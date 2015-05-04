@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.PropertyResourceBundle;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -23,14 +24,17 @@ import org.apache.log4j.Logger;
 public class DBUtil {
 
 	private static Logger logger = Logger.getLogger(DBUtil.class);
+	private static PropertyResourceBundle bundle = InitProperty
+			.getProperty("pcbaJNDI.properties");
 
 	public static DataSource getOracleDataSource() throws NamingException
 	{
 		logger.info("DBUtil Inside  DataSource method inside");
 		DataSource ds = null;
+		String jndiName = bundle.getString("pcbaOracleJNDI");
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:jboss/jdbc/updOracleJNDI");
+			ds = (DataSource) ctx.lookup(jndiName);
 		} catch (NamingException e) {
 			throw e;
 		}
@@ -43,9 +47,10 @@ public class DBUtil {
 	{
 		logger.info("DBUtil Inside  DataSource method inside");
 		DataSource ds = null;
+		String jndiName = bundle.getString("pcbaMySQLJNDI");
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:jboss/jdbc/updMySqlJNDI");
+			ds = (DataSource) ctx.lookup(jndiName);
 		} catch (NamingException e) {
 			throw e;
 		}
