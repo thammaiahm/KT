@@ -78,7 +78,7 @@ public class ServiceMessageCodes {
 	public static final String  OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG="Old Serialno not found in warranty info table";
 	
 	//R12 scrap serial
-	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Successfully found the initial primary serial number";
+	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";
 	public static final String R12_OLD_SN_NOT_AVAILABLE= "5015";
 	public static final String R12_SN_NOT_VALID = "5016";
