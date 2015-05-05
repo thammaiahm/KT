@@ -3,7 +3,7 @@ package com.mot.upd.pcba.handler;
 public class PCBASerialNumberModel {
 	
 	private String msnStatus;
-	private String newSN;
+	private String oldSN;
 	private String serialStatus;
 	private int responseCode;
 	private String responseMsg;
@@ -27,11 +27,11 @@ public class PCBASerialNumberModel {
 	public void setMsnStatus(String msnStatus) {
 		this.msnStatus = msnStatus;
 	}
-	public String getNewSN() {
-		return newSN;
+	public String getOldSN() {
+		return oldSN;
 	}
-	public void setNewSN(String newSN) {
-		this.newSN = newSN;
+	public void setOldSN(String oldSN) {
+		this.oldSN = oldSN;
 	}
 	public String getSerialStatus() {
 		return serialStatus;

@@ -47,20 +47,17 @@ public class R12SnSwapOracleDAO {
 		ResultSet rs = null;
 		String oldSnValue =null;
 		PCBASerialNumberModel pCBASerialNumberModel = new PCBASerialNumberModel();
-		try {
-			
-			ds = DBUtil.getOracleDataSource();
-			} catch (NamingException e) {
-			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
-			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
-					+ e.getMessage());
-			return pCBASerialNumberModel;
-		}
-		
-		
-		try{
-			 
-			
+			try {
+				
+				ds = DBUtil.getOracleDataSource();
+				} catch (NamingException e) {
+				pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+				pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+						+ e.getMessage());
+				return pCBASerialNumberModel;
+			}
+			try{
+
 				String query = bundle.getString("R12.OlddestSNFetch");
 				logger.info("query : = " + query);
 				conn  = ds.getConnection();
@@ -75,7 +72,7 @@ public class R12SnSwapOracleDAO {
 					}
 					 oldSnValue = checkOddKey(map,serialIn);
 					 logger.info("oldSnValue -------------- " + oldSnValue);
-					pCBASerialNumberModel.setNewSN(oldSnValue);
+					pCBASerialNumberModel.setOldSN(oldSnValue);
 
 				}catch(SQLException e){
 					e.printStackTrace();

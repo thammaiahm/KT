@@ -54,15 +54,15 @@ public class R12SnSwapUpdateRestWebservice {
 					pCBASerialNumberModel = r12SwapUpdateMysqlDAO.fetchOldestSCRMysqlValue(r12UpdateQueryInput.getSerialNO());
 				}
 
-				if(pCBASerialNumberModel.getNewSN() !=null ){
+				if(pCBASerialNumberModel.getOldSN() !=null ){
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
-					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getNewSN());
+					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.SUCCESS);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_FOUND_SUCCSS_MSG);
 
 				}else{
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
-					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getNewSN());
+					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 				}

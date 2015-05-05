@@ -68,7 +68,7 @@ public class R12SnSwapMySQLDAO {
 				}
 				 oldSnValue = checkOddKey(map,serialIn);
 				 logger.info("oldSnValue -------------- " + oldSnValue);
-				pCBASerialNumberModel.setNewSN(oldSnValue);
+				pCBASerialNumberModel.setOldSN(oldSnValue);
 
 				}catch(SQLException e){
 					e.printStackTrace();
