@@ -5,6 +5,22 @@ public class PCBASerialNumberModel {
 	private String msnStatus;
 	private String newSN;
 	private String serialStatus;
+	private int responseCode;
+	private String responseMsg;
+	
+	public int getResponseCode() {
+		return responseCode;
+	}
+	public void setResponseCode(int responseCode) {
+		this.responseCode = responseCode;
+	}
+	public String getResponseMsg() {
+		return responseMsg;
+	}
+	public void setResponseMsg(String responseMsg) {
+		this.responseMsg = responseMsg;
+	}
+
 	public String getMsnStatus() {
 		return msnStatus;
 	}
@@ -24,10 +40,5 @@ public class PCBASerialNumberModel {
 		this.serialStatus = serialStatus;
 	}
 	
-	@Override
-	public String toString() {
-		return "PCBASerialNumberModel [msnStatus=" + msnStatus + ", newSN="
-				+ newSN + ", serialStatus=" + serialStatus + "]";
-	}
-
+	
 }

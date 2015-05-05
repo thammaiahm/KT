@@ -58,7 +58,7 @@ public class R12SnSwapUpdateRestWebservice {
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getNewSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.SUCCESS);
-					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLDEST_SCR_SERIAL_FOUND_SUCCSS_MSG);
+					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_FOUND_SUCCSS_MSG);
 
 				}else{
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
@@ -67,17 +67,17 @@ public class R12SnSwapUpdateRestWebservice {
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 				}
 			}else{
-				//rs_R12UpdateQueryResult.setSerialIn(rs_R12UpdateQueryInput.getSerialNO());
-				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.SERIAL_NO_NOT_VALID);
-				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
+					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
+					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.SERIAL_NO_NOT_VALID);
+					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
 			}
-		} catch (Exception e) {
+			} catch (Exception e) {
 			e.printStackTrace();
+			}
+			return r12UpdateQueryResult;
 		}
-		return r12UpdateQueryResult;
-	}
-	public static boolean isSerialLengthValid(String serial_no)
-	{
+		public static boolean isSerialLengthValid(String serial_no)
+		{
 		int length = serial_no.length();
 		if (length == 15){
 			return true;
