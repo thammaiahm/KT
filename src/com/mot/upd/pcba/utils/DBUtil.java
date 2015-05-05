@@ -17,6 +17,9 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import com.mot.upd.pcba.constants.ServiceMessageCodes;
+import com.mot.upd.pcba.handler.PCBASerialNumberModel;
+
 /**
  * @author rviswa
  *
@@ -26,6 +29,7 @@ public class DBUtil {
 	private static Logger logger = Logger.getLogger(DBUtil.class);
 	private static PropertyResourceBundle bundle = InitProperty
 			.getProperty("pcbaJNDI.properties");
+	
 
 	public static DataSource getOracleDataSource() throws NamingException
 	{
@@ -65,7 +69,12 @@ public class DBUtil {
 		Statement stmt = null;
 		ResultSet rs = null;
 		String updConfig = null;
-		String query = "select value from upd_config where key = 'CONFIG_OLD'";
+		String dbconfig = bundle.getString("dbConfig");
+		String query = "select value from upd.upd_config where key = " +
+				 "'"+ dbconfig + "'";
+		logger.info("updconfig query " + query);
+		PCBASerialNumberModel pCBASerialNumberModel = new PCBASerialNumberModel();
+		
 		try{
 			
 				ds = DBUtil.getOracleDataSource();
@@ -78,19 +87,30 @@ public class DBUtil {
 	
 					}
 
-			}catch(Exception e){
-				 e.printStackTrace();
-			}finally{
-				
-					DBUtil.closeConnections(conn, stmt, rs);
-			}
+		}catch(NamingException e){
+			 e.printStackTrace();
+		}catch(SQLException e){
+			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+		}finally{
+			
+				DBUtil.closeConnections(conn, stmt, rs);
+		}
 		return updConfig;
 	}
 	public static Connection getConnection(DataSource ds) throws SQLException
 	{
 		logger.info("DBUtil Inside  Connection method inside");
+		PCBASerialNumberModel pCBASerialNumberModel = new PCBASerialNumberModel();
 		Connection con = null;
-		con = ds.getConnection();
+		try {
+			con = ds.getConnection();
+		} catch (SQLException e) {
+			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+		}
 		return con;
 	}
 	public static void closeConnections(Connection con,Statement stmt,ResultSet rs){
