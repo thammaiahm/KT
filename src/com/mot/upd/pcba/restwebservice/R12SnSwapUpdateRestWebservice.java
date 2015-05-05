@@ -9,11 +9,14 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
+import com.mot.upd.pcba.constants.PCBADataDictionary;
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
-import com.mot.upd.pcba.dao.R12SnSwapUpdateDAO;
+import com.mot.upd.pcba.dao.R12SnSwapMySQLDAO;
+import com.mot.upd.pcba.dao.R12SnSwapOracleDAO;
 import com.mot.upd.pcba.handler.PCBASerialNumberModel;
 import com.mot.upd.pcba.pojo.R12SnSwapUpdateQueryInput;
 import com.mot.upd.pcba.pojo.R12SnSwapUpdateQueryResult;
+import com.mot.upd.pcba.utils.DBUtil;
 
 
 /**
@@ -31,6 +34,7 @@ public class R12SnSwapUpdateRestWebservice {
 		//serialIn = "353339060930372";
 
 		logger.info(" Request serialIn value from rest webservice = " +serialIn);
+		PCBASerialNumberModel pCBASerialNumberModel =null;
 		R12SnSwapUpdateQueryInput r12UpdateQueryInput = new R12SnSwapUpdateQueryInput();
 		R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
 		try {
@@ -38,21 +42,29 @@ public class R12SnSwapUpdateRestWebservice {
 			r12UpdateQueryInput.setSerialNO(serialIn);
 			if(isSerialLengthValid(serialIn)==true && !serialIn.equals(null)){
 
-				R12SnSwapUpdateDAO r12SwapUpdateDAO = new R12SnSwapUpdateDAO();
+				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
+				R12SnSwapMySQLDAO r12SwapUpdateMysqlDAO = new R12SnSwapMySQLDAO();
 
-				PCBASerialNumberModel pCBASerialNumberModel = r12SwapUpdateDAO.fetchR12SerialOutValue(r12UpdateQueryInput.getSerialNO());
+				//PCBASerialNumberModel pCBASerialNumberModel = r12SwapUpdateDAO.fetchR12SerialOutValue(r12UpdateQueryInput.getSerialNO());
+				String updConfig = DBUtil.dbConfigCheck();
+				logger.info("updConfig value : = " + updConfig);
+				if(updConfig.equals(PCBADataDictionary.DBCONFIG)){
+				 pCBASerialNumberModel = r12SwapUpdateOraDAO.fetchOldestSCROracleValue(r12UpdateQueryInput.getSerialNO());
+				}else{
+					pCBASerialNumberModel = r12SwapUpdateMysqlDAO.fetchOldestSCRMysqlValue(r12UpdateQueryInput.getSerialNO());
+				}
 
-				if(pCBASerialNumberModel.getNewSN() !=null && pCBASerialNumberModel.getSerialStatus().substring(0, 3).equals("ACT")){
+				if(pCBASerialNumberModel.getNewSN() !=null ){
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getNewSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.SUCCESS);
-					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OPERATION_SUCCESS);
+					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLDEST_SCR_SERIAL_FOUND_SUCCSS_MSG);
 
 				}else{
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getNewSN());
-					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND);
-					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND_MSG);
+					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND);
+					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 				}
 			}else{
 				//rs_R12UpdateQueryResult.setSerialIn(rs_R12UpdateQueryInput.getSerialNO());
