@@ -21,7 +21,8 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author HRDJ36 Thammaiah M B
  */
 
-@Path("/dispatchserialNumber")
+//@Path("/dispatchserialNumber")
+@Path("/")
 public class UPDDispatchSerialRestWebservice {
 	private static Logger logger = Logger
 			.getLogger(UPDDispatchSerialRestWebservice.class);

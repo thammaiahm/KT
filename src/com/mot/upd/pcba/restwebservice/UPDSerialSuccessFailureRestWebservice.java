@@ -24,7 +24,8 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author Quinnox Dev Team
  *
  */
-@Path("/updateStatusOfSerialNO")
+//@Path("/updateStatusOfSerialNO")
+@Path("/")
 public class UPDSerialSuccessFailureRestWebservice {
 	private static Logger logger = Logger.getLogger(UPDSerialSuccessFailureRestWebservice.class);
 
