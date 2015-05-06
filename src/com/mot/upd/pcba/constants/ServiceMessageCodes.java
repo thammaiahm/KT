@@ -43,6 +43,8 @@ public class ServiceMessageCodes {
 	public static final int IMEI_FAILURE = 5017;
 	public static final int OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE = 5018;
 	public static final int OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE = 5019;
+	public static final int DUAL_SERIAL_NOT_FOUND = 5020;
+	public static final int TRI_SERIAL_NOT_FOUND=5021;
 	
 	// Thammaiah added
 	// Messages for dispatch serial no WS
@@ -76,7 +78,8 @@ public class ServiceMessageCodes {
 	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG ="Old Serialno not found in Shipment table";
 	public static final String READING_OLD_SERIAL_NO_INTO_NEW_SERIAL_NO ="Reading old serial number data and Inserted into new Serial Number in Shipment table";
 	public static final String  OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG="Old Serialno not found in warranty info table";
-	
+	public static final String DUAL_SERIAL_NOT_FOUND_MSG="Required both DualSerialNoIn and DualSerialNoOut.";
+	public static final String TRI_SERIAL_NOT_FOUND_MSG ="Required TriSerialNoIn,TriSerialNoOut,DualSerialNoIn and DualSerialNoOut.";
 	//R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";

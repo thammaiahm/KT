@@ -78,8 +78,6 @@ public class MailUtil {
 			// Set Subject: header field
 			message.setContent(mp);
 
-
-
 			// Send message
 			Transport.send(message);
 			System.out.println("Sent message successfully....");
@@ -88,7 +86,6 @@ public class MailUtil {
 			mex.printStackTrace();
 			throw mex;
 		}
-
 
 		return isMailSent;
 
