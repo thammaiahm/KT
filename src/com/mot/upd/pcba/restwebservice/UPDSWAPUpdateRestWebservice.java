@@ -21,8 +21,7 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author rviswa
  *
  */
-//@Path("/swapSerialNOData")
-@Path("/")
+@Path("/swapSerialNOData")
 public class UPDSWAPUpdateRestWebservice {
 	
 
