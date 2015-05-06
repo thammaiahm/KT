@@ -82,6 +82,31 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				connection = DBUtil.getConnection(ds);
 				connection.setAutoCommit(false);
+				
+				
+				String serialNoOfstatus=rs.getString("ATTRIBUTE_37");
+				if(serialNoOfstatus.startsWith("VOI")){
+					
+					StringBuffer stb = new StringBuffer();
+					stb.append("insert into shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
+					prestmt = connection.prepareStatement(stb.toString());
+					prestmt.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoIn());
+					prestmt.setString(2,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					prestmt.setString(3, "PCBA_PGM");
+					prestmt.setDate(4,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(5, "PCBA_PGM");
+					prestmt.setDate(6,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(7, "S");
+					prestmt.execute();
+
+					MailUtil.sendEmail();
+					
+				}
+				
 
 				SQLQuery.append("insert into UPD_SN_REPOS(SERIAL_NO, REQUEST_ID, REGION_ID, SYSTEM_ID, ATTRIBUTE_01, ATTRIBUTE_02, ATTRIBUTE_03, ATTRIBUTE_04, ATTRIBUTE_05,ATTRIBUTE_06,  ATTRIBUTE_07,  ATTRIBUTE_08,");
 				SQLQuery.append("ATTRIBUTE_09, ATTRIBUTE_10,   ATTRIBUTE_11,  ATTRIBUTE_12,  ATTRIBUTE_13,  ATTRIBUTE_14, ATTRIBUTE_15,  ATTRIBUTE_16,  ATTRIBUTE_17,  ATTRIBUTE_18,  ATTRIBUTE_19,");
@@ -95,6 +120,8 @@ PCBASwapUPDUpdateInterfaceDAO {
 				SQLQuery.append("ATTRIBUTE_111, ATTRIBUTE_112, ATTRIBUTE_113, ATTRIBUTE_117, ATTRIBUTE_118, ATTRIBUTE_114,ATTRIBUTE_115, ATTRIBUTE_116, ATTRIBUTE_119, ATTRIBUTE_120, ATTRIBUTE_121,");
 				SQLQuery.append("ATTRIBUTE_122, ATTRIBUTE_123) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
+				
+				
 				pstmt = connection.prepareStatement(SQLQuery.toString());
 				pstmt.setString(1,
 						pCBASerialNoUPdateQueryInput.getSerialNoOut());
@@ -236,7 +263,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 			} else {
 
-				StringBuffer stb = new StringBuffer();
+				/*StringBuffer stb = new StringBuffer();
 				stb.append("insert into shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
 				prestmt = connection.prepareStatement(stb.toString());
 				prestmt.setString(1,
@@ -252,10 +279,11 @@ PCBASwapUPDUpdateInterfaceDAO {
 				prestmt.setString(7, "S");
 				prestmt.execute();
 
-				MailUtil.sendEmail();
+				MailUtil.sendEmail();*/
 
 				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG);
+				return response;
 
 			}
 
@@ -357,6 +385,27 @@ PCBASwapUPDUpdateInterfaceDAO {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
+				
+				String serialNoOfstatus=rs.getString("ATTRIBUTE_37");
+				if(serialNoOfstatus.startsWith("VOI")){
+					
+					StringBuffer stb = new StringBuffer();
+					stb.append("insert into shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
+					prestmt = innerselectcon.prepareStatement(stb.toString());
+					prestmt.setString(1,serialNoIn);
+					prestmt.setString(2,serialNoOut);
+					prestmt.setString(3, "PCBA_PGM");
+					prestmt.setDate(4,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(5, "PCBA_PGM");
+					prestmt.setDate(6,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(7, "S");
+					prestmt.execute();
+
+					MailUtil.sendEmail();
+					
+				}
 
 				SQLInnerQuery
 				.append("insert into UPD_SN_REPOS(SERIAL_NO, REQUEST_ID, REGION_ID, SYSTEM_ID, ATTRIBUTE_01, ATTRIBUTE_02, ATTRIBUTE_03, ATTRIBUTE_04, ATTRIBUTE_05,ATTRIBUTE_06,  ATTRIBUTE_07,  ATTRIBUTE_08,");
@@ -523,7 +572,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 			} else {
 
-				StringBuffer stb = new StringBuffer();
+				/*StringBuffer stb = new StringBuffer();
 				stb.append("insert into shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
 				pstUpdate = connection2.prepareStatement(stb.toString());
 				pstUpdate.setString(1, serialNoIn);
@@ -537,10 +586,10 @@ PCBASwapUPDUpdateInterfaceDAO {
 				pstUpdate.setString(7, "S");
 				pstUpdate.execute();
 
-				MailUtil.sendEmail();
+				MailUtil.sendEmail();*/
 
 				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
-				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG);
+				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG);				
 
 			}
 

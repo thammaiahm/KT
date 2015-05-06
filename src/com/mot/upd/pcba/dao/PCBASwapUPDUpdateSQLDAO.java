@@ -75,6 +75,29 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			rs = preparedStmt.executeQuery();
 
 			if (rs.next()) {
+				
+				String serialNoStatus=rs.getString("status_code");				
+				if(serialNoStatus.startsWith("VOI")){
+					StringBuffer stb = new StringBuffer();
+					stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
+					prestmt = con.prepareStatement(stb.toString());
+					prestmt.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoIn());
+					prestmt.setString(2,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					prestmt.setString(3, "PCBA_PGM");
+					prestmt.setDate(4,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(5, "PCBA_PGM");
+					prestmt.setDate(6,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(7, "S");
+					prestmt.execute();
+
+					MailUtil.sendEmail();
+				}
+				
+				
 
 				String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
 						+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
@@ -277,7 +300,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 			} else {
 
-				StringBuffer stb = new StringBuffer();
+				/*StringBuffer stb = new StringBuffer();
 				stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
 				prestmt = con1.prepareStatement(stb.toString());
 				prestmt.setString(1,
@@ -293,10 +316,11 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 				prestmt.setString(7, "S");
 				prestmt.execute();
 
-				MailUtil.sendEmail();
+				MailUtil.sendEmail();*/
 
 				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
+				return response;
 
 			}
 			// Dual Case
@@ -387,6 +411,28 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			rs = preparedStmt.executeQuery();
 
 			if (rs.next()) {
+				
+				
+				String serialNoStatus=rs.getString("status_code");				
+				if(serialNoStatus.startsWith("VOI")){
+					StringBuffer stb = new StringBuffer();
+					stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
+					prestmt = innerselectcon.prepareStatement(stb.toString());
+					prestmt.setString(1,serialNoIn);
+					prestmt.setString(2,serialNoOut);
+					prestmt.setString(3, "PCBA_PGM");
+					prestmt.setDate(4,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(5, "PCBA_PGM");
+					prestmt.setDate(6,
+							new java.sql.Date(System.currentTimeMillis()));
+					prestmt.setString(7, "S");
+					prestmt.execute();
+
+					MailUtil.sendEmail();
+				}
+				
+				
 
 				String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
 						+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
@@ -582,7 +628,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 			} else {
 
-				StringBuffer stb = new StringBuffer();
+				/*StringBuffer stb = new StringBuffer();
 				stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
 				pstmt1 = con12.prepareStatement(stb.toString());
 				pstmt1.setString(1, serialNoIn);
@@ -594,7 +640,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 				pstmt1.setString(7, "S");
 				pstmt1.execute();
 
-				MailUtil.sendEmail();
+				MailUtil.sendEmail();*/
 
 				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
