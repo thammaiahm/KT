@@ -5,7 +5,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateInterfaceDAO;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateOracleDAO;
@@ -13,8 +12,6 @@ import com.mot.upd.pcba.dao.PCBASwapUPDUpdateSQLDAO;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateQueryInput;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
-
-
 
 
 /**
@@ -51,7 +48,7 @@ public class UPDSWAPUpdateRestWebservice {
 		//Check for Mandatory Fields in input
 		isMissing =validateMandatoryInputParam(pCBASerialNoUPdateQueryInput);
 		if(isMissing){
-			pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INPUT_PARAM_MISSING);
+			pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.INPUT_PARAM_MISSING);
 			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING);
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 		}
@@ -61,7 +58,7 @@ public class UPDSWAPUpdateRestWebservice {
 		isValidSerialNoIn =validateSerialNoIn(pCBASerialNoUPdateQueryInput);
 
 		if(isValidSerialNoIn){
-			pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND);
+			pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND);
 			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 
@@ -72,18 +69,21 @@ public class UPDSWAPUpdateRestWebservice {
 		isValidSerialNoOut =validateSerialNoOut(pCBASerialNoUPdateQueryInput);
 
 		if(isValidSerialNoOut){
-			pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND);
+			pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND);
 			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND_MSG);
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 
 		}
 		
 		// check if DualSerialNo is valid
-		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null || pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null || !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals("")) || !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals(""))){
+//		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null || pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals("")) && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals(""))){
+			
+		if((pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))) || (pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null  && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals("")))){
+					
 		
 			isValidDualSerialNo = validateDualSerialNo(pCBASerialNoUPdateQueryInput);
 			if(isValidDualSerialNo){
-				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.DUAL_SERIAL_NOT_FOUND);
+				pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.DUAL_SERIAL_NOT_FOUND);
 				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.DUAL_SERIAL_NOT_FOUND_MSG);
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}
@@ -91,10 +91,10 @@ public class UPDSWAPUpdateRestWebservice {
 		
 		// check if TriSerialNo is valid
 		
-		if(pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null || pCBASerialNoUPdateQueryInput.getTriSerialNoOut()!=null || !(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals("")) || !(pCBASerialNoUPdateQueryInput.getTriSerialNoOut().equals(""))){
+		if((pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals(""))) || (pCBASerialNoUPdateQueryInput.getTriSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoOut().equals("")))){
 			isValidTriSerialNo=validateTriSerialNo(pCBASerialNoUPdateQueryInput);
 			if(isValidTriSerialNo){
-				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.TRI_SERIAL_NOT_FOUND);
+				pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.TRI_SERIAL_NOT_FOUND);
 				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.TRI_SERIAL_NOT_FOUND_MSG);
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}

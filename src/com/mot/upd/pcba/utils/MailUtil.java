@@ -3,6 +3,7 @@
  */
 package com.mot.upd.pcba.utils;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
 
@@ -26,11 +27,10 @@ import org.apache.log4j.Logger;
 public class MailUtil {
 
 	private static Logger logger = Logger.getLogger(MailUtil.class);
-	private static PropertyResourceBundle bundle = InitProperty
-			.getProperty("pcbaMail.properties");
+	private static PropertyResourceBundle bundle = InitProperty.getProperty("pcbaMail.properties");
 
 
-	public static boolean sendEmail()throws Exception{
+	public static  boolean sendEmail(String serialNoIn,String SerialNoOut)throws Exception{
 
 		boolean isMailSent = false;
 		String email = bundle.getString("email");
@@ -42,6 +42,8 @@ public class MailUtil {
 		String from = bundle.getString("from");
 		String emailSubject=bundle.getString("emailSubject");
 		String emailBody=bundle.getString("emailBody");
+		emailBody = MessageFormat.format(emailBody, serialNoIn,SerialNoOut);
+
 		// Recipient's email ID needs to be mentioned.
 		String to = email;
 		// Get system properties
@@ -78,6 +80,8 @@ public class MailUtil {
 			// Set Subject: header field
 			message.setContent(mp);
 
+
+
 			// Send message
 			Transport.send(message);
 			System.out.println("Sent message successfully....");
@@ -87,7 +91,9 @@ public class MailUtil {
 			throw mex;
 		}
 
+
 		return isMailSent;
 
-	} 	
+	} 
+
 }

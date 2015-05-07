@@ -55,7 +55,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 		isMissing =validateMandatoryInputParam(pcbaProgramQueryInput);
 		if(isMissing){
 			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.INPUT_PARAM_MISSING);
+			pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INPUT_PARAM_MISSING);
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}
@@ -65,7 +65,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 		if(!isValidSerial){
 			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.INVALID_SN_TYPE);
+			pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}
@@ -73,7 +73,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 		isValidStatus=validateStatus(pcbaProgramQueryInput);
 		if(!isValidStatus){
 			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.INVALID_STATUS);
+			pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INVALID_STATUS);
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_STATUS_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}

@@ -40,7 +40,7 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in updateIMEIStatusSuccess:"+e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -66,12 +66,12 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			logger.info("IMEIStatusSuccess-MY SQLQueryMEID:"+MYSQL_QueryMEID);
 
 			response.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			response.setResponseCode(ServiceMessageCodes.SUCCESS);
+			response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 			response.setResponseMessage(ServiceMessageCodes.IMEI_SUCCES_MSG);
 
 		}catch(Exception e){
 			logger.info("Update IMEIStatusSuccess error:"+e);
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG);
 		}
 		finally{
@@ -91,7 +91,7 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in updateIMEIStatusFailure:"+e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -118,12 +118,12 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			logger.info("IMEIStatusFailure-MY SQLQueryMEID:"+MYSQL_QueryMEID);
 
 			response.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			response.setResponseCode(ServiceMessageCodes.IMEI_FAILURE);
+			response.setResponseCode(""+ServiceMessageCodes.IMEI_FAILURE);
 			response.setResponseMessage(ServiceMessageCodes.IMEI_FAILURE_MSG);
 
 		}catch(Exception e){
 			logger.info("Update IMEIStatusFailure error:"+e);
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG);
 		}
 		finally{
@@ -140,7 +140,7 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in updateMEIDStatusSuccess:"+e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -168,13 +168,13 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			logger.info("MEIDStatusSuccess - MY SQLQueryMEID:"+MYSQL_QueryMEID);
 
 			response.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			response.setResponseCode(ServiceMessageCodes.SUCCESS);
+			response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 			response.setResponseMessage(ServiceMessageCodes.MEID_SUCCES_MSG);
 
 
 		}catch(Exception e){
 			logger.info("Update MEIDStatusSuccess error:"+e);
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG+e.getMessage());
 		}
 		finally{
@@ -193,7 +193,7 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in updateMEIDStatusFailure:"+e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -220,12 +220,12 @@ public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInt
 			logger.info("MEIDStatusFailure-SQLQueryMEID:"+MYSQL_QueryMEID);
 
 			response.setSerialNO(pcbaProgramQueryInput.getSerialNO());
-			response.setResponseCode(ServiceMessageCodes.MEID_FAILURE);
+			response.setResponseCode(""+ServiceMessageCodes.MEID_FAILURE);
 			response.setResponseMessage(ServiceMessageCodes.MEID_FAILURE_MSG);
 
 		}catch(Exception e){
 			logger.info("Update MEIDStatusSuccess error:"+e);
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG);
 
 		}

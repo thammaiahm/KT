@@ -21,6 +21,7 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
 
+
 /**
  * @author rviswa
  *
@@ -47,7 +48,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in MEID:" + e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -94,7 +95,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.setString(7, "S");
 					prestmt.execute();
 
-					MailUtil.sendEmail();
+					MailUtil.sendEmail(pCBASerialNoUPdateQueryInput.getSerialNoIn(),pCBASerialNoUPdateQueryInput.getSerialNoOut());
 				}
 				
 				
@@ -295,7 +296,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					pstmt1.execute();
 				}
 
-				response.setResponseCode(ServiceMessageCodes.SUCCESS);
+				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 				response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 
 			} else {
@@ -318,7 +319,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 				MailUtil.sendEmail();*/
 
-				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
+				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
 				return response;
 
@@ -368,7 +369,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG
 					+ e.getMessage());
 		} finally {
@@ -429,7 +430,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.setString(7, "S");
 					prestmt.execute();
 
-					MailUtil.sendEmail();
+					MailUtil.sendEmail(serialNoIn,serialNoOut);
 				}
 				
 				
@@ -623,7 +624,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 				// innerupdatecon.commit();
 
-				response.setResponseCode(ServiceMessageCodes.SUCCESS);
+				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 				response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 
 			} else {
@@ -642,7 +643,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 				MailUtil.sendEmail();*/
 
-				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
+				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
 
 			}

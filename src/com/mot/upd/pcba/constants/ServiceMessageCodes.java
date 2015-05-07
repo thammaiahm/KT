@@ -82,6 +82,8 @@ public class ServiceMessageCodes {
 	public static final String  OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG="Old Serialno not found in warranty info table";
 	public static final String DUAL_SERIAL_NOT_FOUND_MSG="Required both DualSerialNoIn and DualSerialNoOut.";
 	public static final String TRI_SERIAL_NOT_FOUND_MSG ="Required TriSerialNoIn,TriSerialNoOut,DualSerialNoIn and DualSerialNoOut.";
+	public static final String EMAIL_MSG_CODE="8002";
+	public static final String EMAIL_MSG="Error - Contact Support Team.";
 	//R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";

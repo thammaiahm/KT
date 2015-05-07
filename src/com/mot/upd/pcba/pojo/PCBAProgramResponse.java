@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class PCBAProgramResponse implements Serializable{
 	
 	private String serialNO;
-	private int    responseCode;
+	private String    responseCode;
 	private String responseMessage;
 	
 	public String getSerialNO() {
@@ -21,10 +21,10 @@ public class PCBAProgramResponse implements Serializable{
 	public void setSerialNO(String serialNO) {
 		this.serialNO = serialNO;
 	}
-	public int getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
-	public void setResponseCode(int responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 	public String getResponseMessage() {

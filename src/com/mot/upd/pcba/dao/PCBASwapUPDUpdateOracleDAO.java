@@ -21,6 +21,7 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
 
+
 /**
  * @author rviswa
  * 
@@ -50,7 +51,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 			ds = DBUtil.getOracleDataSource();
 		} catch (NamingException e) {
 			logger.info("Data source not found in MEID:" + e);
-			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG);
 			return response;
 		}
@@ -103,8 +104,11 @@ PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.setString(7, "S");
 					prestmt.execute();
 
-					MailUtil.sendEmail();
+					MailUtil.sendEmail(pCBASerialNoUPdateQueryInput.getSerialNoIn(),pCBASerialNoUPdateQueryInput.getSerialNoOut());
 					
+					response.setResponseCode(ServiceMessageCodes.EMAIL_MSG_CODE);
+					response.setResponseMessage(ServiceMessageCodes.EMAIL_MSG);
+					return response;
 				}
 				
 
@@ -258,7 +262,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				}
 
-				response.setResponseCode(ServiceMessageCodes.SUCCESS);
+				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 				response.setResponseMessage(ServiceMessageCodes.READING_OLD_SERIAL_NO_INTO_NEW_SERIAL_NO);
 
 			} else {
@@ -281,7 +285,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				MailUtil.sendEmail();*/
 
-				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
+				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG);
 				return response;
 
@@ -339,7 +343,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 			}
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseCode(""+ServiceMessageCodes.SQL_EXCEPTION);
 			response.setResponseMessage(ServiceMessageCodes.SQL_EXCEPTION_MSG
 					+ e.getMessage());
 		} finally {
@@ -403,7 +407,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.setString(7, "S");
 					prestmt.execute();
 
-					MailUtil.sendEmail();
+					MailUtil.sendEmail(serialNoIn,serialNoOut);
 					
 				}
 
@@ -567,7 +571,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				}
 
-				response.setResponseCode(ServiceMessageCodes.SUCCESS);
+				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 				response.setResponseMessage(ServiceMessageCodes.READING_OLD_SERIAL_NO_INTO_NEW_SERIAL_NO);
 
 			} else {
@@ -588,7 +592,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				MailUtil.sendEmail();*/
 
-				response.setResponseCode(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
+				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG);				
 
 			}

@@ -11,13 +11,13 @@ import java.io.Serializable;
  */
 public class PCBASerialNoUPdateResponse implements Serializable{
 	
-	private int    responseCode;
+	private String    responseCode;
 	private String responseMessage;
 	
-	public int getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
-	public void setResponseCode(int responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 	public String getResponseMessage() {
