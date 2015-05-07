@@ -30,6 +30,8 @@ public class ServiceMessageCodes {
 	public static final int NO_PROTOCOL_FOUND = 5022;
 	public static final int ULMA_ADDRESS_GREATER_THAN_FIVE = 5017;
 	public static final int INVALID_GPPID = 5018;
+	public static final int SN_15_DIGIT = 15;
+	public static final int SN_14_DIGIT = 14;
 
 	// Viswanath added
 

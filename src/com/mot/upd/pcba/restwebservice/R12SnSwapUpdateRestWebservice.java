@@ -17,6 +17,8 @@ import com.mot.upd.pcba.handler.PCBASerialNumberModel;
 import com.mot.upd.pcba.pojo.R12SnSwapUpdateQueryInput;
 import com.mot.upd.pcba.pojo.R12SnSwapUpdateQueryResult;
 import com.mot.upd.pcba.utils.DBUtil;
+import com.mot.upd.pcba.utils.MEIDException;
+import com.mot.upd.pcba.utils.MeidUtils;
 
 
 /**
@@ -37,10 +39,13 @@ public class R12SnSwapUpdateRestWebservice {
 		PCBASerialNumberModel pCBASerialNumberModel =null;
 		R12SnSwapUpdateQueryInput r12UpdateQueryInput = new R12SnSwapUpdateQueryInput();
 		R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
+		
 		try {
 
-			r12UpdateQueryInput.setSerialNO(serialIn);
-			if(isSerialLengthValid(serialIn)==true && !serialIn.equals(null)){
+			String serialSnCheckValue = serialCheck(serialIn);
+			logger.info(" Request serialIn value from after check process  = " +serialSnCheckValue);
+			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
+				r12UpdateQueryInput.setSerialNO(serialSnCheckValue);
 
 				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
 				R12SnSwapMySQLDAO r12SwapUpdateMysqlDAO = new R12SnSwapMySQLDAO();
@@ -54,7 +59,7 @@ public class R12SnSwapUpdateRestWebservice {
 					pCBASerialNumberModel = r12SwapUpdateMysqlDAO.fetchOldestSCRMysqlValue(r12UpdateQueryInput.getSerialNO());
 				}
 
-				if(pCBASerialNumberModel.getOldSN() !=null && isSerialLengthValid(pCBASerialNumberModel.getOldSN())==true){
+				if(pCBASerialNumberModel.getOldSN() !=null ){
 					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
@@ -67,7 +72,7 @@ public class R12SnSwapUpdateRestWebservice {
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 				}
 			}else{
-					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
+					r12UpdateQueryResult.setSerialIn(serialIn);
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_SN_NOT_VALID);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
 			}
@@ -76,12 +81,27 @@ public class R12SnSwapUpdateRestWebservice {
 			}
 			return r12UpdateQueryResult;
 		}
-		public static boolean isSerialLengthValid(String serial_no)
-		{
-		int length = serial_no.length();
-		if (length == 15){
-			return true;
+		public static String serialCheck(String serialNo){
+			
+				if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
+				try {
+				if(serialNo.length()==ServiceMessageCodes.SN_14_DIGIT){
+				logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
+				MeidUtils meidUtils = new MeidUtils();
+				String checkLastDigit = meidUtils.getChecksum(serialNo);
+				StringBuffer sb = new StringBuffer(serialNo);
+		
+				serialNo =sb.append(checkLastDigit).toString();
+				logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
+		
+				return serialNo;
+				}
+				}catch(Exception e){
+					logger.error("Error in serialCheck function " + e);
+				}
+				}
+		
+				return serialNo;
 		}
-		return false;
-	}
+		
 }
