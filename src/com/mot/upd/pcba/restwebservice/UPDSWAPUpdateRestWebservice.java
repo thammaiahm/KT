@@ -5,6 +5,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateInterfaceDAO;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateOracleDAO;
@@ -12,6 +13,7 @@ import com.mot.upd.pcba.dao.PCBASwapUPDUpdateSQLDAO;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateQueryInput;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
+
 
 
 /**
@@ -76,7 +78,6 @@ public class UPDSWAPUpdateRestWebservice {
 		}
 		
 		// check if DualSerialNo is valid
-//		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null || pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals("")) && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals(""))){
 			
 		if((pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))) || (pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null  && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals("")))){
 					

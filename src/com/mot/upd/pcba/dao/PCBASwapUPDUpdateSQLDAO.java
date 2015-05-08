@@ -76,7 +76,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			rs = preparedStmt.executeQuery();
 
 			if (rs.next()) {
-				
+
 				String serialNoStatus=rs.getString("status_code");				
 				if(serialNoStatus.startsWith("VOI")){
 					StringBuffer stb = new StringBuffer();
@@ -96,208 +96,218 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.execute();
 
 					MailUtil.sendEmail(pCBASerialNoUPdateQueryInput.getSerialNoIn(),pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
+					response.setResponseCode(ServiceMessageCodes.EMAIL_MSG_CODE);
+					response.setResponseMessage(ServiceMessageCodes.EMAIL_MSG);
+
+				}else{				
+
+
+					String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
+							+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
+							+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
+							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					con1 = DBUtil.getConnection(ds);
+					con1.setAutoCommit(false);
+					pstmt1 = con1.prepareStatement(MySql_updFactoryShipmentInfo);
+
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("factory_code"));
+					pstmt1.setDate(3, rs.getDate("gen_date"));
+					pstmt1.setString(4, rs.getString("protocol"));
+					pstmt1.setString(5, rs.getString("apc"));
+					pstmt1.setString(6, rs.getString("trans_model"));
+					pstmt1.setString(7, rs.getString("cust_model"));
+					pstmt1.setString(8, rs.getString("mkt_model"));
+					pstmt1.setString(9, rs.getString("item_code"));
+					pstmt1.setString(10, rs.getString("warr_code"));
+					pstmt1.setDate(11, rs.getDate("ship_date"));
+					pstmt1.setString(12, rs.getString("ship_to_cust_id"));
+					pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
+					pstmt1.setString(14, rs.getString("ship_to_cust_name"));
+					pstmt1.setString(15, rs.getString("ship_to_cust_city"));
+					pstmt1.setString(16, rs.getString("ship_to_cust_country"));
+					pstmt1.setString(17, rs.getString("sold_to_cust_id"));
+					pstmt1.setString(18, rs.getString("sold_to_cust_name"));
+					pstmt1.setDate(19, rs.getDate("sold_date"));
+					pstmt1.setString(20, rs.getString("cit"));
+					pstmt1.setString(21, rs.getString("ta_no"));
+					pstmt1.setString(22, rs.getString("carton_id"));
+					pstmt1.setString(23, rs.getString("po_no"));
+					pstmt1.setString(24, rs.getString("so_no"));
+					pstmt1.setString(25, rs.getString("fo_sequence"));
+					pstmt1.setString(26, rs.getString("msn"));
+					pstmt1.setDate(27, rs.getDate("assign_date"));
+					pstmt1.setString(28, rs.getString("gpp_id"));
+					pstmt1.setString(29, rs.getString("product_type"));
+					pstmt1.setString(30, rs.getString("location_type"));
+					pstmt1.setString(31, rs.getString("packing_list"));
+					pstmt1.setDate(32, rs.getDate("fab_date"));
+					pstmt1.setString(33, rs.getString("imc_mfg_location"));
+					pstmt1.setString(34, rs.getString("guid"));
+					pstmt1.setString(35, "pdb_id");
+					boolean status1 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
+							+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
+							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con1.prepareStatement(MySql_updRepair);
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("cancel_code"));
+					pstmt1.setString(3, rs.getString("swap_ref_no"));
+					pstmt1.setString(4, rs.getString("swap_count"));
+					pstmt1.setString(5, rs.getString("delete_flag"));
+					pstmt1.setString(6, rs.getString("org_code"));
+					pstmt1.setString(7, rs.getString("upd_time"));
+					pstmt1.setString(8, rs.getString("dn"));
+					pstmt1.setString(9, rs.getString("era"));
+					pstmt1.setString(10, rs.getString("rma"));
+					pstmt1.setDate(11, rs.getDate("receive_date"));
+					pstmt1.setDate(12, rs.getDate("delivery_date"));
+					pstmt1.setDate(13, rs.getDate("return_date"));
+					pstmt1.setDate(14, rs.getDate("rma_date"));
+					pstmt1.setDate(15, rs.getDate("scrap_date"));
+					pstmt1.setString(16, rs.getString("cust_id"));
+					pstmt1.setString(17, rs.getString("warehouse_id"));
+					pstmt1.setString(18, rs.getString("shop_id"));
+					pstmt1.setString(19, rs.getString("status_id"));
+					pstmt1.setString(20, rs.getString("action"));
+					pstmt1.setString(21, rs.getString("remarks"));
+					pstmt1.setString(22, rs.getString("csn"));
+					pstmt1.setDate(23, rs.getDate("last_repair_date"));
+					pstmt1.setString(24, rs.getString("repair_count"));
+					pstmt1.setDate(25, rs.getDate("swap_date"));
+					boolean status2 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
+							+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con1.prepareStatement(MySql_updWarrantyInfo);
+
+					Date curDate = new Date();
+					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
+					String DateToStr = format.format(curDate);
+
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, "ACT  " + DateToStr);
+					pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
+					pstmt1.setString(4, rs.getString("ren_warr_code"));
+					pstmt1.setString(5, rs.getString("warr_country_code"));
+					pstmt1.setString(6, rs.getString("warr_region"));
+					pstmt1.setString(7, rs.getString("orig_ship_date"));
+					pstmt1.setString(8, rs.getString("reference_key"));
+					pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
+					pstmt1.setDate(10, rs.getDate("pop_date"));
+					pstmt1.setString(11, rs.getString("pop_identifier"));
+					boolean status3 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
+							+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+
+					pstmt1 = con1.prepareStatement(MySql_updDeviceConfig);
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("handset_type"));
+					pstmt1.setString(3, rs.getString("flex_option"));
+					pstmt1.setString(4, rs.getString("flex_sw"));
+					pstmt1.setString(5, rs.getString("hw"));
+					pstmt1.setString(6, rs.getString("icc_id"));
+					pstmt1.setString(7, rs.getString("software_version"));
+					pstmt1.setString(8, rs.getString("wimax"));
+					pstmt1.setString(9, rs.getString("hsn"));
+					pstmt1.setString(10, rs.getString("flash_uid"));
+					pstmt1.setString(11, rs.getString("dual_serial_no"));
+					pstmt1.setString(12, rs.getString("dual_serial_no_type"));
+					pstmt1.setString(13, rs.getString("fastt_id"));
+					pstmt1.setString(14, rs.getString("base_processor_id"));
+					pstmt1.setString(15, rs.getString("wlan"));
+					boolean status4 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
+							+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con1.prepareStatement(MySql_updDirectShipment);
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("so_line_no"));
+					pstmt1.setString(3, rs.getString("ds_region_code"));
+					pstmt1.setString(4, rs.getString("ds_so_no"));
+					pstmt1.setString(5, rs.getString("ds_po_no"));
+					pstmt1.setString(6, rs.getString("ds_cust_id"));
+					pstmt1.setString(7, rs.getString("ds_bill_to_id"));
+					pstmt1.setString(8, rs.getString("ds_ship_to_id"));
+					pstmt1.setString(9, rs.getString("ds_cust_country_code"));
+					pstmt1.setString(10, rs.getString("ds_cust_name"));
+					pstmt1.setString(11, rs.getString("bill_to_id"));
+					pstmt1.setString(12, rs.getString("shipment_no"));
+					pstmt1.setString(13, rs.getString("phone_no"));
+					pstmt1.setString(14, rs.getString("wip_dj"));
+					pstmt1.setDate(15, rs.getDate("sale_date"));
+					pstmt1.setString(16, rs.getString("last_imei"));
+					boolean status5 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con1.prepareStatement(MySql_updLockCode);
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("meid_evdo_password"));
+					pstmt1.setString(3, rs.getString("meid_a_key2_type"));
+					pstmt1.setString(4, rs.getString("meid_a_key2"));
+					pstmt1.setString(5, rs.getString("imc_lock_code"));
+					boolean status6 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con1.prepareStatement(Sql_updMeid);
+					pstmt1.setString(1,
+							pCBASerialNoUPdateQueryInput.getSerialNoOut());
+					pstmt1.setString(2, rs.getString("a_key_index"));
+					pstmt1.setString(3, rs.getString("cas_no"));
+					boolean status7 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					if (!status1 && !status2 && !status3 && !status4 && !status5
+							&& !status6 && !status7) {
+						String statusCode = "SCR  " + DateToStr;
+
+						String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"
+								+ statusCode
+								+ "' where serial_no='"
+								+ pCBASerialNoUPdateQueryInput.getSerialNoIn()
+								+ "'";
+						pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
+						pstmt1.execute();
+						pstmt1=null;
+						
+						String statusOfnewSerialNO="update upd.upd_repair set swap_ref_no='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"' where serial_no='"+pCBASerialNoUPdateQueryInput.getSerialNoIn()+"'";
+						pstmt1 = con1.prepareStatement(statusOfnewSerialNO);
+						pstmt1.execute();
+					
+					}
+
+					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
+					response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 				}
-				
-				
-
-				String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
-						+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
-						+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
-						+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				con1 = DBUtil.getConnection(ds);
-				con1.setAutoCommit(false);
-				pstmt1 = con1.prepareStatement(MySql_updFactoryShipmentInfo);
-
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("factory_code"));
-				pstmt1.setDate(3, rs.getDate("gen_date"));
-				pstmt1.setString(4, rs.getString("protocol"));
-				pstmt1.setString(5, rs.getString("apc"));
-				pstmt1.setString(6, rs.getString("trans_model"));
-				pstmt1.setString(7, rs.getString("cust_model"));
-				pstmt1.setString(8, rs.getString("mkt_model"));
-				pstmt1.setString(9, rs.getString("item_code"));
-				pstmt1.setString(10, rs.getString("warr_code"));
-				pstmt1.setDate(11, rs.getDate("ship_date"));
-				pstmt1.setString(12, rs.getString("ship_to_cust_id"));
-				pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
-				pstmt1.setString(14, rs.getString("ship_to_cust_name"));
-				pstmt1.setString(15, rs.getString("ship_to_cust_city"));
-				pstmt1.setString(16, rs.getString("ship_to_cust_country"));
-				pstmt1.setString(17, rs.getString("sold_to_cust_id"));
-				pstmt1.setString(18, rs.getString("sold_to_cust_name"));
-				pstmt1.setDate(19, rs.getDate("sold_date"));
-				pstmt1.setString(20, rs.getString("cit"));
-				pstmt1.setString(21, rs.getString("ta_no"));
-				pstmt1.setString(22, rs.getString("carton_id"));
-				pstmt1.setString(23, rs.getString("po_no"));
-				pstmt1.setString(24, rs.getString("so_no"));
-				pstmt1.setString(25, rs.getString("fo_sequence"));
-				pstmt1.setString(26, rs.getString("msn"));
-				pstmt1.setDate(27, rs.getDate("assign_date"));
-				pstmt1.setString(28, rs.getString("gpp_id"));
-				pstmt1.setString(29, rs.getString("product_type"));
-				pstmt1.setString(30, rs.getString("location_type"));
-				pstmt1.setString(31, rs.getString("packing_list"));
-				pstmt1.setDate(32, rs.getDate("fab_date"));
-				pstmt1.setString(33, rs.getString("imc_mfg_location"));
-				pstmt1.setString(34, rs.getString("guid"));
-				pstmt1.setString(35, "pdb_id");
-				boolean status1 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
-						+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
-						+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con1.prepareStatement(MySql_updRepair);
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("cancel_code"));
-				pstmt1.setString(3, rs.getString("swap_ref_no"));
-				pstmt1.setString(4, rs.getString("swap_count"));
-				pstmt1.setString(5, rs.getString("delete_flag"));
-				pstmt1.setString(6, rs.getString("org_code"));
-				pstmt1.setString(7, rs.getString("upd_time"));
-				pstmt1.setString(8, rs.getString("dn"));
-				pstmt1.setString(9, rs.getString("era"));
-				pstmt1.setString(10, rs.getString("rma"));
-				pstmt1.setDate(11, rs.getDate("receive_date"));
-				pstmt1.setDate(12, rs.getDate("delivery_date"));
-				pstmt1.setDate(13, rs.getDate("return_date"));
-				pstmt1.setDate(14, rs.getDate("rma_date"));
-				pstmt1.setDate(15, rs.getDate("scrap_date"));
-				pstmt1.setString(16, rs.getString("cust_id"));
-				pstmt1.setString(17, rs.getString("warehouse_id"));
-				pstmt1.setString(18, rs.getString("shop_id"));
-				pstmt1.setString(19, rs.getString("status_id"));
-				pstmt1.setString(20, rs.getString("action"));
-				pstmt1.setString(21, rs.getString("remarks"));
-				pstmt1.setString(22, rs.getString("csn"));
-				pstmt1.setDate(23, rs.getDate("last_repair_date"));
-				pstmt1.setString(24, rs.getString("repair_count"));
-				pstmt1.setDate(25, rs.getDate("swap_date"));
-				boolean status2 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
-						+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con1.prepareStatement(MySql_updWarrantyInfo);
-
-				Date curDate = new Date();
-				SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
-				String DateToStr = format.format(curDate);
-
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, "ACT  " + DateToStr);
-				pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
-				pstmt1.setString(4, rs.getString("ren_warr_code"));
-				pstmt1.setString(5, rs.getString("warr_country_code"));
-				pstmt1.setString(6, rs.getString("warr_region"));
-				pstmt1.setString(7, rs.getString("orig_ship_date"));
-				pstmt1.setString(8, rs.getString("reference_key"));
-				pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
-				pstmt1.setDate(10, rs.getDate("pop_date"));
-				pstmt1.setString(11, rs.getString("pop_identifier"));
-				boolean status3 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
-						+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-
-				pstmt1 = con1.prepareStatement(MySql_updDeviceConfig);
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("handset_type"));
-				pstmt1.setString(3, rs.getString("flex_option"));
-				pstmt1.setString(4, rs.getString("flex_sw"));
-				pstmt1.setString(5, rs.getString("hw"));
-				pstmt1.setString(6, rs.getString("icc_id"));
-				pstmt1.setString(7, rs.getString("software_version"));
-				pstmt1.setString(8, rs.getString("wimax"));
-				pstmt1.setString(9, rs.getString("hsn"));
-				pstmt1.setString(10, rs.getString("flash_uid"));
-				pstmt1.setString(11, rs.getString("dual_serial_no"));
-				pstmt1.setString(12, rs.getString("dual_serial_no_type"));
-				pstmt1.setString(13, rs.getString("fastt_id"));
-				pstmt1.setString(14, rs.getString("base_processor_id"));
-				pstmt1.setString(15, rs.getString("wlan"));
-				boolean status4 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
-						+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con1.prepareStatement(MySql_updDirectShipment);
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("so_line_no"));
-				pstmt1.setString(3, rs.getString("ds_region_code"));
-				pstmt1.setString(4, rs.getString("ds_so_no"));
-				pstmt1.setString(5, rs.getString("ds_po_no"));
-				pstmt1.setString(6, rs.getString("ds_cust_id"));
-				pstmt1.setString(7, rs.getString("ds_bill_to_id"));
-				pstmt1.setString(8, rs.getString("ds_ship_to_id"));
-				pstmt1.setString(9, rs.getString("ds_cust_country_code"));
-				pstmt1.setString(10, rs.getString("ds_cust_name"));
-				pstmt1.setString(11, rs.getString("bill_to_id"));
-				pstmt1.setString(12, rs.getString("shipment_no"));
-				pstmt1.setString(13, rs.getString("phone_no"));
-				pstmt1.setString(14, rs.getString("wip_dj"));
-				pstmt1.setDate(15, rs.getDate("sale_date"));
-				pstmt1.setString(16, rs.getString("last_imei"));
-				boolean status5 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con1.prepareStatement(MySql_updLockCode);
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("meid_evdo_password"));
-				pstmt1.setString(3, rs.getString("meid_a_key2_type"));
-				pstmt1.setString(4, rs.getString("meid_a_key2"));
-				pstmt1.setString(5, rs.getString("imc_lock_code"));
-				boolean status6 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con1.prepareStatement(Sql_updMeid);
-				pstmt1.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				pstmt1.setString(2, rs.getString("a_key_index"));
-				pstmt1.setString(3, rs.getString("cas_no"));
-				boolean status7 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				if (!status1 && !status2 && !status3 && !status4 && !status5
-						&& !status6 && !status7) {
-					String statusCode = "SCR  " + DateToStr;
-
-					String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"
-							+ statusCode
-							+ "' where serial_no='"
-							+ pCBASerialNoUPdateQueryInput.getSerialNoIn()
-							+ "'";
-					pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
-					pstmt1.execute();
-				}
-
-				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
-				response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 
 			} else {
 
@@ -412,8 +422,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			rs = preparedStmt.executeQuery();
 
 			if (rs.next()) {
-				
-				
+
 				String serialNoStatus=rs.getString("status_code");				
 				if(serialNoStatus.startsWith("VOI")){
 					StringBuffer stb = new StringBuffer();
@@ -431,201 +440,209 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					prestmt.execute();
 
 					MailUtil.sendEmail(serialNoIn,serialNoOut);
+					response.setResponseCode(ServiceMessageCodes.EMAIL_MSG_CODE);
+					response.setResponseMessage(ServiceMessageCodes.EMAIL_MSG);
+
+				}else{					
+
+					String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
+							+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
+							+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
+							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+
+					pstmt1 = con12.prepareStatement(MySql_updFactoryShipmentInfo);
+
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("factory_code"));
+					pstmt1.setDate(3, rs.getDate("gen_date"));
+					pstmt1.setString(4, rs.getString("protocol"));
+					pstmt1.setString(5, rs.getString("apc"));
+					pstmt1.setString(6, rs.getString("trans_model"));
+					pstmt1.setString(7, rs.getString("cust_model"));
+					pstmt1.setString(8, rs.getString("mkt_model"));
+					pstmt1.setString(9, rs.getString("item_code"));
+					pstmt1.setString(10, rs.getString("warr_code"));
+					pstmt1.setDate(11, rs.getDate("ship_date"));
+					pstmt1.setString(12, rs.getString("ship_to_cust_id"));
+					pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
+					pstmt1.setString(14, rs.getString("ship_to_cust_name"));
+					pstmt1.setString(15, rs.getString("ship_to_cust_city"));
+					pstmt1.setString(16, rs.getString("ship_to_cust_country"));
+					pstmt1.setString(17, rs.getString("sold_to_cust_id"));
+					pstmt1.setString(18, rs.getString("sold_to_cust_name"));
+					pstmt1.setDate(19, rs.getDate("sold_date"));
+					pstmt1.setString(20, rs.getString("cit"));
+					pstmt1.setString(21, rs.getString("ta_no"));
+					pstmt1.setString(22, rs.getString("carton_id"));
+					pstmt1.setString(23, rs.getString("po_no"));
+					pstmt1.setString(24, rs.getString("so_no"));
+					pstmt1.setString(25, rs.getString("fo_sequence"));
+					pstmt1.setString(26, rs.getString("msn"));
+					pstmt1.setDate(27, rs.getDate("assign_date"));
+					pstmt1.setString(28, rs.getString("gpp_id"));
+					pstmt1.setString(29, rs.getString("product_type"));
+					pstmt1.setString(30, rs.getString("location_type"));
+					pstmt1.setString(31, rs.getString("packing_list"));
+					pstmt1.setDate(32, rs.getDate("fab_date"));
+					pstmt1.setString(33, rs.getString("imc_mfg_location"));
+					pstmt1.setString(34, rs.getString("guid"));
+					pstmt1.setString(35, "pdb_id");
+					boolean status1 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
+							+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
+							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con12.prepareStatement(MySql_updRepair);
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("cancel_code"));
+					pstmt1.setString(3, rs.getString("swap_ref_no"));
+					pstmt1.setString(4, rs.getString("swap_count"));
+					pstmt1.setString(5, rs.getString("delete_flag"));
+					pstmt1.setString(6, rs.getString("org_code"));
+					pstmt1.setString(7, rs.getString("upd_time"));
+					pstmt1.setString(8, rs.getString("dn"));
+					pstmt1.setString(9, rs.getString("era"));
+					pstmt1.setString(10, rs.getString("rma"));
+					pstmt1.setDate(11, rs.getDate("receive_date"));
+					pstmt1.setDate(12, rs.getDate("delivery_date"));
+					pstmt1.setDate(13, rs.getDate("return_date"));
+					pstmt1.setDate(14, rs.getDate("rma_date"));
+					pstmt1.setDate(15, rs.getDate("scrap_date"));
+					pstmt1.setString(16, rs.getString("cust_id"));
+					pstmt1.setString(17, rs.getString("warehouse_id"));
+					pstmt1.setString(18, rs.getString("shop_id"));
+					pstmt1.setString(19, rs.getString("status_id"));
+					pstmt1.setString(20, rs.getString("action"));
+					pstmt1.setString(21, rs.getString("remarks"));
+					pstmt1.setString(22, rs.getString("csn"));
+					pstmt1.setDate(23, rs.getDate("last_repair_date"));
+					pstmt1.setString(24, rs.getString("repair_count"));
+					pstmt1.setDate(25, rs.getDate("swap_date"));
+					boolean status2 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
+							+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con12.prepareStatement(MySql_updWarrantyInfo);
+
+					Date curDate = new Date();
+					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
+					String DateToStr = format.format(curDate);
+
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, "ACT  " + DateToStr);
+					pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
+					pstmt1.setString(4, rs.getString("ren_warr_code"));
+					pstmt1.setString(5, rs.getString("warr_country_code"));
+					pstmt1.setString(6, rs.getString("warr_region"));
+					pstmt1.setString(7, rs.getString("orig_ship_date"));
+					pstmt1.setString(8, rs.getString("reference_key"));
+					pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
+					pstmt1.setDate(10, rs.getDate("pop_date"));
+					pstmt1.setString(11, rs.getString("pop_identifier"));
+					boolean status3 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
+							+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+
+					pstmt1 = con12.prepareStatement(MySql_updDeviceConfig);
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("handset_type"));
+					pstmt1.setString(3, rs.getString("flex_option"));
+					pstmt1.setString(4, rs.getString("flex_sw"));
+					pstmt1.setString(5, rs.getString("hw"));
+					pstmt1.setString(6, rs.getString("icc_id"));
+					pstmt1.setString(7, rs.getString("software_version"));
+					pstmt1.setString(8, rs.getString("wimax"));
+					pstmt1.setString(9, rs.getString("hsn"));
+					pstmt1.setString(10, rs.getString("flash_uid"));
+					pstmt1.setString(11, rs.getString("dual_serial_no"));
+					pstmt1.setString(12, rs.getString("dual_serial_no_type"));
+					pstmt1.setString(13, rs.getString("fastt_id"));
+					pstmt1.setString(14, rs.getString("base_processor_id"));
+					pstmt1.setString(15, rs.getString("wlan"));
+					boolean status4 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
+							+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con12.prepareStatement(MySql_updDirectShipment);
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("so_line_no"));
+					pstmt1.setString(3, rs.getString("ds_region_code"));
+					pstmt1.setString(4, rs.getString("ds_so_no"));
+					pstmt1.setString(5, rs.getString("ds_po_no"));
+					pstmt1.setString(6, rs.getString("ds_cust_id"));
+					pstmt1.setString(7, rs.getString("ds_bill_to_id"));
+					pstmt1.setString(8, rs.getString("ds_ship_to_id"));
+					pstmt1.setString(9, rs.getString("ds_cust_country_code"));
+					pstmt1.setString(10, rs.getString("ds_cust_name"));
+					pstmt1.setString(11, rs.getString("bill_to_id"));
+					pstmt1.setString(12, rs.getString("shipment_no"));
+					pstmt1.setString(13, rs.getString("phone_no"));
+					pstmt1.setString(14, rs.getString("wip_dj"));
+					pstmt1.setDate(15, rs.getDate("sale_date"));
+					pstmt1.setString(16, rs.getString("last_imei"));
+					boolean status5 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con12.prepareStatement(MySql_updLockCode);
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("meid_evdo_password"));
+					pstmt1.setString(3, rs.getString("meid_a_key2_type"));
+					pstmt1.setString(4, rs.getString("meid_a_key2"));
+					pstmt1.setString(5, rs.getString("imc_lock_code"));
+					boolean status6 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
+
+					pstmt1 = con12.prepareStatement(Sql_updMeid);
+					pstmt1.setString(1, serialNoOut);
+					pstmt1.setString(2, rs.getString("a_key_index"));
+					pstmt1.setString(3, rs.getString("cas_no"));
+					boolean status7 = pstmt1.execute();
+
+					pstmt1 = null;
+
+					if (!status1 && !status2 && !status3 && !status4 && !status5
+							&& !status6 && !status7) {
+						String statusCode = "SCR  " + DateToStr;
+						String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"
+								+ statusCode
+								+ "' where serial_no='"
+								+ serialNoIn
+								+ "'";
+						pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
+						pstmt1.execute();
+						
+						pstmt1=null;
+						
+						String statusOfnewSerialNO="update upd.upd_repair set swap_ref_no='"+serialNoOut+"' where serial_no='"+serialNoIn+"'";
+						pstmt1 = con1.prepareStatement(statusOfnewSerialNO);
+						pstmt1.execute();
+					}
+
+					// innerupdatecon.commit();
+
+					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
+					response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 				}
-				
-				
-
-				String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
-						+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
-						+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
-						+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-
-				pstmt1 = con12.prepareStatement(MySql_updFactoryShipmentInfo);
-
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("factory_code"));
-				pstmt1.setDate(3, rs.getDate("gen_date"));
-				pstmt1.setString(4, rs.getString("protocol"));
-				pstmt1.setString(5, rs.getString("apc"));
-				pstmt1.setString(6, rs.getString("trans_model"));
-				pstmt1.setString(7, rs.getString("cust_model"));
-				pstmt1.setString(8, rs.getString("mkt_model"));
-				pstmt1.setString(9, rs.getString("item_code"));
-				pstmt1.setString(10, rs.getString("warr_code"));
-				pstmt1.setDate(11, rs.getDate("ship_date"));
-				pstmt1.setString(12, rs.getString("ship_to_cust_id"));
-				pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
-				pstmt1.setString(14, rs.getString("ship_to_cust_name"));
-				pstmt1.setString(15, rs.getString("ship_to_cust_city"));
-				pstmt1.setString(16, rs.getString("ship_to_cust_country"));
-				pstmt1.setString(17, rs.getString("sold_to_cust_id"));
-				pstmt1.setString(18, rs.getString("sold_to_cust_name"));
-				pstmt1.setDate(19, rs.getDate("sold_date"));
-				pstmt1.setString(20, rs.getString("cit"));
-				pstmt1.setString(21, rs.getString("ta_no"));
-				pstmt1.setString(22, rs.getString("carton_id"));
-				pstmt1.setString(23, rs.getString("po_no"));
-				pstmt1.setString(24, rs.getString("so_no"));
-				pstmt1.setString(25, rs.getString("fo_sequence"));
-				pstmt1.setString(26, rs.getString("msn"));
-				pstmt1.setDate(27, rs.getDate("assign_date"));
-				pstmt1.setString(28, rs.getString("gpp_id"));
-				pstmt1.setString(29, rs.getString("product_type"));
-				pstmt1.setString(30, rs.getString("location_type"));
-				pstmt1.setString(31, rs.getString("packing_list"));
-				pstmt1.setDate(32, rs.getDate("fab_date"));
-				pstmt1.setString(33, rs.getString("imc_mfg_location"));
-				pstmt1.setString(34, rs.getString("guid"));
-				pstmt1.setString(35, "pdb_id");
-				boolean status1 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
-						+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
-						+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con12.prepareStatement(MySql_updRepair);
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("cancel_code"));
-				pstmt1.setString(3, rs.getString("swap_ref_no"));
-				pstmt1.setString(4, rs.getString("swap_count"));
-				pstmt1.setString(5, rs.getString("delete_flag"));
-				pstmt1.setString(6, rs.getString("org_code"));
-				pstmt1.setString(7, rs.getString("upd_time"));
-				pstmt1.setString(8, rs.getString("dn"));
-				pstmt1.setString(9, rs.getString("era"));
-				pstmt1.setString(10, rs.getString("rma"));
-				pstmt1.setDate(11, rs.getDate("receive_date"));
-				pstmt1.setDate(12, rs.getDate("delivery_date"));
-				pstmt1.setDate(13, rs.getDate("return_date"));
-				pstmt1.setDate(14, rs.getDate("rma_date"));
-				pstmt1.setDate(15, rs.getDate("scrap_date"));
-				pstmt1.setString(16, rs.getString("cust_id"));
-				pstmt1.setString(17, rs.getString("warehouse_id"));
-				pstmt1.setString(18, rs.getString("shop_id"));
-				pstmt1.setString(19, rs.getString("status_id"));
-				pstmt1.setString(20, rs.getString("action"));
-				pstmt1.setString(21, rs.getString("remarks"));
-				pstmt1.setString(22, rs.getString("csn"));
-				pstmt1.setDate(23, rs.getDate("last_repair_date"));
-				pstmt1.setString(24, rs.getString("repair_count"));
-				pstmt1.setDate(25, rs.getDate("swap_date"));
-				boolean status2 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
-						+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con12.prepareStatement(MySql_updWarrantyInfo);
-
-				Date curDate = new Date();
-				SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
-				String DateToStr = format.format(curDate);
-
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, "ACT  " + DateToStr);
-				pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
-				pstmt1.setString(4, rs.getString("ren_warr_code"));
-				pstmt1.setString(5, rs.getString("warr_country_code"));
-				pstmt1.setString(6, rs.getString("warr_region"));
-				pstmt1.setString(7, rs.getString("orig_ship_date"));
-				pstmt1.setString(8, rs.getString("reference_key"));
-				pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
-				pstmt1.setDate(10, rs.getDate("pop_date"));
-				pstmt1.setString(11, rs.getString("pop_identifier"));
-				boolean status3 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
-						+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-
-				pstmt1 = con12.prepareStatement(MySql_updDeviceConfig);
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("handset_type"));
-				pstmt1.setString(3, rs.getString("flex_option"));
-				pstmt1.setString(4, rs.getString("flex_sw"));
-				pstmt1.setString(5, rs.getString("hw"));
-				pstmt1.setString(6, rs.getString("icc_id"));
-				pstmt1.setString(7, rs.getString("software_version"));
-				pstmt1.setString(8, rs.getString("wimax"));
-				pstmt1.setString(9, rs.getString("hsn"));
-				pstmt1.setString(10, rs.getString("flash_uid"));
-				pstmt1.setString(11, rs.getString("dual_serial_no"));
-				pstmt1.setString(12, rs.getString("dual_serial_no_type"));
-				pstmt1.setString(13, rs.getString("fastt_id"));
-				pstmt1.setString(14, rs.getString("base_processor_id"));
-				pstmt1.setString(15, rs.getString("wlan"));
-				boolean status4 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
-						+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con12.prepareStatement(MySql_updDirectShipment);
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("so_line_no"));
-				pstmt1.setString(3, rs.getString("ds_region_code"));
-				pstmt1.setString(4, rs.getString("ds_so_no"));
-				pstmt1.setString(5, rs.getString("ds_po_no"));
-				pstmt1.setString(6, rs.getString("ds_cust_id"));
-				pstmt1.setString(7, rs.getString("ds_bill_to_id"));
-				pstmt1.setString(8, rs.getString("ds_ship_to_id"));
-				pstmt1.setString(9, rs.getString("ds_cust_country_code"));
-				pstmt1.setString(10, rs.getString("ds_cust_name"));
-				pstmt1.setString(11, rs.getString("bill_to_id"));
-				pstmt1.setString(12, rs.getString("shipment_no"));
-				pstmt1.setString(13, rs.getString("phone_no"));
-				pstmt1.setString(14, rs.getString("wip_dj"));
-				pstmt1.setDate(15, rs.getDate("sale_date"));
-				pstmt1.setString(16, rs.getString("last_imei"));
-				boolean status5 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con12.prepareStatement(MySql_updLockCode);
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("meid_evdo_password"));
-				pstmt1.setString(3, rs.getString("meid_a_key2_type"));
-				pstmt1.setString(4, rs.getString("meid_a_key2"));
-				pstmt1.setString(5, rs.getString("imc_lock_code"));
-				boolean status6 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
-
-				pstmt1 = con12.prepareStatement(Sql_updMeid);
-				pstmt1.setString(1, serialNoOut);
-				pstmt1.setString(2, rs.getString("a_key_index"));
-				pstmt1.setString(3, rs.getString("cas_no"));
-				boolean status7 = pstmt1.execute();
-
-				pstmt1 = null;
-
-				if (!status1 && !status2 && !status3 && !status4 && !status5
-						&& !status6 && !status7) {
-					String statusCode = "SCR  " + DateToStr;
-					String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"
-							+ statusCode
-							+ "' where serial_no='"
-							+ serialNoOut
-							+ "'";
-					pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
-					pstmt1.execute();
-				}
-
-				// innerupdatecon.commit();
-
-				response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
-				response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
 
 			} else {
 
