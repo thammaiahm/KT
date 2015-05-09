@@ -8,8 +8,8 @@ public class ServiceMessageCodes {
 
 	// Thammaiah added
 	// Common codes(Application Exception)
-	public static final int NO_DATASOURCE_FOUND = 8001;
-	public static final int SQL_EXCEPTION = 8001;
+	public static final String NO_DATASOURCE_FOUND = "8001";
+	public static final String SQL_EXCEPTION = "8001";
 
 	// Common Messages
 	public static final String NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG = "Error:Please Contact Support Team    Error Details:";
@@ -17,36 +17,39 @@ public class ServiceMessageCodes {
 	// Thammaiah added
 	// Codes for dispatch serial no
 
-	public static final int SUCCESS = 0000;
-	public static final int NO_NEW_SERIAL_NO_AVAILABLE = 5001;
-	public static final int INVALID_REQUEST_TYPE = 5002;
-	public static final int INVALID_BUILD_TYPE = 5003;
-	public static final int SERIAL_NO_NOT_VALID = 5009;
-	public static final int INPUT_PARAM_MISSING = 5005;
-	public static final int NO_ULMA_AVAILABLE = 5006;
-	public static final int NEW_SERIAL_NO_AVAILABLE = 5007;
-	public static final int NEW_ULMA_AVAILABLE = 5008;
-	public static final int INVALID_SN_TYPE = 5015;
-	public static final int NO_PROTOCOL_FOUND = 5022;
-	public static final int ULMA_ADDRESS_GREATER_THAN_FIVE = 5017;
-	public static final int INVALID_GPPID = 5018;
+	public static final String SUCCESS = "0000";
+	public static final String NO_NEW_SERIAL_NO_AVAILABLE = "5001";
+	public static final String INVALID_REQUEST_TYPE = "5002";
+	public static final String INVALID_BUILD_TYPE = "5003";
+	public static final String SERIAL_NO_NOT_VALID = "5009";
+	public static final String INPUT_PARAM_MISSING = "5005";
+	public static final String NO_ULMA_AVAILABLE = "5006";
+	public static final String NEW_SERIAL_NO_AVAILABLE = "5007";
+	public static final String NEW_ULMA_AVAILABLE = "5008";
+	public static final String INVALID_SN_TYPE = "5015";
+	public static final String NO_PROTOCOL_FOUND = "5022";
+	public static final String ULMA_ADDRESS_GREATER_THAN_FIVE = "5017";
+	public static final String INVALID_GPPID = "5018";
+	public static final String INVALID_CUSTOMER = "5022";
 	public static final int SN_15_DIGIT = 15;
 	public static final int SN_14_DIGIT = 14;
+	
+	
 
 	// Viswanath added
 
 	// public static final int MEID_SUCCESS = 5009;
-	public static final int MEID_FAILURE = 5010;
-	public static final int INVALID_STATUS = 5011;
-	public static final int NO_LOCK_CODE_FOUND = 5012;
-	public static final int OLD_SERIAL_NO_NOT_FOUND = 5013;
-	public static final int NEW_SERIAL_NO_NOT_FOUND = 5014;
+	public static final String MEID_FAILURE = "5010";
+	public static final String INVALID_STATUS = "5011";
+	public static final String NO_LOCK_CODE_FOUND = "5012";
+	public static final String OLD_SERIAL_NO_NOT_FOUND = "5013";
+	public static final String NEW_SERIAL_NO_NOT_FOUND = "5014";
 	// public static final int IMEI_SUCCESS = 5016;
-	public static final int IMEI_FAILURE = 5017;
-	public static final int OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE = 5018;
-	public static final int OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE = 5019;
-	public static final int DUAL_SERIAL_NOT_FOUND = 5020;
-	public static final int TRI_SERIAL_NOT_FOUND = 5021;
+	public static final String IMEI_FAILURE = "5017";
+	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE = "5018";
+	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE = "5019";
+	public static final String DUAL_SERIAL_NOT_FOUND = "5020";
+	public static final String TRI_SERIAL_NOT_FOUND = "5021";
 
 	// Thammaiah added
 	// Messages for dispatch serial no WS
@@ -63,6 +66,7 @@ public class ServiceMessageCodes {
 	public static final String ULMA_ADDRESS_GREATER_THAN_FIVE_MSG = "Ulma address requested is greater than five";
 	public static final String INVALID_GPPID_MSG = "Invalid GPPID";
 	public static final String INVALID_BUILD_TYPE_MSG = "Build type Value must be PROD/PROTO";
+	public static final String INVALID_CUSTOMER_MSG = "Invalid Customer";
 
 	// Viswanath added
 
