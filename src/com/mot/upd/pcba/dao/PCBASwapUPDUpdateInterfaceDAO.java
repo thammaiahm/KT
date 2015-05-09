@@ -15,6 +15,11 @@ public interface PCBASwapUPDUpdateInterfaceDAO {
 
 	PCBASerialNoUPdateResponse serialNumberInfo(
 			PCBASerialNoUPdateQueryInput pCBASerialNoUPdateQueryInput);
+
+	int checkValidSerialNoIn(String SerialNoIn);
+
+	
+	
 	
 
 }

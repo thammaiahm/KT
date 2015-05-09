@@ -84,6 +84,10 @@ public class ServiceMessageCodes {
 	public static final String TRI_SERIAL_NOT_FOUND_MSG = "Required TriSerialNoIn,TriSerialNoOut,DualSerialNoIn and DualSerialNoOut.";
 	public static final String EMAIL_MSG_CODE = "8002";
 	public static final String EMAIL_MSG = "Error - Contact Support Team.";
+	public static final String DUAL_SERIAL_NO_CODE = "5022";
+	public static final String DUAL_SERIAL_NO_CODE_MSG = "This DualSerialNoIn is not eligible for Dual Case.";
+	public static final String TRI_SERIAL_NO_CODE = "5023";
+	public static final String TRI_SERIAL_NO_CODE_MSG = "This TriSerialNoIn is not eligible for Tri Case.";
 	// R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";

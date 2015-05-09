@@ -15,12 +15,12 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateQueryInput;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
-
 
 /**
  * @author rviswa
@@ -725,5 +725,13 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 		return con;
 	}
+
+	@Override
+	public int checkValidSerialNoIn(String SerialNoIn) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
 
 }
