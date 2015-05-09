@@ -51,7 +51,7 @@ public class R12SnSwapOracleDAO {
 				
 				ds = DBUtil.getOracleDataSource();
 				} catch (NamingException e) {
-				pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+				pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.NO_DATASOURCE_FOUND));
 				pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
 						+ e.getMessage());
 				return pCBASerialNumberModel;
@@ -76,7 +76,7 @@ public class R12SnSwapOracleDAO {
 
 				}catch(SQLException e){
 					e.printStackTrace();
-					pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+					pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
 					pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
 							+ e.getMessage());
 				}finally{
