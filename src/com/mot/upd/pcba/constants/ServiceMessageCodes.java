@@ -66,14 +66,14 @@ public class ServiceMessageCodes {
 
 	// Viswanath added
 
-	public static final String MEID_SUCCES_MSG = "MEID Success";
+	public static final String MEID_SUCCES_MSG = "Success";
 	public static final String MEID_FAILURE_MSG = "MEID Failure";
 	public static final String INVALID_STATUS_MSG = "Status should be either S or F";
 	public static final String NO_LOCK_CODE_DETAILS_FOUND_MSG = "No Lock Code Details Found";
 	public static final String OLD_SERIAL_NO_NOT_FOUND_MSG = "Old Serial Not Found";
 	public static final String NEW_SERIAL_NO_NOT_FOUND_MSG = "New Serial Not Found";
 	public static final String NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG = "No DataSource found for SerialNO.";
-	public static final String IMEI_SUCCES_MSG = "IMEI Success";
+	public static final String IMEI_SUCCES_MSG = "Success";
 	public static final String IMEI_FAILURE_MSG = "IMEI Failure";
 	public static final String PCBA_INPUT_PARAM_MISSING_MSG = "Following Fields are mandatory- Serial Number,rsdID,mascID,status,snType and either one is mandatory msl,otksl and servicePassCode.Please re-enter and try again.";
 	public static final String PCBA_INPUT_PARAM_MISSING = "Following Fields are mandatory- ClientIP,mascID,serialNoIn,serialNoOut,serialNoType,repairdate.Please re-enter and try again.";
