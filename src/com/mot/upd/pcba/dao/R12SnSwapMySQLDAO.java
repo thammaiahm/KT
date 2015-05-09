@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.handler.PCBASerialNumberModel;
+import com.mot.upd.pcba.pojo.R12SnSwapUpdateQueryResult;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.InitProperty;
 
@@ -27,7 +28,9 @@ public class R12SnSwapMySQLDAO {
 	private static Logger logger = Logger.getLogger(R12SnSwapOracleDAO.class);
 	PropertyResourceBundle bundle = bundle = InitProperty.getProperty("pcbasqlMySQL.properties");
 	/* * Fetching oldest scrapped record for given serial number */
-	
+	boolean isValuePresent = false;
+    HashMap<String,String> resultMap = new HashMap<String,String>();
+    R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
 	public PCBASerialNumberModel fetchOldestSCRMysqlValue(String serialIn){
 
 		//String serialOut = null;
@@ -66,15 +69,27 @@ public class R12SnSwapMySQLDAO {
 				while(rs.next()){
 					map.put(rs.getString(1), rs.getString(2));
 				}
-				 oldSnValue = checkOddKey(map,serialIn);
-				 logger.info("oldSnValue -------------- " + oldSnValue);
-				pCBASerialNumberModel.setOldSN(oldSnValue);
+				Map<String,String> returnedMap1 = checkOddKey(map, serialIn);
+                if(returnedMap1.get("VALUE_FOUND").equals("YES")) {
+                	logger.info("Old Serial number found : ");
+                            //System.out.println("The serial number has reference and result=>"+returnedMap1.get("RESULT_SERIAL_NO"));
+                            pCBASerialNumberModel.setOldSN(returnedMap1.get("RESULT_SERIAL_NO"));
+                } else {
+                            //System.out.println("New Serial Number=>"+returnedMap1.get("RESULT_SERIAL_NO"));
+                			//pCBASerialNumberModel.setOldSN(returnedMap1.get("RESULT_SERIAL_NO"));
+                			if(serialIn.equals(returnedMap1.get("RESULT_SERIAL_NO"))){
+                				logger.info("Old Serial number not found : ");
+                				r12UpdateQueryResult.setSerialIn(serialIn);
+            					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
+            					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_AVAILABLE);
+            					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
+                			}
+                }
 
 				}catch(SQLException e){
-					e.printStackTrace();
 					pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
-					pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
-							+ e.getMessage());
+					pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG);
+					logger.error("SqlException:::: " +e.getMessage());
 				}finally{
 					DBUtil.closeConnections(conn, stmt, rs);
 				}
@@ -83,24 +98,35 @@ public class R12SnSwapMySQLDAO {
 			return pCBASerialNumberModel;
 		}
 		
-	public String checkOddKey(HashMap<String,String> contentsMap, String inputValue) {
-		
-		if(contentsMap.containsValue(inputValue)) {
-			Iterator it = contentsMap.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry pair = (Map.Entry) it.next();
-				String currentKey = (String)pair.getKey();
-				String currentValue = (String)pair.getValue();
-				//System.out.println(currentKey + " = " + currentValue);
-				if(!currentKey.equals(inputValue)&&currentValue.equals(inputValue)) {
-					inputValue = checkOddKey(contentsMap, currentKey);
-				} //else System.out.println("first value"+currentKey+"--curernt Value"+currentValue);
-			}
-		} else {
-			logger.info("Result::"+inputValue);
-			if(inputValue!=null)
-			return inputValue;
-		}
-		return inputValue;
-	}
+	 public Map<String,String> checkOddKey(HashMap<String,String> contentsMap, String inputValue) {
+         //Check if the target value is present in data map
+         if(contentsMap.containsValue(inputValue)) {
+                     //Mark the isValuePresent to 'true'
+                     isValuePresent = true;
+                     Iterator it = contentsMap.entrySet().iterator();
+                     while (it.hasNext()) {
+                                 Map.Entry pair = (Map.Entry) it.next();
+                                 String currentKey = (String)pair.getKey();
+                                 String currentValue = (String)pair.getValue();
+                                 //System.out.println(currentKey + " = " + currentValue);
+                                 if(!currentKey.equals(inputValue)&&currentValue.equals(inputValue)) {
+                                             checkOddKey(contentsMap, currentKey);
+                                 }
+                     }
+         } // Looped through the map and no more reference identified
+         else if (isValuePresent) {
+                     //System.out.println("Result::"+inputValue);
+                     resultMap.put("RESULT_SERIAL_NO", inputValue);
+                     resultMap.put("VALUE_FOUND", "YES");
+         } // If the given reference key/value not found in Map
+
+         else {
+                     //System.out.println("The Value is not found in our records");
+                     resultMap.put("RESULT_SERIAL_NO", inputValue);
+                     resultMap.put("VALUE_FOUND", "NO");
+         }
+        return resultMap;
+
+}
+
 }

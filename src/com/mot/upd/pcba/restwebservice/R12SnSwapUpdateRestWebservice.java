@@ -41,12 +41,10 @@ public class R12SnSwapUpdateRestWebservice {
 		R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
 		
 		try {
-
+			r12UpdateQueryResult.setSerialIn(serialIn);
 			String serialSnCheckValue = serialCheck(serialIn);
 			logger.info(" Request serialIn value from after check process  = " +serialSnCheckValue);
 			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
-				r12UpdateQueryInput.setSerialNO(serialSnCheckValue);
-
 				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
 				R12SnSwapMySQLDAO r12SwapUpdateMysqlDAO = new R12SnSwapMySQLDAO();
 
@@ -54,25 +52,25 @@ public class R12SnSwapUpdateRestWebservice {
 				String updConfig = DBUtil.dbConfigCheck();
 				logger.info("updConfig value : = " + updConfig);
 				if(updConfig.equals(PCBADataDictionary.DBCONFIG)){
-				 pCBASerialNumberModel = r12SwapUpdateOraDAO.fetchOldestSCROracleValue(r12UpdateQueryInput.getSerialNO());
+					 pCBASerialNumberModel = r12SwapUpdateOraDAO.fetchOldestSCROracleValue(serialSnCheckValue);
 				}else{
-					pCBASerialNumberModel = r12SwapUpdateMysqlDAO.fetchOldestSCRMysqlValue(r12UpdateQueryInput.getSerialNO());
+					//r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
+					pCBASerialNumberModel = r12SwapUpdateMysqlDAO.fetchOldestSCRMysqlValue(serialSnCheckValue);
 				}
 
 				if(pCBASerialNumberModel.getOldSN() !=null ){
-					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_FOUND_SUCCSS_MSG);
 
 				}else{
-					r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
+					//r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_AVAILABLE);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
 				}
 			}else{
-					r12UpdateQueryResult.setSerialIn(serialIn);
+					//r12UpdateQueryResult.setSerialIn(serialIn);
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_SN_NOT_VALID);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
 			}
