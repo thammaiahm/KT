@@ -36,4 +36,16 @@ public interface DispatchSerialNumberDAO {
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO,
 			DispatchSerialResponsePOJO dispatchSerialResponsePOJO);
 
+	DispatchSerialResponsePOJO validateCustomerIMEI(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO);
+
+	DispatchSerialResponsePOJO validateCustomerMEID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO);
+
+	DispatchSerialResponsePOJO validateGPPIDIMEI(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO);
+
+	DispatchSerialResponsePOJO validateGPPIDMEID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO);
+
 }

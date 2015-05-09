@@ -33,6 +33,287 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 	private PreparedStatement preparedStmt = null;
 	private ResultSet rs = null;
 	private DispatchSerialResponsePOJO response = new DispatchSerialResponsePOJO();
+	
+	
+	/*
+	 * validate IMEI customer is associated with serial number
+	 */
+	@Override
+	public DispatchSerialResponsePOJO validateCustomerIMEI(DispatchSerialRequestPOJO dispatchSerialRequestPOJO)
+	{
+		logger.debug("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
+		try {
+
+			ds = DBUtil.getOracleDataSource();
+		} catch (NamingException e) {
+			logger.error(e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+					+ e.getMessage());
+			return response;
+		}
+		
+		try {
+			// get database connection
+			con = DBUtil.getConnection(ds);
+			String selectSerialNumber = bundle.getString("IMEI.validateCustomer");
+
+			preparedStmt = con.prepareStatement(selectSerialNumber);
+			preparedStmt.setString(1, dispatchSerialRequestPOJO.getCustomer());
+				rs = preparedStmt.executeQuery();
+			if (rs.next()) {
+				do {
+					
+					return response;
+				} while (rs.next());
+
+			} else {
+				logger.debug("DispatchSerialNumberOracleDAO::validateCustomerIMEI:Customer is Invalid");
+				logger.info("DispatchSerialNumberOracleDAO::validateCustomerIMEI:Customer is Invalid");
+				response.setResponseCode(ServiceMessageCodes.INVALID_CUSTOMER);
+				response.setResponseMsg(ServiceMessageCodes.INVALID_CUSTOMER_MSG);
+
+				return response;
+			}
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} finally {
+
+			DBUtil.closeConnections(con, preparedStmt, rs);
+
+		}
+		logger.debug("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		return response;
+		
+		
+		
+	}
+	
+	
+	/*
+	 * validate MEID customer is associated with serial number
+	 */
+	@Override
+	public DispatchSerialResponsePOJO validateCustomerMEID(DispatchSerialRequestPOJO dispatchSerialRequestPOJO)
+	{
+		logger.debug("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
+		try {
+
+			ds = DBUtil.getOracleDataSource();
+		} catch (NamingException e) {
+			logger.error(e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+					+ e.getMessage());
+			return response;
+		}
+		
+		try {
+			// get database connection
+			con = DBUtil.getConnection(ds);
+			String selectSerialNumber = bundle.getString("MEID.validateCustomer");
+
+			preparedStmt = con.prepareStatement(selectSerialNumber);
+			preparedStmt.setString(1, dispatchSerialRequestPOJO.getCustomer());
+				rs = preparedStmt.executeQuery();
+			if (rs.next()) {
+				do {
+					
+					return response;
+				} while (rs.next());
+
+			} else {
+				logger.debug("DispatchSerialNumberOracleDAO::validateCustomerIMEI:Customer is Invalid");
+				logger.info("DispatchSerialNumberOracleDAO::validateCustomerIMEI:Customer is Invalid");
+				response.setResponseCode(ServiceMessageCodes.INVALID_CUSTOMER);
+				response.setResponseMsg(ServiceMessageCodes.INVALID_CUSTOMER_MSG);
+
+				return response;
+			}
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} finally {
+
+			DBUtil.closeConnections(con, preparedStmt, rs);
+
+		}
+		logger.debug("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		return response;
+		
+		
+		
+	}
+	
+	/*
+	 * validate MEID GPPID is associated with serial number
+	 */
+	@Override
+	public DispatchSerialResponsePOJO validateGPPIDIMEI(DispatchSerialRequestPOJO dispatchSerialRequestPOJO)
+	{
+		logger.debug("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDIMEI");
+		try {
+
+			ds = DBUtil.getOracleDataSource();
+		} catch (NamingException e) {
+			logger.error(e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+					+ e.getMessage());
+			return response;
+		}
+		
+		try {
+			// get database connection
+			con = DBUtil.getConnection(ds);
+			String selectSerialNumber = bundle.getString("IMEI.validateGPPID");
+
+			preparedStmt = con.prepareStatement(selectSerialNumber);
+			preparedStmt.setString(1, dispatchSerialRequestPOJO.getGppdID());
+				rs = preparedStmt.executeQuery();
+			if (rs.next()) {
+				do {
+					
+					return response;
+				} while (rs.next());
+
+			} else {
+				logger.debug("DispatchSerialNumberOracleDAO::validateGPPIDIMEI: is Invalid");
+				logger.info("DispatchSerialNumberOracleDAO::validateGPPIDIMEI:Customer is Invalid");
+				response.setResponseCode(ServiceMessageCodes.INVALID_GPPID);
+				response.setResponseMsg(ServiceMessageCodes.INVALID_GPPID_MSG);
+
+				return response;
+			}
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} finally {
+
+			DBUtil.closeConnections(con, preparedStmt, rs);
+
+		}
+		logger.debug("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		logger.info("DispatchSerialNumberOracleDAO:Leaving Method validateCustomerIMEI");
+		return response;
+		
+		
+		
+	}
+	
+	
+	/*
+	 * validate MEID customer is associated with serial number
+	 */
+	@Override
+	public DispatchSerialResponsePOJO validateGPPIDMEID(DispatchSerialRequestPOJO dispatchSerialRequestPOJO)
+	{
+		logger.debug("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDMEID");
+		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDMEID");
+		try {
+
+			ds = DBUtil.getOracleDataSource();
+		} catch (NamingException e) {
+			logger.error(e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+					+ e.getMessage());
+			return response;
+		}
+		
+		try {
+			// get database connection
+			con = DBUtil.getConnection(ds);
+			String selectSerialNumber = bundle.getString("MEID.validateGPPID");
+
+			preparedStmt = con.prepareStatement(selectSerialNumber);
+			preparedStmt.setString(1, dispatchSerialRequestPOJO.getGppdID());
+				rs = preparedStmt.executeQuery();
+			if (rs.next()) {
+				do {
+					
+					return response;
+				} while (rs.next());
+
+			} else {
+				logger.debug("DispatchSerialNumberOracleDAO::validateGPPIDMEID: is Invalid");
+				logger.info("DispatchSerialNumberOracleDAO::validateGPPIDMEID:Customer is Invalid");
+				response.setResponseCode(ServiceMessageCodes.INVALID_GPPID);
+				response.setResponseMsg(ServiceMessageCodes.INVALID_GPPID_MSG);
+
+				return response;
+			}
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("error=" + e.getMessage());
+			response.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			response.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
+					+ e.getMessage());
+
+		} finally {
+
+			DBUtil.closeConnections(con, preparedStmt, rs);
+
+		}
+		logger.debug("DispatchSerialNumberOracleDAO:Leaving Method validateGPPIDMEID");
+		logger.info("DispatchSerialNumberOracleDAO:Leaving Method validateGPPIDMEID");
+		return response;
+		
+		
+		
+	}
+	
+	
 
 	/*
 	 * Get the serial number which has to be dispatched when request is for IMEI
@@ -699,6 +980,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(1, PCBADataDictionary.UNDISPATCHED);
 			preparedStmt.setInt(2, dispatchSerialRequestPOJO.getNumberOfUlma());
 			rs = preparedStmt.executeQuery();
+			int count =0;
 			if (rs.next()) {
 				do {
 
@@ -706,6 +988,18 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 
 				} while (rs.next());
 				dispatchSerialResponsePOJO.setUlmaAddress(ulmaAddress);
+				if(count!=dispatchSerialRequestPOJO.getNumberOfUlma())
+				{
+					logger.debug("DispatchSerialNumberMySQLDAO::validateULMAAddress:No ULMA Available in DB");
+					logger.info("DispatchSerialNumberMySQLDAO::validateULMAAddress:No ULMA Available in DB");
+					dispatchSerialResponsePOJO.reset();
+					dispatchSerialResponsePOJO
+							.setResponseCode(ServiceMessageCodes.NO_ULMA_AVAILABLE);
+					dispatchSerialResponsePOJO
+							.setResponseMsg(ServiceMessageCodes.NO_ULMA_AVAILABLE_MSG);
+
+					return dispatchSerialResponsePOJO;
+				}
 			} else {
 				logger.debug("DispatchSerialNumberOracleDAO::dispatchULMAAddress:No ULMA to dispatch");
 				logger.info("DispatchSerialNumberOracleDAO::dispatchULMAAddress:No ULMA to dispatch");
@@ -776,11 +1070,25 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(1, PCBADataDictionary.UNDISPATCHED);
 			preparedStmt.setInt(2, dispatchSerialRequestPOJO.getNumberOfUlma());
 			rs = preparedStmt.executeQuery();
+			int count =0;
 			if (rs.next()) {
 				do {
 					// Nothing
+					count++;
 
 				} while (rs.next());
+				if(count!=dispatchSerialRequestPOJO.getNumberOfUlma())
+				{
+					logger.debug("DispatchSerialNumberMySQLDAO::validateULMAAddress:No ULMA Available in DB");
+					logger.info("DispatchSerialNumberMySQLDAO::validateULMAAddress:No ULMA Available in DB");
+					dispatchSerialResponsePOJO.reset();
+					dispatchSerialResponsePOJO
+							.setResponseCode(ServiceMessageCodes.NO_ULMA_AVAILABLE);
+					dispatchSerialResponsePOJO
+							.setResponseMsg(ServiceMessageCodes.NO_ULMA_AVAILABLE_MSG);
+
+					return dispatchSerialResponsePOJO;
+				}
 
 			} else {
 				logger.debug("DispatchSerialNumberOracleDAO::validateULMAAddress:No ULMA Available in DB");
