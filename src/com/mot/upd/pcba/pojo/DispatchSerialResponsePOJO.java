@@ -27,7 +27,7 @@ public class DispatchSerialResponsePOJO {
 	private String mascID;
 	private String gppdID;
 	private String requestType;
-	private int responseCode;
+	private String responseCode;
 	private String responseMsg;
 	private String rsdID;
 	private List<String> ulmaAddress = new ArrayList<String>();
@@ -88,11 +88,11 @@ public class DispatchSerialResponsePOJO {
 		this.requestType = requestType;
 	}
 
-	public int getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
 
-	public void setResponseCode(int responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 
@@ -120,7 +120,7 @@ public class DispatchSerialResponsePOJO {
 		mascID = null;
 		gppdID = null;
 		requestType = null;
-		responseCode = 0;
+		responseCode = null;
 		responseMsg = null;
 		rsdID = null;
 		ulmaAddress = null;
