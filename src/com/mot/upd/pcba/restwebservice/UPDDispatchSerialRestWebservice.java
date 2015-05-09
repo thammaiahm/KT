@@ -51,9 +51,9 @@ public class UPDDispatchSerialRestWebservice {
 			logger.debug("Input parameters missing");
 			logger.info("Input parameters missing");
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.INPUT_PARAM_MISSING);
+					.setResponseCode(ServiceMessageCodes.INPUT_PARAM_MISSING);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.INPUT_PARAM_MISSING_MSG);
+					.setResponseMsg(ServiceMessageCodes.INPUT_PARAM_MISSING_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -71,9 +71,9 @@ public class UPDDispatchSerialRestWebservice {
 			logger.info("Request type is invalid"
 					+ dispatchSerialRequestPOJO.getRequestType());
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.INVALID_REQUEST_TYPE);
+					.setResponseCode(ServiceMessageCodes.INVALID_REQUEST_TYPE);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.INVALID_REQUEST_TYPE_MSG);
+					.setResponseMsg(ServiceMessageCodes.INVALID_REQUEST_TYPE_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -90,9 +90,9 @@ public class UPDDispatchSerialRestWebservice {
 			logger.info("Request type is invalid"
 					+ dispatchSerialRequestPOJO.getSnRequestType());
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.INVALID_SN_TYPE);
+					.setResponseCode(ServiceMessageCodes.INVALID_SN_TYPE);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
+					.setResponseMsg(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -109,9 +109,9 @@ public class UPDDispatchSerialRestWebservice {
 			logger.info("Invalid Build Type"
 					+ dispatchSerialRequestPOJO.getBuildType());
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.INVALID_BUILD_TYPE);
+					.setResponseCode(ServiceMessageCodes.INVALID_BUILD_TYPE);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.INVALID_BUILD_TYPE_MSG);
+					.setResponseMsg(ServiceMessageCodes.INVALID_BUILD_TYPE_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -127,9 +127,9 @@ public class UPDDispatchSerialRestWebservice {
 			logger.info("ULMA Requested is greater than 5"
 					+ dispatchSerialRequestPOJO.getNumberOfUlma());
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.ULMA_ADDRESS_GREATER_THAN_FIVE);
+					.setResponseCode(ServiceMessageCodes.ULMA_ADDRESS_GREATER_THAN_FIVE);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.ULMA_ADDRESS_GREATER_THAN_FIVE_MSG);
+					.setResponseMsg(ServiceMessageCodes.ULMA_ADDRESS_GREATER_THAN_FIVE_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -145,9 +145,9 @@ public class UPDDispatchSerialRestWebservice {
 					+ dispatchSerialRequestPOJO.getGppdID());
 			logger.info("Invalid GPPID" + dispatchSerialRequestPOJO.getGppdID());
 			dispatchSerialResponsePOJO
-			.setResponseCode(ServiceMessageCodes.INVALID_GPPID);
+					.setResponseCode(ServiceMessageCodes.INVALID_GPPID);
 			dispatchSerialResponsePOJO
-			.setResponseMsg(ServiceMessageCodes.INVALID_GPPID_MSG);
+					.setResponseMsg(ServiceMessageCodes.INVALID_GPPID_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -169,11 +169,26 @@ public class UPDDispatchSerialRestWebservice {
 		else {
 			dispatchSerialNumberDAO = new DispatchSerialNumberMySQLDAO();
 		}
-		;
 
 		// If IMEI
 		if (dispatchSerialRequestPOJO.getSnRequestType().trim()
 				.equals(PCBADataDictionary.IMEI)) {
+
+			// validate customer in DB
+			dispatchSerialResponsePOJO = dispatchSerialNumberDAO
+					.validateCustomerIMEI(dispatchSerialRequestPOJO);
+			if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.INVALID_CUSTOMER) {
+				return Response.status(200).entity(dispatchSerialResponsePOJO)
+						.build();
+			}
+
+			// validate gppid
+			dispatchSerialResponsePOJO = dispatchSerialNumberDAO
+					.validateGPPIDIMEI(dispatchSerialRequestPOJO);
+			if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.INVALID_GPPID) {
+				return Response.status(200).entity(dispatchSerialResponsePOJO)
+						.build();
+			}
 
 			if (dispatchSerialRequestPOJO.getRequestType().trim()
 					.equals(PCBADataDictionary.REQUEST_DISPATCH)) {
@@ -215,6 +230,11 @@ public class UPDDispatchSerialRestWebservice {
 					.equals(PCBADataDictionary.REQUEST_VALIDATE)) {
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateSerialNumberIMEI(dispatchSerialRequestPOJO);
+				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND)
+				{
+					return Response.status(200)
+							.entity(dispatchSerialResponsePOJO).build();
+				}
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateULMAAddress(dispatchSerialRequestPOJO,
 								dispatchSerialResponsePOJO);
@@ -230,13 +250,29 @@ public class UPDDispatchSerialRestWebservice {
 			if (dispatchSerialRequestPOJO.getProtocol() == null
 					|| dispatchSerialRequestPOJO.getProtocol() == "") {
 				dispatchSerialResponsePOJO
-				.setResponseCode(ServiceMessageCodes.NO_PROTOCOL_FOUND);
+						.setResponseCode(ServiceMessageCodes.NO_PROTOCOL_FOUND);
 				dispatchSerialResponsePOJO
-				.setResponseMsg(ServiceMessageCodes.NO_PROTOCOL_FOUND_MSG);
+						.setResponseMsg(ServiceMessageCodes.NO_PROTOCOL_FOUND_MSG);
 				logger.info("Returning response"
 						+ dispatchSerialResponsePOJO.toString());
 				logger.debug("Returning response"
 						+ dispatchSerialResponsePOJO.toString());
+				return Response.status(200).entity(dispatchSerialResponsePOJO)
+						.build();
+			}
+
+			// validate customer in DB
+			dispatchSerialResponsePOJO = dispatchSerialNumberDAO
+					.validateCustomerMEID(dispatchSerialRequestPOJO);
+			if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.INVALID_CUSTOMER) {
+				return Response.status(200).entity(dispatchSerialResponsePOJO)
+						.build();
+			}
+
+			// validate gppid
+			dispatchSerialResponsePOJO = dispatchSerialNumberDAO
+					.validateGPPIDMEID(dispatchSerialRequestPOJO);
+			if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.INVALID_GPPID) {
 				return Response.status(200).entity(dispatchSerialResponsePOJO)
 						.build();
 			}
@@ -281,6 +317,11 @@ public class UPDDispatchSerialRestWebservice {
 
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateSerialNumberMEID(dispatchSerialRequestPOJO);
+				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND)
+				{
+					return Response.status(200)
+							.entity(dispatchSerialResponsePOJO).build();
+				}
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateULMAAddress(dispatchSerialRequestPOJO,
 								dispatchSerialResponsePOJO);
@@ -302,7 +343,7 @@ public class UPDDispatchSerialRestWebservice {
 				|| dispatchSerialRequestPOJO.getCustomer() == null
 				|| dispatchSerialRequestPOJO.getCustomer().length() == 0) {
 			dispatchSerialRequestPOJO
-			.setCustomer(PCBADataDictionary.DEFAULT_CUSTOMER);
+					.setCustomer(PCBADataDictionary.DEFAULT_CUSTOMER);
 		}
 		return dispatchSerialRequestPOJO;
 
@@ -335,7 +376,7 @@ public class UPDDispatchSerialRestWebservice {
 		if (dispatchSerialRequestPOJO.getBuildType().trim()
 				.equals(PCBADataDictionary.BUILD_TYPE1)
 				|| dispatchSerialRequestPOJO.getBuildType().trim()
-				.equals(PCBADataDictionary.BUILD_TYPE2)) {
+						.equals(PCBADataDictionary.BUILD_TYPE2)) {
 			return true;
 		}
 
@@ -349,7 +390,7 @@ public class UPDDispatchSerialRestWebservice {
 		if (dispatchSerialRequestPOJO.getSnRequestType().trim()
 				.equals(PCBADataDictionary.IMEI)
 				|| dispatchSerialRequestPOJO.getSnRequestType().trim()
-				.equals(PCBADataDictionary.MEID)) {
+						.equals(PCBADataDictionary.MEID)) {
 			return true;
 		}
 
@@ -363,7 +404,7 @@ public class UPDDispatchSerialRestWebservice {
 		if (dispatchSerialRequestPOJO.getRequestType().trim()
 				.equals(PCBADataDictionary.REQUEST_VALIDATE)
 				|| dispatchSerialRequestPOJO.getRequestType().trim()
-				.equals(PCBADataDictionary.REQUEST_DISPATCH)) {
+						.equals(PCBADataDictionary.REQUEST_DISPATCH)) {
 			return true;
 		}
 
