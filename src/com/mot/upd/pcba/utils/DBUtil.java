@@ -90,7 +90,7 @@ public class DBUtil {
 		}catch(NamingException e){
 			 e.printStackTrace();
 		}catch(SQLException e){
-			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
 			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
 					+ e.getMessage());
 		}finally{
@@ -107,7 +107,7 @@ public class DBUtil {
 		try {
 			con = ds.getConnection();
 		} catch (SQLException e) {
-			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
+			pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
 			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
 					+ e.getMessage());
 		}
