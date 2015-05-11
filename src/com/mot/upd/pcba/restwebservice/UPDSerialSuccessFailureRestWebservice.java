@@ -20,6 +20,7 @@ import com.mot.upd.pcba.utils.DBUtil;
 
 
 
+
 /**
  * @author Quinnox Dev Team
  *
@@ -35,17 +36,17 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 		PCBAProgramResponse pcbaProgramResponse = new PCBAProgramResponse();
 		UPDSerialSuccessFailureInterfaceDAO updSerialSuccessFailureInterfaceDAO =null;
-		
-		
+
+
 		String updConfig =DBUtil.dbConfigCheck();
-		
+
 		if(updConfig!=null && updConfig.equals("YES")){
 			updSerialSuccessFailureInterfaceDAO = new UPDSerialSuccessFailureOracleDAO();
-			
+
 		}else{
 			updSerialSuccessFailureInterfaceDAO = new UPDSerialSuccessFailureSQLDAO();
 		}
-		
+
 
 		boolean isMissing=false;
 		boolean isValidSerial=false;
@@ -59,7 +60,21 @@ public class UPDSerialSuccessFailureRestWebservice {
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}
+		
+		//Check Valid serialNo
+		if(pcbaProgramQueryInput.getSerialNO()!=null && !(pcbaProgramQueryInput.getSerialNO().equals(""))){
+			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
+			if(statusOfSerialNoIn.length() == 15){
+				pcbaProgramQueryInput.setSerialNO(statusOfSerialNoIn);
+			}else{
+				pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
+				pcbaProgramResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaProgramResponse.setResponseMessage(statusOfSerialNoIn);
+				return Response.status(200).entity(pcbaProgramResponse).build();
 
+			}
+		}
+		
 		//check if sn type is valid
 		isValidSerial=validateSNType(pcbaProgramQueryInput);
 
@@ -131,15 +146,15 @@ public class UPDSerialSuccessFailureRestWebservice {
 		if(pcbaProgramQueryInput.getSerialNO().equals("") || pcbaProgramQueryInput.getRsdID().equals("") || pcbaProgramQueryInput.getMascID().equals("") || pcbaProgramQueryInput.getStatus().equals("") || pcbaProgramQueryInput.getSnType().equals("")){
 			return true;
 		}
-		
+
 		if(pcbaProgramQueryInput.getMsl()==null && pcbaProgramQueryInput.getOtksl()==null && pcbaProgramQueryInput.getServicePassCode()==null){
 			return true;
 		}
-		
+
 		if(pcbaProgramQueryInput.getMsl().equals("") && pcbaProgramQueryInput.getOtksl().equals("") && pcbaProgramQueryInput.getServicePassCode().equals("")){
 			return true;
 		}
-		
+
 		return false;
 	}
 
