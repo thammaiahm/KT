@@ -184,9 +184,8 @@ public class DBUtil {
 	}
 	public static String checkValidSerialNumber(String serialNoIn,String inputType){
 
-		//If it matches regex [a-zA-Z0-9 ]* then there is not special characters in it.
-
-		Pattern pattren = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
+		
+		Pattern pattren = Pattern.compile("[^a-zA-Z0-9 ]", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattren.matcher(serialNoIn);
 		boolean status = matcher.find();
 		String serialNoValue =null;
