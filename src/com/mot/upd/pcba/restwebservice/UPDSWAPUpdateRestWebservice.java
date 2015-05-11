@@ -16,13 +16,14 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 
 
+
 /**
  * @author rviswa
  *
  */
 @Path("/swapSerialNOData")
 public class UPDSWAPUpdateRestWebservice {
-	
+
 
 	@POST
 	@Produces("application/json")
@@ -41,7 +42,7 @@ public class UPDSWAPUpdateRestWebservice {
 		String updConfig =DBUtil.dbConfigCheck();
 		PCBASwapUPDUpdateInterfaceDAO pcbaSwapUPDUpdateInterfaceDAO =null;
 
-		if(updConfig!=null && updConfig.equals("NO")){
+		if(updConfig!=null && updConfig.equals("YES")){
 			pcbaSwapUPDUpdateInterfaceDAO = new PCBASwapUPDUpdateOracleDAO();
 		}else{
 			pcbaSwapUPDUpdateInterfaceDAO = new PCBASwapUPDUpdateSQLDAO();
@@ -53,6 +54,31 @@ public class UPDSWAPUpdateRestWebservice {
 			pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.INPUT_PARAM_MISSING);
 			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING);
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+		}
+		//Check Valid serialNoIn
+		if(pCBASerialNoUPdateQueryInput.getSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getSerialNoIn().equals(""))){
+			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoIn(),"SerialNoIn");
+			if(statusOfSerialNoIn.length() == 15){
+				pCBASerialNoUPdateQueryInput.setSerialNoIn(statusOfSerialNoIn);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfSerialNoIn);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
+		}
+		//Check Valid serialNoOut
+
+		if(pCBASerialNoUPdateQueryInput.getSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getSerialNoOut().equals(""))){
+			String statusOfSerialNoOut = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoOut(),"SerialNoOut");
+			if(statusOfSerialNoOut.length() == 15){
+				pCBASerialNoUPdateQueryInput.setSerialNoOut(statusOfSerialNoOut);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfSerialNoOut);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
 		}
 
 		//check if SerialNoIN is valid
@@ -76,12 +102,37 @@ public class UPDSWAPUpdateRestWebservice {
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 
 		}
-		
+		//Check Valid DualSerialNoIn
+		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))){
+			String statusOfDualSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),"DualSerialNoIn");
+			if(statusOfDualSerialNoIn.length() == 15){
+				pCBASerialNoUPdateQueryInput.setDualSerialNoIn(statusOfDualSerialNoIn);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfDualSerialNoIn);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
+		}
+		//Check Valid DualserialNoOut
+
+		if(pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals(""))){
+			String statusOfDualSerialNoOut = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),"DualSerialNoOut");
+			if(statusOfDualSerialNoOut.length() == 15){
+				pCBASerialNoUPdateQueryInput.setDualSerialNoOut(statusOfDualSerialNoOut);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfDualSerialNoOut);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
+		}
+
 		// check if DualSerialNo is valid
-			
+
 		if((pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))) || (pCBASerialNoUPdateQueryInput.getDualSerialNoOut()!=null  && !(pCBASerialNoUPdateQueryInput.getDualSerialNoOut().equals("")))){
-					
-		
+
+
 			isValidDualSerialNo = validateDualSerialNo(pCBASerialNoUPdateQueryInput);
 			if(isValidDualSerialNo){
 				pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.DUAL_SERIAL_NOT_FOUND);
@@ -89,7 +140,7 @@ public class UPDSWAPUpdateRestWebservice {
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}
 		}
-		
+
 		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null &&!(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))){
 			int dualSerialCount = pcbaSwapUPDUpdateInterfaceDAO.checkValidSerialNoIn(pCBASerialNoUPdateQueryInput.getDualSerialNoIn());
 			if(dualSerialCount!=2){
@@ -97,11 +148,39 @@ public class UPDSWAPUpdateRestWebservice {
 				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.DUAL_SERIAL_NO_CODE_MSG);
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}
-			
+
 		}
-		
+
+		//Check Valid TriSerialNoIn
+		if(pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals(""))){
+			String statusOfTriSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getTriSerialNoIn(),"TriSerialNoIn");
+			if(statusOfTriSerialNoIn.length() == 15){
+				pCBASerialNoUPdateQueryInput.setTriSerialNoIn(statusOfTriSerialNoIn);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfTriSerialNoIn);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
+		}
+		//Check Valid TriSerialNoOut
+
+		if(pCBASerialNoUPdateQueryInput.getTriSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoOut().equals(""))){
+			String statusOfTriSerialNoOut = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getTriSerialNoOut(),"TriSerialNoOut");
+			if(statusOfTriSerialNoOut.length() == 15){
+				pCBASerialNoUPdateQueryInput.setTriSerialNoOut(statusOfTriSerialNoOut);
+			}else{
+				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfTriSerialNoOut);
+				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+
+			}
+		}
+
+
+
 		// check if TriSerialNo is valid
-		
+
 		if((pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals(""))) || (pCBASerialNoUPdateQueryInput.getTriSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoOut().equals("")))){
 			isValidTriSerialNo=validateTriSerialNo(pCBASerialNoUPdateQueryInput);
 			if(isValidTriSerialNo){
@@ -109,9 +188,9 @@ public class UPDSWAPUpdateRestWebservice {
 				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.TRI_SERIAL_NOT_FOUND_MSG);
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}
-			
+
 		}
-		
+
 		if(pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null &&!(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals(""))){
 			int triSerialCount = pcbaSwapUPDUpdateInterfaceDAO.checkValidSerialNoIn(pCBASerialNoUPdateQueryInput.getTriSerialNoIn());
 			if(triSerialCount!=3){
@@ -120,8 +199,7 @@ public class UPDSWAPUpdateRestWebservice {
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 			}			
 		}
-		
-		
+
 
 		PCBASerialNoUPdateResponse response = pcbaSwapUPDUpdateInterfaceDAO.serialNumberInfo(pCBASerialNoUPdateQueryInput);
 
@@ -142,7 +220,7 @@ public class UPDSWAPUpdateRestWebservice {
 			return true;
 		}
 
-		
+
 		return false;
 	}
 

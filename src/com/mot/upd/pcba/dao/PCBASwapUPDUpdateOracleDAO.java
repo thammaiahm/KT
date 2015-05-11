@@ -649,7 +649,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 			logger.info("Data source not found in MEID:" + e);
 			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG+e.getMessage());
-			
+
 		}
 
 		try {
@@ -661,20 +661,20 @@ PCBASwapUPDUpdateInterfaceDAO {
 			rs1 = pstmt1.executeQuery();
 			String referenceKey = null;
 			String referenceKeyQuery="select count(*) from upd_sn_repos_ref where status is null and reference_key=?";
-			
+
 			if (rs1.next()) {
 				referenceKey=rs1.getString("Attribute_99");
 				if(referenceKey!=null && !(referenceKey.equals(""))){
-					
+
 					conn2 = DBUtil.getConnection(ds);
 					pstmt2 = conn2.prepareStatement(referenceKeyQuery);
 					pstmt2.setString(1, referenceKey);
-					 rs2 = pstmt2.executeQuery();
-					 if(rs2.next()){
-						 referenceKeyCount = rs2.getInt(1);
-					 }
-									 
-					
+					rs2 = pstmt2.executeQuery();
+					if(rs2.next()){
+						referenceKeyCount = rs2.getInt(1);
+					}
+
+
 				}
 			}
 

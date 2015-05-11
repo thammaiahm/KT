@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.PropertyResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -29,7 +31,7 @@ public class DBUtil {
 	private static Logger logger = Logger.getLogger(DBUtil.class);
 	private static PropertyResourceBundle bundle = InitProperty
 			.getProperty("pcbaJNDI.properties");
-	
+
 
 	public static DataSource getOracleDataSource() throws NamingException
 	{
@@ -42,7 +44,7 @@ public class DBUtil {
 		} catch (NamingException e) {
 			throw e;
 		}
-		
+
 		logger.info("DataSource method end");
 
 		return ds;
@@ -63,7 +65,7 @@ public class DBUtil {
 		return ds;
 	}
 	public static String dbConfigCheck(){
-		
+
 		DataSource ds;
 		Connection conn = null;
 		Statement stmt = null;
@@ -71,31 +73,31 @@ public class DBUtil {
 		String updConfig = null;
 		String dbconfig = bundle.getString("dbConfig");
 		String query = "select value from upd.upd_config where key = " +
-				 "'"+ dbconfig + "'";
+				"'"+ dbconfig + "'";
 		logger.info("updconfig query " + query);
 		PCBASerialNumberModel pCBASerialNumberModel = new PCBASerialNumberModel();
-		
+
 		try{
-			
-				ds = DBUtil.getOracleDataSource();
-				conn  = ds.getConnection();
-				System.out.println("connection " + conn);
-				stmt = conn.createStatement();
-				rs = stmt.executeQuery(query);
-				while(rs.next()){
-					updConfig = rs.getString(1);
-	
-					}
+
+			ds = DBUtil.getOracleDataSource();
+			conn  = ds.getConnection();
+			System.out.println("connection " + conn);
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			while(rs.next()){
+				updConfig = rs.getString(1);
+
+			}
 
 		}catch(NamingException e){
-			 e.printStackTrace();
+			e.printStackTrace();
 		}catch(SQLException e){
 			pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
 			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
 					+ e.getMessage());
 		}finally{
-			
-				DBUtil.closeConnections(conn, stmt, rs);
+
+			DBUtil.closeConnections(conn, stmt, rs);
 		}
 		return updConfig;
 	}
@@ -164,7 +166,7 @@ public class DBUtil {
 	}
 	public static void connectionClosed(Connection con,PreparedStatement preparedStmt){
 		logger.info("DBUtil Inside  closeConnection method inside.");
-		
+
 		try {
 			if (preparedStmt != null) {
 				preparedStmt.close();
@@ -180,4 +182,29 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 	}
+	public static String checkValidSerialNumber(String serialNoIn,String inputType){
+
+		//If it matches regex [a-zA-Z0-9 ]* then there is not special characters in it.
+
+		Pattern pattren = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattren.matcher(serialNoIn);
+		boolean status = matcher.find();
+		String serialNoValue =null;
+		if (status || serialNoIn.length()<14){
+			serialNoValue = ServiceMessageCodes.INVALID+inputType;	
+		}
+		else{
+			if(serialNoIn.length()==15){
+
+				serialNoValue = serialNoIn;
+
+			}else if(serialNoIn.length()==14){
+
+				serialNoValue = "0"+serialNoIn;
+
+			}
+		}
+		return serialNoValue;
+	}
+
 }

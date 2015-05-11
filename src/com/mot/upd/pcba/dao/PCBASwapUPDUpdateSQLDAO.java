@@ -22,6 +22,7 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
 
+
 /**
  * @author rviswa
  *
@@ -298,11 +299,11 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 						pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
 						pstmt1.execute();
 						pstmt1=null;
-						
+
 						String statusOfnewSerialNO="update upd.upd_repair set swap_ref_no='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"' where serial_no='"+pCBASerialNoUPdateQueryInput.getSerialNoIn()+"'";
 						pstmt1 = con1.prepareStatement(statusOfnewSerialNO);
 						pstmt1.execute();
-					
+
 					}
 
 					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
@@ -630,9 +631,9 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 								+ "'";
 						pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
 						pstmt1.execute();
-						
+
 						pstmt1=null;
-						
+
 						String statusOfnewSerialNO="update upd.upd_repair set swap_ref_no='"+serialNoOut+"' where serial_no='"+serialNoIn+"'";
 						pstmt1 = con1.prepareStatement(statusOfnewSerialNO);
 						pstmt1.execute();
@@ -732,6 +733,6 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 		return 0;
 	}
 
-	
+
 
 }
