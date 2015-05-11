@@ -33,8 +33,8 @@ public class ServiceMessageCodes {
 	public static final String INVALID_CUSTOMER = "5022";
 	public static final int SN_15_DIGIT = 15;
 	public static final int SN_14_DIGIT = 14;
-	
-	
+
+
 
 	// Viswanath added
 
@@ -92,6 +92,8 @@ public class ServiceMessageCodes {
 	public static final String DUAL_SERIAL_NO_CODE_MSG = "This DualSerialNoIn is not eligible for Dual Case.";
 	public static final String TRI_SERIAL_NO_CODE = "5023";
 	public static final String TRI_SERIAL_NO_CODE_MSG = "This TriSerialNoIn is not eligible for Tri Case.";
+	public static final String INVALID="invalid ";
+	public static final String INVALID_SERIAL_NO_CODE="5024";
 	// R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";
