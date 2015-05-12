@@ -34,8 +34,6 @@ public class ServiceMessageCodes {
 	public static final int SN_15_DIGIT = 15;
 	public static final int SN_14_DIGIT = 14;
 
-
-
 	// Viswanath added
 
 	// public static final int MEID_SUCCESS = 5009;
@@ -69,7 +67,7 @@ public class ServiceMessageCodes {
 	public static final String INVALID_CUSTOMER_MSG = "Invalid Customer";
 
 	// Viswanath added
-
+	
 	public static final String MEID_SUCCES_MSG = "Success";
 	public static final String MEID_FAILURE_MSG = "pcba pgm failure";
 	public static final String INVALID_STATUS_MSG = "Status should be either S or F";
