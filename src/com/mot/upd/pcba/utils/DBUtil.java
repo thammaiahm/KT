@@ -184,7 +184,7 @@ public class DBUtil {
 	}
 	public static String checkValidSerialNumber(String serialNoIn,String inputType){
 
-		Pattern pattren = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
+		Pattern pattren = Pattern.compile("[^a-zA-Z0-9 ]", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattren.matcher(serialNoIn);
 		boolean status = matcher.find();
 		String serialNoValue =null;
