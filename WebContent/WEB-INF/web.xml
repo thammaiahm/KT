@@ -12,7 +12,7 @@
 		</servlet-class>
 		<init-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/dispatchNewSnService</param-value>
+        <param-value>/dispatch</param-value>
     </init-param>       
     <init-param>
         <param-name>resteasy.resources</param-name>
@@ -26,7 +26,7 @@
 		</servlet-class>
 		<init-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/serialSuccessFailureService</param-value>
+        <param-value>/successFailure</param-value>
     </init-param>       
     <init-param>
         <param-name>resteasy.resources</param-name>
@@ -40,7 +40,7 @@
 		</servlet-class>
 		<init-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/serialSwapUpdateService</param-value>
+        <param-value>/swapUpdate</param-value>
     </init-param>       
     <init-param>
         <param-name>resteasy.resources</param-name>
@@ -54,7 +54,7 @@
 		</servlet-class>
 		<init-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/r12SnSwapUpdateService</param-value>
+        <param-value>/swapOldSerialFetchRS</param-value>
     </init-param>       
     <init-param>
         <param-name>resteasy.resources</param-name>
@@ -63,18 +63,18 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>UPDSWAPUpdateRestWebservice</servlet-name>
-    <url-pattern>/serialSwapUpdateService/*</url-pattern>
+    <url-pattern>/swapUpdate/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UPDDispatchSerialRestWebservice</servlet-name>
-    <url-pattern>/dispatchNewSnService/*</url-pattern>
+    <url-pattern>/dispatch/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>UPDSerialSuccessFailureRestWebservice</servlet-name>
-    <url-pattern>/serialSuccessFailureService/*</url-pattern>
+    <url-pattern>/successFailure/*</url-pattern>
   </servlet-mapping>
    <servlet-mapping>
     <servlet-name>R12SnSwapUpdateRestWebservice</servlet-name>
-    <url-pattern>/r12SnSwapUpdateService/*</url-pattern>
+    <url-pattern>/swapOldSerialFetchRS/*</url-pattern>
   </servlet-mapping>
 </web-app>

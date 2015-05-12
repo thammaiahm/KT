@@ -1,10 +1,14 @@
 package com.mot.upd.pcba.restwebservice;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+
 
 
 import com.mot.upd.pcba.constants.PCBADataDictionary;
@@ -21,7 +25,7 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author rviswa
  *
  */
-@Path("/SwapUpdateRS")
+@Path("/swapUpdateRS")
 public class UPDSWAPUpdateRestWebservice {
 
 
@@ -40,7 +44,16 @@ public class UPDSWAPUpdateRestWebservice {
 		boolean isValidTriSerialNo=false;
 		boolean isValidSerial=false;
 
-		String updConfig =DBUtil.dbConfigCheck();
+		String updConfig = null;
+		try {
+			updConfig = DBUtil.dbConfigCheck();
+		} catch (NamingException e) {
+			pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		} catch (SQLException e) {
+			pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		}
 		PCBASwapUPDUpdateInterfaceDAO pcbaSwapUPDUpdateInterfaceDAO =null;
 
 		if(updConfig!=null && updConfig.equals("YES")){

@@ -1,5 +1,8 @@
 package com.mot.upd.pcba.restwebservice;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -37,8 +40,16 @@ public class UPDSerialSuccessFailureRestWebservice {
 		PCBAProgramResponse pcbaProgramResponse = new PCBAProgramResponse();
 		UPDSerialSuccessFailureInterfaceDAO updSerialSuccessFailureInterfaceDAO =null;
 
-
-		String updConfig =DBUtil.dbConfigCheck();
+		String updConfig = null;
+		try {
+			updConfig = DBUtil.dbConfigCheck();
+		} catch (NamingException e) {
+			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		} catch (SQLException e) {
+			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		}
 
 		if(updConfig!=null && updConfig.equals("YES")){
 			updSerialSuccessFailureInterfaceDAO = new UPDSerialSuccessFailureOracleDAO();

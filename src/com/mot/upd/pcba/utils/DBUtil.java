@@ -64,7 +64,7 @@ public class DBUtil {
 
 		return ds;
 	}
-	public static String dbConfigCheck(){
+	public static String dbConfigCheck() throws NamingException, SQLException{
 
 		DataSource ds = null;
 		Connection conn = null;
@@ -90,11 +90,9 @@ public class DBUtil {
 			}
 
 		}catch(NamingException e){
-			e.printStackTrace();
+			throw e;
 		}catch(SQLException e){
-			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
-			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
-					+ e.getMessage());
+			throw e;
 		}finally{
 
 			DBUtil.closeConnections(conn, stmt, rs);
@@ -109,9 +107,7 @@ public class DBUtil {
 		try {
 			con = ds.getConnection();
 		} catch (SQLException e) {
-			pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
-			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG
-					+ e.getMessage());
+			throw e;
 		}
 		return con;
 	}

@@ -52,7 +52,7 @@ public class R12SnSwapUpdateRestWebservice {
 		
 		try {
 			r12UpdateQueryResult.setSerialIn(serialIn);
-			String serialSnCheckValue = DBUtil.serialCheck(serialIn);
+			String serialSnCheckValue = DBUtil.checkValidSerialNumber(serialIn,"SerialIn");
 			logger.info(" Request serialIn value from after check process  = " +serialSnCheckValue);
 			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
 				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
@@ -86,7 +86,7 @@ public class R12SnSwapUpdateRestWebservice {
 			}
 			} catch (Exception e) {
 				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
-				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG +"No DataSource Found");
+				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
 			}
 			return r12UpdateQueryResult;
 		}

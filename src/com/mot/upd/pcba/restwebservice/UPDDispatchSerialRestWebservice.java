@@ -1,5 +1,8 @@
 package com.mot.upd.pcba.restwebservice;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -159,7 +162,16 @@ public class UPDDispatchSerialRestWebservice {
 		dispatchSerialRequestPOJO = verifyCustomer(dispatchSerialRequestPOJO);
 
 		DispatchSerialNumberDAO dispatchSerialNumberDAO = null;
-		String updConfig = DBUtil.dbConfigCheck();
+		String updConfig = null;
+		try {
+			updConfig = DBUtil.dbConfigCheck();
+		} catch (NamingException e) {
+			dispatchSerialResponsePOJO.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			dispatchSerialResponsePOJO.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		} catch (SQLException e) {
+			dispatchSerialResponsePOJO.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			dispatchSerialResponsePOJO.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+		}
 
 		// Oracle
 		if (updConfig.equals("YES")) {
