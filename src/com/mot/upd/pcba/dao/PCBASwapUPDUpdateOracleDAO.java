@@ -260,7 +260,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 					}
 
 					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
-					response.setResponseMessage(ServiceMessageCodes.READING_OLD_SERIAL_NO_INTO_NEW_SERIAL_NO);
+					response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_FOUND_SUCCSS_MSG);
 				}
 
 			} else {
@@ -556,7 +556,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 					}
 
 					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
-					response.setResponseMessage(ServiceMessageCodes.READING_OLD_SERIAL_NO_INTO_NEW_SERIAL_NO);
+					response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_FOUND_SUCCSS_MSG);
 				}
 
 			} else {
