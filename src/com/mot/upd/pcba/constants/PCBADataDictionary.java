@@ -17,7 +17,7 @@ public class PCBADataDictionary {
 	public static final String DISPATCHED="Y";
 	public static final String UNDISPATCHED="N";
 	public static final String MODIFIED_BY="pcba_reqest_ws";
-	public static final String DBCONFIG = "NO";
+	public static final String DBCONFIG = "YES";
 	public static final String STATUS_S="S";
 	public static final String STAYUS_F="F";
 	public static final String DEFAULT_CUSTOMER="ANY";

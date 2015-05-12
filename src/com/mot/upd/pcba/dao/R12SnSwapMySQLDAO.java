@@ -45,8 +45,8 @@ public class R12SnSwapMySQLDAO {
 			
 			ds = DBUtil.getMySqlDataSource();
 			} catch (NamingException e) {
-			pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.NO_DATASOURCE_FOUND));
-			pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+				pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+				pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
 					+ e.getMessage());
 			return pCBASerialNumberModel;
 		}
@@ -69,25 +69,28 @@ public class R12SnSwapMySQLDAO {
 				while(rs.next()){
 					map.put(rs.getString(1), rs.getString(2));
 				}
-				Map<String,String> returnedMap1 = checkOddKey(map, serialIn);
+				Map<String,String> returnedMap1 = checkOldKey(map, serialIn);
                 if(returnedMap1.get("VALUE_FOUND").equals("YES")) {
-                	logger.info("Old Serial number found : ");
-                            //System.out.println("The serial number has reference and result=>"+returnedMap1.get("RESULT_SERIAL_NO"));
-                            pCBASerialNumberModel.setOldSN(returnedMap1.get("RESULT_SERIAL_NO"));
+                	logger.info("Old Serial number found : " + returnedMap1.get("RESULT_SERIAL_NO"));
+                	// Old serial length check
+                	//	if((returnedMap1.get("RESULT_SERIAL_NO").length()==ServiceMessageCodes.SN_15_DIGIT)){       
+                		pCBASerialNumberModel.setOldSN(returnedMap1.get("RESULT_SERIAL_NO"));
+                	//	}else{
+                	//		pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_VALID);
+         			//		pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.R12_OLD_SN_NOT_VALID_MSG);
+                	//	}
                 } else {
                             //System.out.println("New Serial Number=>"+returnedMap1.get("RESULT_SERIAL_NO"));
                 			//pCBASerialNumberModel.setOldSN(returnedMap1.get("RESULT_SERIAL_NO"));
                 			if(serialIn.equals(returnedMap1.get("RESULT_SERIAL_NO"))){
                 				logger.info("Old Serial number not found : ");
-                				r12UpdateQueryResult.setSerialIn(serialIn);
-            					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
-            					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_AVAILABLE);
-            					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
+                				pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_AVAILABLE);
+                				pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
                 			}
                 }
 
 				}catch(SQLException e){
-					pCBASerialNumberModel.setResponseCode(Integer.parseInt(ServiceMessageCodes.SQL_EXCEPTION));
+					pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.SQL_EXCEPTION);
 					pCBASerialNumberModel.setResponseMsg(ServiceMessageCodes.SQL_EXCEPTION_MSG);
 					logger.error("SqlException:::: " +e.getMessage());
 				}finally{
@@ -98,7 +101,7 @@ public class R12SnSwapMySQLDAO {
 			return pCBASerialNumberModel;
 		}
 		
-	 public Map<String,String> checkOddKey(HashMap<String,String> contentsMap, String inputValue) {
+	 public Map<String,String> checkOldKey(HashMap<String,String> contentsMap, String inputValue) {
          //Check if the target value is present in data map
          if(contentsMap.containsValue(inputValue)) {
                      //Mark the isValuePresent to 'true'
@@ -110,7 +113,7 @@ public class R12SnSwapMySQLDAO {
                                  String currentValue = (String)pair.getValue();
                                  //System.out.println(currentKey + " = " + currentValue);
                                  if(!currentKey.equals(inputValue)&&currentValue.equals(inputValue)) {
-                                             checkOddKey(contentsMap, currentKey);
+                                	 checkOldKey(contentsMap, currentKey);
                                  }
                      }
          } // Looped through the map and no more reference identified

@@ -1,6 +1,9 @@
 package com.mot.upd.pcba.restwebservice;
 
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -31,7 +34,7 @@ public class R12SnSwapUpdateRestWebservice {
 	@GET
 	@Path("/{serialIn}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public R12SnSwapUpdateQueryResult r12SnSwapUpdateService(@PathParam("serialIn") String serialIn){
+	public R12SnSwapUpdateQueryResult r12SnSwapUpdateService(@PathParam("serialIn") String serialIn)throws NamingException,SQLException{
 		//String serialOut = null;
 		//serialIn = "353339060930372";
 
@@ -42,7 +45,7 @@ public class R12SnSwapUpdateRestWebservice {
 		
 		try {
 			r12UpdateQueryResult.setSerialIn(serialIn);
-			String serialSnCheckValue = serialCheck(serialIn);
+			String serialSnCheckValue = DBUtil.serialCheck(serialIn);
 			logger.info(" Request serialIn value from after check process  = " +serialSnCheckValue);
 			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
 				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
@@ -66,8 +69,8 @@ public class R12SnSwapUpdateRestWebservice {
 				}else{
 					//r12UpdateQueryResult.setSerialIn(r12UpdateQueryInput.getSerialNO());
 					r12UpdateQueryResult.setSerialOut(pCBASerialNumberModel.getOldSN());
-					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_OLD_SN_NOT_AVAILABLE);
-					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_MSG);
+					r12UpdateQueryResult.setResponseCode(pCBASerialNumberModel.getResponseCode());
+					r12UpdateQueryResult.setResponseMsg(pCBASerialNumberModel.getResponseMsg());
 				}
 			}else{
 					//r12UpdateQueryResult.setSerialIn(serialIn);
@@ -75,31 +78,10 @@ public class R12SnSwapUpdateRestWebservice {
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
 			}
 			} catch (Exception e) {
-			e.printStackTrace();
+				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG +"No DataSource Found");
 			}
 			return r12UpdateQueryResult;
-		}
-		public static String serialCheck(String serialNo){
-			
-				if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
-				try {
-				if(serialNo.length()==ServiceMessageCodes.SN_14_DIGIT){
-				logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
-				MeidUtils meidUtils = new MeidUtils();
-				String checkLastDigit = meidUtils.getChecksum(serialNo);
-				StringBuffer sb = new StringBuffer(serialNo);
-		
-				serialNo =sb.append(checkLastDigit).toString();
-				logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
-		
-				return serialNo;
-				}
-				}catch(Exception e){
-					logger.error("Error in serialCheck function " + e);
-				}
-				}
-		
-				return serialNo;
 		}
 		
 }

@@ -5,13 +5,13 @@ public class PCBASerialNumberModel {
 	private String msnStatus;
 	private String oldSN;
 	private String serialStatus;
-	private int responseCode;
+	private String responseCode;
 	private String responseMsg;
 	
-	public int getResponseCode() {
+	public String getResponseCode() {
 		return responseCode;
 	}
-	public void setResponseCode(int responseCode) {
+	public void setResponseCode(String responseCode) {
 		this.responseCode = responseCode;
 	}
 	public String getResponseMsg() {

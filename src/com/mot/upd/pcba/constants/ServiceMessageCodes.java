@@ -99,5 +99,10 @@ public class ServiceMessageCodes {
 	public static final String OLD_SN_SUCCESS = "0000";
 	public static final String R12_OLD_SN_NOT_AVAILABLE = "5015";
 	public static final String R12_SN_NOT_VALID = "5016";
+	public static final String R12_OLD_SN_NOT_VALID = "5025";
+	public static final String R12_OLD_SN_NOT_VALID_MSG = "OLD SerialNumber not valid";
+	
+	//public static final String JNDI_NOT_FOUND = "8003";
+	//public static final String JNDI_NOT_FOUND_MSG = "JNDI IS NOT AVAILABLE";
 
 }
