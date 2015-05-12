@@ -204,30 +204,31 @@ public class DBUtil {
 			}
 		}
 		return serialNoValue;
-	}
-public static String serialCheck(String serialNo){
-		
-		if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
-		try {
-		if(serialNo.length()==ServiceMessageCodes.SN_14_DIGIT){
-		logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
-		MeidUtils meidUtils = new MeidUtils();
-		String checkLastDigit = meidUtils.getChecksum(serialNo);
-		StringBuffer sb = new StringBuffer(serialNo);
-
-		serialNo =sb.append(checkLastDigit).toString();
-		logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
-
-		return serialNo;
 		}
-		}catch(Exception e){
-			logger.error("Error in serialCheck function " + e);
+	
+		public static String serialCheck(String serialNo){
+				
+				if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
+				try {
+				if(serialNo.length()==ServiceMessageCodes.SN_14_DIGIT){
+				logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
+			MeidUtils meidUtils = new MeidUtils();
+			String checkLastDigit = meidUtils.getChecksum(serialNo);
+			StringBuffer sb = new StringBuffer(serialNo);
+			
+			serialNo =sb.append(checkLastDigit).toString();
+			logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
+			
+			return serialNo;
+			}
+			}catch(Exception e){
+				logger.error("Error in serialCheck function " + e);
+				}
+				}
+			
+				return serialNo;
 		}
-		}
-
-		return serialNo;
-	}
-
+			
 
 
 }

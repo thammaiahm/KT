@@ -31,6 +31,13 @@ import com.mot.upd.pcba.utils.MeidUtils;
 @Path("/")
 public class R12SnSwapUpdateRestWebservice {
 	private static final Logger logger = Logger.getLogger(R12SnSwapUpdateRestWebservice.class);
+	/**
+     * RestService for fetch the old serial number for given serial input 
+     * @param  serialIn
+     * @return R12SnSwapUpdateQueryResult Object contains the old serial
+     * 		   reference and error details
+    
+     */	
 	@GET
 	@Path("/{serialIn}")
 	@Produces(MediaType.APPLICATION_JSON)

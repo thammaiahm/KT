@@ -36,8 +36,13 @@ public class R12SnSwapOracleDAO {
 	boolean isValuePresent = false;
     HashMap<String,String> resultMap = new HashMap<String,String>();
 	
-		/** 
-		 * Fetching oldest scrapped record for given serial number */
+    /**
+     * Fetch the old serial number for given serial input 
+     * @param  serialIn
+     * @return      PCBASerialNumberModel Object contains the old serial
+     * 				reference
+    
+     */
 	public PCBASerialNumberModel fetchOldestSCROracleValue(String serialIn){
 
 		//String serialOut = null;

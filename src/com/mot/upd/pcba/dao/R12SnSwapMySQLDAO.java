@@ -31,6 +31,13 @@ public class R12SnSwapMySQLDAO {
 	boolean isValuePresent = false;
     HashMap<String,String> resultMap = new HashMap<String,String>();
     R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
+    /**
+     * Fetch the old serial number for given serial input 
+     * @param  serialIn
+     * @return      PCBASerialNumberModel Object contains the old serial
+     * 				reference
+    
+     */
 	public PCBASerialNumberModel fetchOldestSCRMysqlValue(String serialIn){
 
 		//String serialOut = null;
