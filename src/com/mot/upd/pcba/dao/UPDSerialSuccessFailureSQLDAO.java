@@ -16,6 +16,7 @@ import com.mot.upd.pcba.pojo.PCBAProgramQueryInput;
 import com.mot.upd.pcba.pojo.PCBAProgramResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 
+
 /**
  * @author rviswa
  *
@@ -23,7 +24,7 @@ import com.mot.upd.pcba.utils.DBUtil;
 public class UPDSerialSuccessFailureSQLDAO implements UPDSerialSuccessFailureInterfaceDAO{
 	private static Logger logger = Logger.getLogger(UPDSerialSuccessFailureSQLDAO.class);
 
-	
+
 	private DataSource ds;
 	private Connection con = null;
 	private PreparedStatement preparedStmt = null;

@@ -184,51 +184,42 @@ public class DBUtil {
 	}
 	public static String checkValidSerialNumber(String serialNoIn,String inputType){
 
-		
-		Pattern pattren = Pattern.compile("[^a-zA-Z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Pattern pattren = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattren.matcher(serialNoIn);
 		boolean status = matcher.find();
 		String serialNoValue =null;
-		if (status || serialNoIn.length()<14){
+		if (status){
 			serialNoValue = ServiceMessageCodes.INVALID+inputType;	
 		}
 		else{
-			if(serialNoIn.length()==15){
-
-				serialNoValue = serialNoIn;
-
-			}else if(serialNoIn.length()==14){
-
-				serialNoValue = "0"+serialNoIn;
-
-			}
+			serialNoValue =serialCheck(serialNoIn);
 		}
 		return serialNoValue;
-		}
-	
-		public static String serialCheck(String serialNo){
-				
-				if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
-				try {
+	}
+
+	public static String serialCheck(String serialNo){
+
+		if (serialNo.length()==ServiceMessageCodes.SN_15_DIGIT || serialNo.length() ==ServiceMessageCodes.SN_14_DIGIT){
+			try {
 				if(serialNo.length()==ServiceMessageCodes.SN_14_DIGIT){
-				logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
-			MeidUtils meidUtils = new MeidUtils();
-			String checkLastDigit = meidUtils.getChecksum(serialNo);
-			StringBuffer sb = new StringBuffer(serialNo);
-			
-			serialNo =sb.append(checkLastDigit).toString();
-			logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
-			
-			return serialNo;
-			}
+					logger.info("serialNo :" + serialNo + "length :" + serialNo.length());
+					MeidUtils meidUtils = new MeidUtils();
+					String checkLastDigit = meidUtils.getChecksum(serialNo);
+					StringBuffer sb = new StringBuffer(serialNo);
+
+					serialNo =sb.append(checkLastDigit).toString();
+					logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
+
+					return serialNo;
+				}
 			}catch(Exception e){
 				logger.error("Error in serialCheck function " + e);
-				}
-				}
-			
-				return serialNo;
+			}
 		}
-			
+
+		return serialNo;
+	}
+
 
 
 }

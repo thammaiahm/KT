@@ -11,12 +11,12 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-
 import com.mot.upd.pcba.constants.PCBADataDictionary;
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.pojo.PCBAProgramQueryInput;
 import com.mot.upd.pcba.pojo.PCBAProgramResponse;
 import com.mot.upd.pcba.utils.DBUtil;
+
 
 /**
  * @author rviswa
@@ -53,19 +53,19 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 			con = DBUtil.getConnection(ds);
 
 			StringBuffer sb=new StringBuffer();
-			sb.append("update UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_success',ATTRIBUTE_25='"+pcbaProgramQueryInput.getMsl()+"',");
+			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_success',ATTRIBUTE_25='"+pcbaProgramQueryInput.getMsl()+"',");
 			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 			logger.info("IMEI SQL Query:"+sb.toString());
 			
-			String SQLQueryIMEI ="update upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryIMEI ="update upd.upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			conn=DBUtil.getConnection(ds);
 			pstmt = conn.prepareStatement(SQLQueryIMEI);
 			pstmt.execute();
 			logger.info("IMEIStatusSuccess-SQLQueryIMEI: "+SQLQueryIMEI);
 			
-			String SQLQueryMEID ="update upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryMEID ="update upd.upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			connection=DBUtil.getConnection(ds);
 			prestmt = connection.prepareStatement(SQLQueryMEID);
 			prestmt.execute();
@@ -105,19 +105,19 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 			con = DBUtil.getConnection(ds);
 
 			StringBuffer sb=new StringBuffer();
-			sb.append("update UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_failure',ATTRIBUTE_25='"+pcbaProgramQueryInput.getMsl()+"',");
+			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_failure',ATTRIBUTE_25='"+pcbaProgramQueryInput.getMsl()+"',");
 			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 			logger.info("IMEI SQL Query:"+sb.toString());
 			
-			String SQLQueryIMEI ="update upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryIMEI ="update upd.upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			conn=DBUtil.getConnection(ds);
 			pstmt = conn.prepareStatement(SQLQueryIMEI);
 			pstmt.execute();
 			logger.info("IMEIStatusFailure-SQLQueryIMEI:"+SQLQueryIMEI);
 			
-			String SQLQueryMEID ="update upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryMEID ="update upd.upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			connection=DBUtil.getConnection(ds);
 			prestmt = connection.prepareStatement(SQLQueryMEID);
 			prestmt.execute();
@@ -156,20 +156,20 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 			con = DBUtil.getConnection(ds);
 
 			StringBuffer sb=new StringBuffer();
-			sb.append("update UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_success',");
+			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_success',");
 			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 
 			logger.info("MEID SQL Query:"+sb.toString());
 			
-			String SQLQueryIMEI ="update upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryIMEI ="update upd.upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			conn=DBUtil.getConnection(ds);
 			pstmt = conn.prepareStatement(SQLQueryIMEI);
 			pstmt.execute();
 			logger.info("MEIDStatusSuccess-SQLQueryIMEI:"+SQLQueryIMEI);
 			
-			String SQLQueryMEID ="update upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryMEID ="update upd.upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_success' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			connection=DBUtil.getConnection(ds);
 			prestmt = connection.prepareStatement(SQLQueryMEID);
 			prestmt.execute();
@@ -209,20 +209,20 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 			con = DBUtil.getConnection(ds);
 
 			StringBuffer sb=new StringBuffer();
-			sb.append("update UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_failure',");
+			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_failure',");
 			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 
 			logger.info("updateMEIDStatusFailure SQL Query:"+sb.toString());
 			
-			String SQLQueryIMEI ="update upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryIMEI ="update upd.upd_pcba_pgm_imei  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			conn=DBUtil.getConnection(ds);
 			pstmt = conn.prepareStatement(SQLQueryIMEI);
 			pstmt.execute();
 			logger.info("MEIDStatusFailure-SQLQueryIMEI:"+SQLQueryIMEI);
 			
-			String SQLQueryMEID ="update upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
+			String SQLQueryMEID ="update upd.upd_pcba_pgm_meid  set PGM_DATE=sysdate,PGM_STATUS='pcba_pgm_failure' where serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'";
 			connection=DBUtil.getConnection(ds);
 			prestmt = connection.prepareStatement(SQLQueryMEID);
 			prestmt.execute();

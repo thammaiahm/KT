@@ -25,7 +25,7 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author Quinnox Dev Team
  *
  */
-@Path("/updateStatusOfSerialNO")
+@Path("/successFailureRS")
 public class UPDSerialSuccessFailureRestWebservice {
 	private static Logger logger = Logger.getLogger(UPDSerialSuccessFailureRestWebservice.class);
 
@@ -60,7 +60,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}
-		
+
 		//Check Valid serialNo
 		if(pcbaProgramQueryInput.getSerialNO()!=null && !(pcbaProgramQueryInput.getSerialNO().equals(""))){
 			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
@@ -74,7 +74,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 			}
 		}
-		
+
 		//check if sn type is valid
 		isValidSerial=validateSNType(pcbaProgramQueryInput);
 
