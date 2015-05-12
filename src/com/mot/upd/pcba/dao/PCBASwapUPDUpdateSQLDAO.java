@@ -14,14 +14,11 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-
-
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateQueryInput;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
-
 
 /**
  * @author rviswa

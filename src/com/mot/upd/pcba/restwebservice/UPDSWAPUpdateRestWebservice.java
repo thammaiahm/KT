@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 
+import com.mot.upd.pcba.constants.PCBADataDictionary;
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateInterfaceDAO;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateOracleDAO;
@@ -16,12 +17,11 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 
 
-
 /**
  * @author rviswa
  *
  */
-@Path("/swapSerialNOData")
+@Path("/SwapUpdateRS")
 public class UPDSWAPUpdateRestWebservice {
 
 
@@ -38,6 +38,7 @@ public class UPDSWAPUpdateRestWebservice {
 		boolean isValidSerialNoOut=false;
 		boolean isValidDualSerialNo=false;
 		boolean isValidTriSerialNo=false;
+		boolean isValidSerial=false;
 
 		String updConfig =DBUtil.dbConfigCheck();
 		PCBASwapUPDUpdateInterfaceDAO pcbaSwapUPDUpdateInterfaceDAO =null;
@@ -55,6 +56,16 @@ public class UPDSWAPUpdateRestWebservice {
 			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING);
 			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
 		}
+
+		//check if sn type is valid
+		isValidSerial=validateSNType(pCBASerialNoUPdateQueryInput);
+
+		if(!isValidSerial){
+			pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
+			pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
+			return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
+		}
+
 		//Check Valid serialNoIn
 		if(pCBASerialNoUPdateQueryInput.getSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getSerialNoIn().equals(""))){
 			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoIn(),"SerialNoIn");
@@ -206,6 +217,17 @@ public class UPDSWAPUpdateRestWebservice {
 
 		return Response.status(200).entity(response).build();
 
+	}
+
+
+
+	private boolean validateSNType(
+			PCBASerialNoUPdateQueryInput pCBASerialNoUPdateQueryInput) {
+		// TODO Auto-generated method stub
+		if(pCBASerialNoUPdateQueryInput.getSerialNoType().trim().equals(PCBADataDictionary.IMEI) || pCBASerialNoUPdateQueryInput.getSerialNoType().trim().equals(PCBADataDictionary.MEID)){
+			return true;
+		}
+		return false;
 	}
 
 
