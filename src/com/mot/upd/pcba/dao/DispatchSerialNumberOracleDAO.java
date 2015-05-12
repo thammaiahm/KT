@@ -496,13 +496,17 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 
 			}
 			preparedStmt = null;
-			String updateDispatchStatusForULMA = "UPDATE upd_ulma_detail  SET LAST_MOD_USER=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=?,ATTRIBUTE_STATE=? WHERE ATTRIBUTE_VALUE IN("
+			/*String updateDispatchStatusForULMA = "UPDATE upd_ulma_detail  SET LAST_MOD_USER=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=?,ATTRIBUTE_STATE=? WHERE ATTRIBUTE_VALUE IN("
+					+ ulmaAddressString + ")";*/
+			String updateDispatchStatusForULMA = "update upd.upd_ulma_repos set LAST_MOD_BY=?,dispatched_datetime=SYSDATE,is_dispatched=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=? where ulma in("
 					+ ulmaAddressString + ")";
+			
+			System.out.println("Thammaiah"+updateDispatchStatusForULMA);
 			preparedStmt = con.prepareStatement(updateDispatchStatusForULMA);
 			preparedStmt.setString(1, PCBADataDictionary.MODIFIED_BY);
-			preparedStmt.setString(2, dispatchSerialResponsePOJO
+			preparedStmt.setString(2, PCBADataDictionary.DISPATCHED);
+			preparedStmt.setString(3, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());
-			preparedStmt.setString(3, PCBADataDictionary.DISPATCHED);
 			int rows = preparedStmt.executeUpdate();
 			// update ULMA table
 
@@ -732,7 +736,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			// String updateDispatchStatusMEID =
 			// "UPDATE UPD_PCBA_PGM_MEID SET DISPATCH_DATE=SYSDATE,DISPATCH_STATUS=?,RSD_ID=?,MASC_ID=?,CLIENT_REQUEST_DATETIME=SYSTIMESTAMP,LAST_MOD_BY=?,LAST_MOD_DATETIME=SYSTIMESTAMP WHERE SERIAL_NO=?";
 			String updateDispatchStatusMEID = bundle
-					.getString("MEID.selectSerial");
+					.getString("MEID.updateDispatchStatus");
 
 			preparedStmt = con.prepareStatement(updateDispatchStatusMEID);
 			preparedStmt.setString(1, PCBADataDictionary.DISPATCHED);
@@ -807,13 +811,15 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 
 			// update ULMA table
 			preparedStmt = null;
-			String updateDispatchStatusForULMA = "UPDATE upd_ulma_detail  SET LAST_MOD_USER=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=?,ATTRIBUTE_STATE=? WHERE ATTRIBUTE_VALUE IN("
+			/*String updateDispatchStatusForULMA = "UPDATE upd_ulma_detail  SET LAST_MOD_USER=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=?,ATTRIBUTE_STATE=? WHERE ATTRIBUTE_VALUE IN("
+					+ ulmaAddressString + ")";*/
+			String updateDispatchStatusForULMA = "update upd.upd_ulma_repos set LAST_MOD_BY=?,dispatched_datetime=SYSDATE,is_dispatched=?,LAST_MOD_DATETIME=SYSDATE,SERIAL_NO=? where ulma in("
 					+ ulmaAddressString + ")";
 			preparedStmt = con.prepareStatement(updateDispatchStatusForULMA);
 			preparedStmt.setString(1, PCBADataDictionary.MODIFIED_BY);
-			preparedStmt.setString(2, dispatchSerialResponsePOJO
+			preparedStmt.setString(2, PCBADataDictionary.DISPATCHED);
+			preparedStmt.setString(3, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());
-			preparedStmt.setString(3, PCBADataDictionary.DISPATCHED);
 			int rows = preparedStmt.executeUpdate();
 			// update ULMA table
 
@@ -984,7 +990,8 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			if (rs.next()) {
 				do {
 
-					ulmaAddress.add(rs.getString("ATTRIBUTE_VALUE"));
+					ulmaAddress.add(rs.getString("ulma"));
+					count++;
 
 				} while (rs.next());
 				dispatchSerialResponsePOJO.setUlmaAddress(ulmaAddress);
