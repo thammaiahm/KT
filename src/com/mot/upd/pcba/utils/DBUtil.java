@@ -188,7 +188,7 @@ public class DBUtil {
 			serialNoValue = ServiceMessageCodes.INVALID+inputType;	
 		}
 		else{
-			serialNoValue =serialCheck(serialNoIn);
+			serialNoValue = serialNoIn;
 		}
 		return serialNoValue;
 	}
@@ -202,7 +202,6 @@ public class DBUtil {
 					MeidUtils meidUtils = new MeidUtils();
 					String checkLastDigit = meidUtils.getChecksum(serialNo);
 					StringBuffer sb = new StringBuffer(serialNo);
-
 					serialNo =sb.append(checkLastDigit).toString();
 					logger.info("serialNo.concat(checkLastDigit); : " + serialNo);
 

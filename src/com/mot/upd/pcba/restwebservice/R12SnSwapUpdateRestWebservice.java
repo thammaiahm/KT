@@ -52,8 +52,10 @@ public class R12SnSwapUpdateRestWebservice {
 		
 		try {
 			r12UpdateQueryResult.setSerialIn(serialIn);
-			String serialSnCheckValue = DBUtil.checkValidSerialNumber(serialIn,"SerialIn");
-			logger.info(" Request serialIn value from after check process  = " +serialSnCheckValue);
+			
+			String serialSnCheckValue = DBUtil.checkValidSerialNumber(MeidUtils.validateMEID(serialIn),"SerialIn");
+			//String serialSnCheckValue = MeidUtils.validateMEID(serialIn);
+			logger.info(" Request serialIn value from after check process  = " + serialSnCheckValue);
 			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
 				R12SnSwapOracleDAO r12SwapUpdateOraDAO = new R12SnSwapOracleDAO();
 				R12SnSwapMySQLDAO r12SwapUpdateMysqlDAO = new R12SnSwapMySQLDAO();
@@ -80,13 +82,20 @@ public class R12SnSwapUpdateRestWebservice {
 					r12UpdateQueryResult.setResponseMsg(pCBASerialNumberModel.getResponseMsg());
 				}
 			}else{
-					//r12UpdateQueryResult.setSerialIn(serialIn);
 					r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_SN_NOT_VALID);
 					r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
-			}
-			} catch (Exception e) {
+				}
+					
+			
+			} catch (NamingException e) {
 				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
 				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+			}catch (SQLException e) {
+				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+			}catch (MEIDException e) {
+				r12UpdateQueryResult.setResponseCode(ServiceMessageCodes.R12_SN_NOT_VALID);
+				r12UpdateQueryResult.setResponseMsg(ServiceMessageCodes.SERIAL_NO_NOT_VALID_MSG);
 			}
 			return r12UpdateQueryResult;
 		}

@@ -19,6 +19,8 @@ import com.mot.upd.pcba.dao.UPDSerialSuccessFailureSQLDAO;
 import com.mot.upd.pcba.pojo.PCBAProgramQueryInput;
 import com.mot.upd.pcba.pojo.PCBAProgramResponse;
 import com.mot.upd.pcba.utils.DBUtil;
+import com.mot.upd.pcba.utils.MEIDException;
+import com.mot.upd.pcba.utils.MeidUtils;
 
 
 
@@ -74,7 +76,14 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 		//Check Valid serialNo
 		if(pcbaProgramQueryInput.getSerialNO()!=null && !(pcbaProgramQueryInput.getSerialNO().equals(""))){
-			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
+			//String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
+			String statusOfSerialNoIn = null;
+			try {
+				statusOfSerialNoIn = DBUtil.checkValidSerialNumber(MeidUtils.validateMEID(pcbaProgramQueryInput.getSerialNO()),"SerialNo");
+			} catch (MEIDException e) {
+				pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
+				pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
+			}
 			if(statusOfSerialNoIn.length() == 15){
 				pcbaProgramQueryInput.setSerialNO(statusOfSerialNoIn);
 			}else{

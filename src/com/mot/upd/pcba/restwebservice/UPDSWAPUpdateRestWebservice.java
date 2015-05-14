@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 
 
+
 import com.mot.upd.pcba.constants.PCBADataDictionary;
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
 import com.mot.upd.pcba.dao.PCBASwapUPDUpdateInterfaceDAO;
@@ -19,6 +20,8 @@ import com.mot.upd.pcba.dao.PCBASwapUPDUpdateSQLDAO;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateQueryInput;
 import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
+import com.mot.upd.pcba.utils.MEIDException;
+import com.mot.upd.pcba.utils.MeidUtils;
 
 
 /**
@@ -81,7 +84,15 @@ public class UPDSWAPUpdateRestWebservice {
 
 		//Check Valid serialNoIn
 		if(pCBASerialNoUPdateQueryInput.getSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getSerialNoIn().equals(""))){
-			String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoIn(),"SerialNoIn");
+			
+			//String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoIn(),"SerialNoIn");
+			String statusOfSerialNoIn = null;
+			try {
+				statusOfSerialNoIn = DBUtil.checkValidSerialNumber(MeidUtils.validateMEID(pCBASerialNoUPdateQueryInput.getSerialNoIn()),"SerialNo");
+			} catch (MEIDException e) {
+				pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
+				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
+			}
 			if(statusOfSerialNoIn.length() == 15){
 				pCBASerialNoUPdateQueryInput.setSerialNoIn(statusOfSerialNoIn);
 			}else{
