@@ -349,6 +349,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, dispatchSerialRequestPOJO.getCustomer());
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
+			preparedStmt.setString(5, PCBADataDictionary.PROGRAM_FACILITY);
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
@@ -606,6 +607,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, dispatchSerialRequestPOJO.getCustomer());
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
+			preparedStmt.setString(5, PCBADataDictionary.PROGRAM_FACILITY);
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
@@ -678,6 +680,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
 			preparedStmt.setString(5, dispatchSerialRequestPOJO.getProtocol());
+			preparedStmt.setString(6, PCBADataDictionary.PROGRAM_FACILITY);
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
@@ -980,6 +983,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
 			preparedStmt.setString(5, dispatchSerialRequestPOJO.getProtocol());
+			preparedStmt.setString(6, PCBADataDictionary.PROGRAM_FACILITY);
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
