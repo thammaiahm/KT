@@ -28,9 +28,14 @@ import com.mot.upd.pcba.utils.MeidUtils;
  * @author Quinnox Dev Team
  *
  */
-@Path("/")
+
 public class R12SnSwapUpdateRestWebservice {
 	private static final Logger logger = Logger.getLogger(R12SnSwapUpdateRestWebservice.class);
+	
+	
+	@GET
+	@Path("/{serialIn}")
+	@Produces(MediaType.APPLICATION_JSON)
 	/**
      * RestService for fetch the old serial number for given serial input 
      * @param  serialIn
@@ -38,9 +43,6 @@ public class R12SnSwapUpdateRestWebservice {
      * 		   reference and error details
     
      */	
-	@GET
-	@Path("/{serialIn}")
-	@Produces(MediaType.APPLICATION_JSON)
 	public R12SnSwapUpdateQueryResult r12SnSwapUpdateService(@PathParam("serialIn") String serialIn)throws NamingException,SQLException{
 		//String serialOut = null;
 		//serialIn = "353339060930372";
@@ -53,7 +55,7 @@ public class R12SnSwapUpdateRestWebservice {
 		try {
 			r12UpdateQueryResult.setSerialIn(serialIn);
 			
-			String serialSnCheckValue = DBUtil.checkValidSerialNumber(MeidUtils.validateMEID(serialIn),"SerialIn");
+			String serialSnCheckValue = DBUtil.checkValidSerialNumber(serialIn,"SerialIn");
 			//String serialSnCheckValue = MeidUtils.validateMEID(serialIn);
 			logger.info(" Request serialIn value from after check process  = " + serialSnCheckValue);
 			if(serialSnCheckValue!=null && serialSnCheckValue.length()==ServiceMessageCodes.SN_15_DIGIT){
