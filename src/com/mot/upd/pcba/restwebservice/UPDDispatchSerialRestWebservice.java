@@ -23,10 +23,6 @@ import com.mot.upd.pcba.pojo.DispatchSerialResponsePOJO;
 import com.mot.upd.pcba.utils.DBUtil;
 
 /**
- * @author HRDJ36 Thammaiah M B
- */
-
-/**
  * @author HRDJ36
  *
  */
