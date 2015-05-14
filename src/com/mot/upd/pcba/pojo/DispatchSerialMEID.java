@@ -1,7 +1,7 @@
 package com.mot.upd.pcba.pojo;
 
 /*
- * @Author HRDJ36
+ * @Author HRDJ36 Thammaiah
  */
 
 public class DispatchSerialMEID {
