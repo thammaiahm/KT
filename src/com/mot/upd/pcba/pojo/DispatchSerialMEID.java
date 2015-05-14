@@ -1,5 +1,9 @@
 package com.mot.upd.pcba.pojo;
 
+/*
+ * @Author HRDJ36
+ */
+
 public class DispatchSerialMEID {
 	
 	private static String aKey1Type;
