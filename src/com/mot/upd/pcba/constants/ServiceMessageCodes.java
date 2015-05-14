@@ -27,12 +27,41 @@ public class ServiceMessageCodes {
 	public static final String NEW_SERIAL_NO_AVAILABLE = "5007";
 	public static final String NEW_ULMA_AVAILABLE = "5008";
 	public static final String INVALID_SN_TYPE = "5015";
-	public static final String NO_PROTOCOL_FOUND = "5022";
+	public static final String NO_PROTOCOL_FOUND = "5050";
 	public static final String ULMA_ADDRESS_GREATER_THAN_FIVE = "5017";
 	public static final String INVALID_GPPID = "5018";
-	public static final String INVALID_CUSTOMER = "5022";
+	public static final String INVALID_CUSTOMER = "5051";
 	public static final int SN_15_DIGIT = 15;
 	public static final int SN_14_DIGIT = 14;
+
+	// Added by thammaiah as part of bug fix
+	public static final String TRACK_ID_NOT_FOUND = "5052";
+	public static final String BUILD_TYPE_NOT_FOUND = "5053";
+	public static final String RSDID_NOT_FOUND = "5054";
+	public static final String MASCID_NOT_FOUND = "5055";
+	public static final String GPPID_NOT_FOUND = "5056";
+	public static final String ULMA_NOT_FOUND = "5057";
+	public static final String SN_TYPE_NOT_FOUND = "5058";
+	public static final String REQUEST_TYPE_NOT_FOUND = "5059";
+	public static final String INVALID_TRACK_ID = "5060";
+	public static final String INVALID_RSDID = "5061";
+	public static final String INVALID_MASCID = "5062";
+	public static final String INVALID_ULMA = "5063";
+	public static final String INVALID_PROTOCOL = "5064";
+
+	public static final String TRACK_ID_NOT_FOUND_MSG = "TrackID is Missing";
+	public static final String BUILD_TYPE_NOT_FOUND_MSG = "Build Type is Missing";
+	public static final String RSDID_NOT_FOUND_MSG = "RSDID is Missing";
+	public static final String MASCID_NOT_FOUND_MSG = "MascID is Missing";
+	public static final String GPPID_NOT_FOUND_MSG = "GPPID is Missing";
+	public static final String ULMA_NOT_FOUND_MSG = "ULMA is Missing";
+	public static final String SN_TYPE_NOT_FOUND_MSG = "SN Type is Missing";
+	public static final String REQUEST_TYPE_NOT_FOUND_MSG = "Request Type is Missing";
+	public static final String INVALID_TRACK_ID_MSG = "Invalid Track ID";
+	public static final String INVALID_RSDID_MSG = "Invalid RSDID";
+	public static final String INVALID_MASCID_MSG = "Invalid MascID";
+	public static final String INVALID_ULMA_MSG = "Invalid ULMA";
+	public static final String INVALID_PROTOCOL_MSG = "Invalid Protocol";
 
 	// Viswanath added
 
@@ -67,7 +96,7 @@ public class ServiceMessageCodes {
 	public static final String INVALID_CUSTOMER_MSG = "Invalid Customer";
 
 	// Viswanath added
-	
+
 	public static final String MEID_SUCCES_MSG = "Success";
 	public static final String MEID_FAILURE_MSG = "pcba pgm failure";
 	public static final String INVALID_STATUS_MSG = "Status should be either S or F";
@@ -89,8 +118,8 @@ public class ServiceMessageCodes {
 	public static final String DUAL_SERIAL_NO_CODE_MSG = "This DualSerialNoIn is not eligible for Dual Case.";
 	public static final String TRI_SERIAL_NO_CODE = "5023";
 	public static final String TRI_SERIAL_NO_CODE_MSG = "This TriSerialNoIn is not eligible for Tri Case.";
-	public static final String INVALID="invalid ";
-	public static final String INVALID_SERIAL_NO_CODE="5024";
+	public static final String INVALID = "invalid ";
+	public static final String INVALID_SERIAL_NO_CODE = "5024";
 	// R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";
@@ -98,8 +127,8 @@ public class ServiceMessageCodes {
 	public static final String R12_SN_NOT_VALID = "5016";
 	public static final String R12_OLD_SN_NOT_VALID = "5025";
 	public static final String R12_OLD_SN_NOT_VALID_MSG = "OLD SerialNumber not valid";
-	
-	//public static final String JNDI_NOT_FOUND = "8003";
-	//public static final String JNDI_NOT_FOUND_MSG = "JNDI IS NOT AVAILABLE";
+
+	// public static final String JNDI_NOT_FOUND = "8003";
+	// public static final String JNDI_NOT_FOUND_MSG = "JNDI IS NOT AVAILABLE";
 
 }
