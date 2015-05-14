@@ -16,11 +16,12 @@ public class PCBADataDictionary {
 	public static final String BUILD_TYPE2="PROTO";
 	public static final String DISPATCHED="Y";
 	public static final String UNDISPATCHED="N";
-	public static final String MODIFIED_BY="pcba_reqest_ws";
+	public static final String MODIFIED_BY="PCBA_REQUEST_WS";
 	public static final String DBCONFIG = "YES";
 	public static final String STATUS_S="S";
 	public static final String STAYUS_F="F";
 	public static final String DEFAULT_CUSTOMER="ANY";
+	public static final String PROGRAM_FACILITY="PCBA_PGM_AGENT";
 	
 
 }
