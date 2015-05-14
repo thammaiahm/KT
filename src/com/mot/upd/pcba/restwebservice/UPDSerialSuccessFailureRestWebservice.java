@@ -20,7 +20,7 @@ import com.mot.upd.pcba.pojo.PCBAProgramQueryInput;
 import com.mot.upd.pcba.pojo.PCBAProgramResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MEIDException;
-import com.mot.upd.pcba.utils.MeidUtils;
+
 
 
 
@@ -45,7 +45,7 @@ public class UPDSerialSuccessFailureRestWebservice {
 		String updConfig = null;
 		try {
 			updConfig = DBUtil.dbConfigCheck();
-		} catch (NamingException e) {
+		}catch (NamingException e) {		
 			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
 		} catch (SQLException e) {
@@ -76,10 +76,10 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 		//Check Valid serialNo
 		if(pcbaProgramQueryInput.getSerialNO()!=null && !(pcbaProgramQueryInput.getSerialNO().equals(""))){
-			//String statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
+
 			String statusOfSerialNoIn = null;
 			try {
-				statusOfSerialNoIn = DBUtil.checkValidSerialNumber(MeidUtils.validateMEID(pcbaProgramQueryInput.getSerialNO()),"SerialNo");
+				statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
 			} catch (MEIDException e) {
 				pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
 				pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);

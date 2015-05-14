@@ -35,7 +35,7 @@ public class UPDSWAPUpdateRestWebservice {
 	@POST
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response swapSerialNOData(PCBASerialNoUPdateQueryInput pCBASerialNoUPdateQueryInput){
+	public Response swapSerialNOData(PCBASerialNoUPdateQueryInput pCBASerialNoUPdateQueryInput) throws MEIDException{
 
 
 		PCBASerialNoUPdateResponse pcbaSerialNoUPdateResponse = new PCBASerialNoUPdateResponse();
