@@ -1,6 +1,8 @@
 package com.mot.upd.pcba.restwebservice;
 
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
@@ -24,6 +26,10 @@ import com.mot.upd.pcba.utils.DBUtil;
  * @author HRDJ36 Thammaiah M B
  */
 
+/**
+ * @author HRDJ36
+ *
+ */
 @Path("/dispatchserialNumber")
 public class UPDDispatchSerialRestWebservice {
 	private static Logger logger = Logger
@@ -47,16 +53,209 @@ public class UPDDispatchSerialRestWebservice {
 		boolean isValidBuildType = false;
 		boolean isGreaterThanFive = false;
 		boolean isValidGPPID = false;
+		boolean isValid = false;
+		boolean hasSpecial = false;
 
 		// Check for Mandatory Fields in input
-		isMissing = validateMandatoryInputParam(dispatchSerialRequestPOJO);
+		isMissing = checkTrackID(dispatchSerialRequestPOJO);
 		if (isMissing) {
-			logger.debug("Input parameters missing");
-			logger.info("Input parameters missing");
+			logger.debug("TrackID missing");
+			logger.info("TrackID missing");
 			dispatchSerialResponsePOJO
-					.setResponseCode(ServiceMessageCodes.INPUT_PARAM_MISSING);
+					.setResponseCode(ServiceMessageCodes.TRACK_ID_NOT_FOUND);
 			dispatchSerialResponsePOJO
-					.setResponseMsg(ServiceMessageCodes.INPUT_PARAM_MISSING_MSG);
+					.setResponseMsg(ServiceMessageCodes.TRACK_ID_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkBuildType(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("BuildType missing");
+			logger.info("BuildType missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.BUILD_TYPE_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.BUILD_TYPE_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkRSDID(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("RSDID missing");
+			logger.info("RSDID missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.RSDID_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.RSDID_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkMASCID(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("MASCID missing");
+			logger.info("MASCID missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.MASCID_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.MASCID_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkGPPID(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("GPPID missing");
+			logger.info("GPPID missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.GPPID_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.GPPID_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkULMA(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("ULMA missing");
+			logger.info("ULMA missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.ULMA_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.ULMA_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkSNType(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("SNType missing");
+			logger.info("SNType missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.SN_TYPE_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.SN_TYPE_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isMissing = checkRequestType(dispatchSerialRequestPOJO);
+		if (isMissing) {
+			logger.debug("RequestType missing");
+			logger.info("RequestType missing");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.REQUEST_TYPE_NOT_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.REQUEST_TYPE_NOT_FOUND_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isValid = validate(dispatchSerialRequestPOJO.getTrackID());
+		if (!isValid) {
+			logger.debug("Invalid TrackID");
+			logger.info("Invalid TrackID");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.INVALID_TRACK_ID);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.INVALID_TRACK_ID_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isValid = validate(dispatchSerialRequestPOJO.getRsdID());
+		if (!isValid) {
+			logger.debug("Invalid RSDID");
+			logger.info("Invalid RSDID");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.INVALID_RSDID);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.INVALID_RSDID_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		/*
+		 * isValid =validate(dispatchSerialRequestPOJO.getMascID()); if
+		 * (!isValid) { logger.debug("Invalid MascID");
+		 * logger.info("Invalid MascID"); dispatchSerialResponsePOJO
+		 * .setResponseCode(ServiceMessageCodes.INVALID_MASCID);
+		 * dispatchSerialResponsePOJO
+		 * .setResponseMsg(ServiceMessageCodes.INVALID_MASCID_MSG);
+		 * logger.info("Returning response" +
+		 * dispatchSerialResponsePOJO.toString());
+		 * logger.debug("Returning response" +
+		 * dispatchSerialResponsePOJO.toString()); return
+		 * Response.status(200).entity(dispatchSerialResponsePOJO) .build(); }
+		 */
+
+		hasSpecial = checkForSpecialCharacter(dispatchSerialRequestPOJO
+				.getMascID());
+		if (hasSpecial) {
+			logger.debug("Invalid MascID");
+			logger.info("Invalid MascID");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.INVALID_MASCID);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.INVALID_MASCID_MSG);
+			logger.info("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			logger.debug("Returning response"
+					+ dispatchSerialResponsePOJO.toString());
+			return Response.status(200).entity(dispatchSerialResponsePOJO)
+					.build();
+		}
+
+		isValid = validate(dispatchSerialRequestPOJO.getNumberOfUlma());
+		if (!isValid) {
+			logger.debug("Invalid ULMA");
+			logger.info("Invalid ULMA");
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.INVALID_ULMA);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.INVALID_ULMA_MSG);
 			logger.info("Returning response"
 					+ dispatchSerialResponsePOJO.toString());
 			logger.debug("Returning response"
@@ -166,11 +365,17 @@ public class UPDDispatchSerialRestWebservice {
 		try {
 			updConfig = DBUtil.dbConfigCheck();
 		} catch (NamingException e) {
-			dispatchSerialResponsePOJO.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
-			dispatchSerialResponsePOJO.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+							+ e);
 		} catch (SQLException e) {
-			dispatchSerialResponsePOJO.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
-			dispatchSerialResponsePOJO.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG + e);
+			dispatchSerialResponsePOJO
+					.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			dispatchSerialResponsePOJO
+					.setResponseMsg(ServiceMessageCodes.NO_DATASOURCE_FOUND_DISPATCH_SERIAL_MSG
+							+ e);
 		}
 
 		// Oracle
@@ -242,8 +447,7 @@ public class UPDDispatchSerialRestWebservice {
 					.equals(PCBADataDictionary.REQUEST_VALIDATE)) {
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateSerialNumberIMEI(dispatchSerialRequestPOJO);
-				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND)
-				{
+				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND) {
 					return Response.status(200)
 							.entity(dispatchSerialResponsePOJO).build();
 				}
@@ -265,6 +469,23 @@ public class UPDDispatchSerialRestWebservice {
 						.setResponseCode(ServiceMessageCodes.NO_PROTOCOL_FOUND);
 				dispatchSerialResponsePOJO
 						.setResponseMsg(ServiceMessageCodes.NO_PROTOCOL_FOUND_MSG);
+				logger.info("Returning response"
+						+ dispatchSerialResponsePOJO.toString());
+				logger.debug("Returning response"
+						+ dispatchSerialResponsePOJO.toString());
+				return Response.status(200).entity(dispatchSerialResponsePOJO)
+						.build();
+			}
+			// check if protocol has special character
+			hasSpecial = checkForSpecialCharacter(
+					dispatchSerialRequestPOJO.getProtocol(), "_");
+			if (hasSpecial) {
+				logger.debug("Invalid Protocol");
+				logger.info("Invalid Protocol");
+				dispatchSerialResponsePOJO
+						.setResponseCode(ServiceMessageCodes.INVALID_PROTOCOL);
+				dispatchSerialResponsePOJO
+						.setResponseMsg(ServiceMessageCodes.INVALID_PROTOCOL_MSG);
 				logger.info("Returning response"
 						+ dispatchSerialResponsePOJO.toString());
 				logger.debug("Returning response"
@@ -329,8 +550,7 @@ public class UPDDispatchSerialRestWebservice {
 
 				dispatchSerialResponsePOJO = dispatchSerialNumberDAO
 						.validateSerialNumberMEID(dispatchSerialRequestPOJO);
-				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND)
-				{
+				if (dispatchSerialResponsePOJO.getResponseCode() == ServiceMessageCodes.NEW_SERIAL_NO_NOT_FOUND) {
 					return Response.status(200)
 							.entity(dispatchSerialResponsePOJO).build();
 				}
@@ -348,6 +568,203 @@ public class UPDDispatchSerialRestWebservice {
 		return Response.status(201).entity(dispatchSerialResponsePOJO).build();
 	}
 
+	/*
+	 * private boolean validateMandatoryInputParam( DispatchSerialRequestPOJO
+	 * dispatchSerialRequestPOJO) { // TODO Auto-generated method stub
+	 * 
+	 * if (dispatchSerialRequestPOJO.getRequestType() == null ||
+	 * dispatchSerialRequestPOJO.getSnRequestType() == null ||
+	 * dispatchSerialRequestPOJO.getNumberOfUlma() == 0 ||
+	 * dispatchSerialRequestPOJO.getGppdID() == null ||
+	 * dispatchSerialRequestPOJO.getMascID() == null ||
+	 * dispatchSerialRequestPOJO.getRsdID() == null ||
+	 * dispatchSerialRequestPOJO.getBuildType() == null ||
+	 * dispatchSerialRequestPOJO.getTrackID() == null) { return true;
+	 * 
+	 * }
+	 * 
+	 * if (dispatchSerialRequestPOJO.getRequestType() == "" ||
+	 * dispatchSerialRequestPOJO.getSnRequestType() == "" ||
+	 * dispatchSerialRequestPOJO.getNumberOfUlma() == 0 ||
+	 * dispatchSerialRequestPOJO.getGppdID() == "" ||
+	 * dispatchSerialRequestPOJO.getMascID() == "" ||
+	 * dispatchSerialRequestPOJO.getRsdID() == "" ||
+	 * dispatchSerialRequestPOJO.getBuildType() == "" ||
+	 * dispatchSerialRequestPOJO.getTrackID() == "") { return true;
+	 * 
+	 * }
+	 * 
+	 * return false; }
+	 */
+
+	/*
+	 * chech if RequestType is missing
+	 */
+	private boolean checkRequestType(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		if (dispatchSerialRequestPOJO.getRequestType() == null
+				|| dispatchSerialRequestPOJO.getRequestType() == "") {
+			return true;
+		}
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * check if SN is missing
+	 */
+	private boolean checkSNType(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		if (dispatchSerialRequestPOJO.getSnRequestType() == null
+				|| dispatchSerialRequestPOJO.getSnRequestType() == "") {
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * check if ULMA is missing
+	 */
+	private boolean checkULMA(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		if (dispatchSerialRequestPOJO.getNumberOfUlma() == 0) {
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * check if gppID is missing
+	 */
+	private boolean checkGPPID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+
+		if (dispatchSerialRequestPOJO.getGppdID() == ""
+				|| dispatchSerialRequestPOJO.getGppdID() == null) {
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * check if mascID is missing
+	 */
+	private boolean checkMASCID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		// TODO Auto-generated method stub
+		if (dispatchSerialRequestPOJO.getMascID() == ""
+				|| dispatchSerialRequestPOJO.getMascID() == null) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * check id rsdID is missing
+	 */
+	private boolean checkRSDID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		// TODO Auto-generated method stub
+		if (dispatchSerialRequestPOJO.getRsdID() == ""
+				|| dispatchSerialRequestPOJO.getRsdID() == null) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * check if buildType is missing
+	 */
+	private boolean checkBuildType(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		if (dispatchSerialRequestPOJO.getBuildType() == null
+				|| dispatchSerialRequestPOJO.getBuildType() == null) {
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/*
+	 * check if trackID is missing
+	 */
+	private boolean checkTrackID(
+			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
+		// TODO Auto-generated method stub
+		if (dispatchSerialRequestPOJO.getTrackID() == ""
+				|| dispatchSerialRequestPOJO.getTrackID() == null) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * validate input string if it has negative number
+	 */
+	private boolean validate(String id) {
+		// TODO Auto-generated method stub
+		try {
+			int number = Integer.parseInt(id);
+			if (number < 0) {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	/*
+	 * validate input int if it has negative number
+	 */
+	private boolean validate(int id) {
+		// TODO Auto-generated method stub
+		if (id < 0) {
+			return false;
+		}
+		return true;
+	}
+
+	/*
+	 * check if any special character apart from alphanumeric and desired
+	 * character
+	 */
+	private boolean checkForSpecialCharacter(String id, String extrachar) {
+		// TODO Auto-generated method stub
+		Pattern pattren = Pattern.compile("[^a-zA-Z0-9" + extrachar + " ]",
+				Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattren.matcher(id);
+		boolean status = matcher.find();
+		if (status) {
+			return true;
+		}
+		return false;
+
+	}
+
+	/*
+	 * check if any special character apart from alphanumeric
+	 */
+	private boolean checkForSpecialCharacter(String id) {
+		// TODO Auto-generated method stub
+
+		Pattern pattren = Pattern.compile("[^a-zA-Z0-9 ]",
+				Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattren.matcher(id);
+		boolean status = matcher.find();
+		if (status) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * verify if customer is null if null add default customer
+	 */
 	private DispatchSerialRequestPOJO verifyCustomer(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 
@@ -361,6 +778,9 @@ public class UPDDispatchSerialRestWebservice {
 
 	}
 
+	/*
+	 * validate if gppID is not a number
+	 */
 	private boolean validateGPPID(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 		// TODO Auto-generated method stub
@@ -373,6 +793,9 @@ public class UPDDispatchSerialRestWebservice {
 
 	}
 
+	/*
+	 * validate if ULMA is greater than 5
+	 */
 	private boolean validateULMAAddress(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 		// TODO Auto-generated method stub
@@ -382,6 +805,9 @@ public class UPDDispatchSerialRestWebservice {
 		return false;
 	}
 
+	/*
+	 * validate if buildType is anything other than PROD and PROTO
+	 */
 	private boolean validateBuildType(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 		// TODO Auto-generated method stub
@@ -396,6 +822,9 @@ public class UPDDispatchSerialRestWebservice {
 
 	}
 
+	/*
+	 * validate if snType is other than IMEI and MEID
+	 */
 	private boolean validateSNType(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 		// TODO Auto-generated method stub
@@ -410,6 +839,9 @@ public class UPDDispatchSerialRestWebservice {
 
 	}
 
+	/*
+	 * validate if requestType is other than V and D
+	 */
 	private boolean validateRequestType(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
 		// TODO Auto-generated method stub
@@ -418,37 +850,6 @@ public class UPDDispatchSerialRestWebservice {
 				|| dispatchSerialRequestPOJO.getRequestType().trim()
 						.equals(PCBADataDictionary.REQUEST_DISPATCH)) {
 			return true;
-		}
-
-		return false;
-	}
-
-	private boolean validateMandatoryInputParam(
-			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
-		// TODO Auto-generated method stub
-
-		if (dispatchSerialRequestPOJO.getRequestType() == null
-				|| dispatchSerialRequestPOJO.getSnRequestType() == null
-				|| dispatchSerialRequestPOJO.getNumberOfUlma() == 0
-				|| dispatchSerialRequestPOJO.getGppdID() == null
-				|| dispatchSerialRequestPOJO.getMascID() == null
-				|| dispatchSerialRequestPOJO.getRsdID() == null
-				|| dispatchSerialRequestPOJO.getBuildType() == null
-				|| dispatchSerialRequestPOJO.getTrackID() == null) {
-			return true;
-
-		}
-
-		if (dispatchSerialRequestPOJO.getRequestType() == ""
-				|| dispatchSerialRequestPOJO.getSnRequestType() == ""
-				|| dispatchSerialRequestPOJO.getNumberOfUlma() == 0
-				|| dispatchSerialRequestPOJO.getGppdID() == ""
-				|| dispatchSerialRequestPOJO.getMascID() == ""
-				|| dispatchSerialRequestPOJO.getRsdID() == ""
-				|| dispatchSerialRequestPOJO.getBuildType() == ""
-				|| dispatchSerialRequestPOJO.getTrackID() == "") {
-			return true;
-
 		}
 
 		return false;
