@@ -21,6 +21,7 @@ import com.mot.upd.pcba.pojo.PCBASerialNoUPdateResponse;
 import com.mot.upd.pcba.utils.DBUtil;
 import com.mot.upd.pcba.utils.MailUtil;
 
+
 /**
  * @author rviswa
  * 
@@ -116,139 +117,670 @@ PCBASwapUPDUpdateInterfaceDAO {
 					//return response;
 				}else{
 
-					SQLQuery.append("insert into upd.UPD_SN_REPOS(SERIAL_NO, REQUEST_ID, REGION_ID, SYSTEM_ID, ATTRIBUTE_01, ATTRIBUTE_02, ATTRIBUTE_03, ATTRIBUTE_04, ATTRIBUTE_05,ATTRIBUTE_06,  ATTRIBUTE_07,  ATTRIBUTE_08,");
-					SQLQuery.append("ATTRIBUTE_09, ATTRIBUTE_10,   ATTRIBUTE_11,  ATTRIBUTE_12,  ATTRIBUTE_13,  ATTRIBUTE_14, ATTRIBUTE_15,  ATTRIBUTE_16,  ATTRIBUTE_17,  ATTRIBUTE_18,  ATTRIBUTE_19,");
-					SQLQuery.append("ATTRIBUTE_20,  ATTRIBUTE_21,  ATTRIBUTE_22,  ATTRIBUTE_23,  ATTRIBUTE_24,  ATTRIBUTE_34, ATTRIBUTE_35,  ATTRIBUTE_37,  ATTRIBUTE_38,  ATTRIBUTE_39,  ATTRIBUTE_40,");
-					SQLQuery.append("ATTRIBUTE_41,  ATTRIBUTE_42,  ATTRIBUTE_43,  ATTRIBUTE_44,  ATTRIBUTE_45,  ATTRIBUTE_46, ATTRIBUTE_47,  ATTRIBUTE_48,  ATTRIBUTE_49,  ATTRIBUTE_50,  ATTRIBUTE_51,");
-					SQLQuery.append("ATTRIBUTE_52,  ATTRIBUTE_53,  ATTRIBUTE_54,  ATTRIBUTE_55,  ATTRIBUTE_56,  ATTRIBUTE_57, ATTRIBUTE_58,  ATTRIBUTE_59,  ATTRIBUTE_60,  ATTRIBUTE_61,  ATTRIBUTE_62,");
-					SQLQuery.append("ATTRIBUTE_63,  ATTRIBUTE_64,  ATTRIBUTE_65,  ATTRIBUTE_66,  ATTRIBUTE_67,  ATTRIBUTE_68, ATTRIBUTE_69,  ATTRIBUTE_70,  ATTRIBUTE_71,  ATTRIBUTE_72,  ATTRIBUTE_73,");
-					SQLQuery.append("ATTRIBUTE_74,  ATTRIBUTE_75,  ATTRIBUTE_76,  ATTRIBUTE_77,  ATTRIBUTE_78,  ATTRIBUTE_79, ATTRIBUTE_80,  ATTRIBUTE_81,  ATTRIBUTE_82,  ATTRIBUTE_84,  ATTRIBUTE_85,");
-					SQLQuery.append("ATTRIBUTE_86,  ATTRIBUTE_87,  ATTRIBUTE_88,  ATTRIBUTE_89,  ATTRIBUTE_90,  ATTRIBUTE_91, ATTRIBUTE_92,  ATTRIBUTE_93,  ATTRIBUTE_94,  ATTRIBUTE_95,  ATTRIBUTE_96,");
-					SQLQuery.append("ATTRIBUTE_97,  ATTRIBUTE_98,  ATTRIBUTE_99,  ATTRIBUTE_100, ATTRIBUTE_101, ATTRIBUTE_105,ATTRIBUTE_106, ATTRIBUTE_107, ATTRIBUTE_108, ATTRIBUTE_109, ATTRIBUTE_110,");
-					SQLQuery.append("ATTRIBUTE_111, ATTRIBUTE_112, ATTRIBUTE_113, ATTRIBUTE_117, ATTRIBUTE_118, ATTRIBUTE_114,ATTRIBUTE_115, ATTRIBUTE_116, ATTRIBUTE_119, ATTRIBUTE_120, ATTRIBUTE_121,");
-					SQLQuery.append("ATTRIBUTE_122, ATTRIBUTE_123) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					SQLQuery.append("update upd.UPD_SN_REPOS SET REQUEST_ID=?,REGION_ID=?,SYSTEM_ID=?,ATTRIBUTE_01=?,ATTRIBUTE_02=?,ATTRIBUTE_03=?,ATTRIBUTE_04=?,ATTRIBUTE_05=?,ATTRIBUTE_06=?,ATTRIBUTE_07=?,ATTRIBUTE_08=?,");
+					SQLQuery.append("ATTRIBUTE_09=?,  ATTRIBUTE_10=?,  ATTRIBUTE_11=?,  ATTRIBUTE_12=?,  ATTRIBUTE_13=?,  ATTRIBUTE_14=?, ATTRIBUTE_15=?,  ATTRIBUTE_16=?,  ATTRIBUTE_17=?,  ATTRIBUTE_18=?,  ATTRIBUTE_19=?,");
+					SQLQuery.append("ATTRIBUTE_20=?,  ATTRIBUTE_21=?,  ATTRIBUTE_22=?,  ATTRIBUTE_23=?,  ATTRIBUTE_24=?,  ATTRIBUTE_34=?, ATTRIBUTE_35=?,  ATTRIBUTE_37=?,  ATTRIBUTE_38=?,  ATTRIBUTE_39=?,  ATTRIBUTE_40=?,");
+					SQLQuery.append("ATTRIBUTE_41=?,  ATTRIBUTE_42=?,  ATTRIBUTE_43=?,  ATTRIBUTE_44=?,  ATTRIBUTE_45=?,  ATTRIBUTE_46=?, ATTRIBUTE_47=?,  ATTRIBUTE_48=?,  ATTRIBUTE_49=?,  ATTRIBUTE_50=?,  ATTRIBUTE_51=?,");
+					SQLQuery.append("ATTRIBUTE_52=?,  ATTRIBUTE_53=?,  ATTRIBUTE_54=?,  ATTRIBUTE_55=?,  ATTRIBUTE_56=?,  ATTRIBUTE_57=?, ATTRIBUTE_58=?,  ATTRIBUTE_59=?,  ATTRIBUTE_60=?,  ATTRIBUTE_61=?,  ATTRIBUTE_62=?,");
+					SQLQuery.append("ATTRIBUTE_63=?,  ATTRIBUTE_64=?,  ATTRIBUTE_65=?,  ATTRIBUTE_66=?,  ATTRIBUTE_67=?,  ATTRIBUTE_68=?, ATTRIBUTE_69=?,  ATTRIBUTE_70=?,  ATTRIBUTE_71=?,  ATTRIBUTE_72=?,  ATTRIBUTE_73=?,");
+					SQLQuery.append("ATTRIBUTE_74=?,  ATTRIBUTE_75=?,  ATTRIBUTE_76=?,  ATTRIBUTE_77=?,  ATTRIBUTE_78=?,  ATTRIBUTE_79=?, ATTRIBUTE_80=?,  ATTRIBUTE_81=?,  ATTRIBUTE_82=?,  ATTRIBUTE_84=?,  ATTRIBUTE_85=?,");
+					SQLQuery.append("ATTRIBUTE_86=?,  ATTRIBUTE_87=?,  ATTRIBUTE_88=?,  ATTRIBUTE_89=?,  ATTRIBUTE_90=?,  ATTRIBUTE_91=?, ATTRIBUTE_92=?,  ATTRIBUTE_93=?,  ATTRIBUTE_94=?,  ATTRIBUTE_95=?,  ATTRIBUTE_96=?,");
+					SQLQuery.append("ATTRIBUTE_97=?,  ATTRIBUTE_98=?,  ATTRIBUTE_99=?,  ATTRIBUTE_100=?, ATTRIBUTE_101=?, ATTRIBUTE_105=?,ATTRIBUTE_106=?, ATTRIBUTE_107=?, ATTRIBUTE_108=?, ATTRIBUTE_109=?, ATTRIBUTE_110=?,");
+					SQLQuery.append("ATTRIBUTE_111=?, ATTRIBUTE_112=?, ATTRIBUTE_113=?, ATTRIBUTE_117=?, ATTRIBUTE_118=?, ATTRIBUTE_114=?,ATTRIBUTE_115=?, ATTRIBUTE_116=?, ATTRIBUTE_119=?, ATTRIBUTE_120=?, ATTRIBUTE_121=?,");
+					SQLQuery.append("ATTRIBUTE_122=?, ATTRIBUTE_123=?, LAST_MOD_BY='pcba_pgm_SwapUpdate',LAST_MOD_DATETIME=sysdate  where SERIAL_NO=?");
+
 
 					logger.info("Before Inserting Shipment Table SQL"+SQLQuery.toString());
 					pstmt = connection.prepareStatement(SQLQuery.toString());
-					pstmt.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt.setString(2, rs.getString("REQUEST_ID"));
-					pstmt.setString(3, rs.getString("REGION_ID"));
-					pstmt.setString(4, rs.getString("SYSTEM_ID"));
-					pstmt.setString(5, rs.getString("ATTRIBUTE_01"));
-					pstmt.setDate(6, rs.getDate("ATTRIBUTE_02"));
-					pstmt.setString(7, rs.getString("ATTRIBUTE_03"));
-					pstmt.setString(8, rs.getString("ATTRIBUTE_04"));
-					pstmt.setString(9, rs.getString("ATTRIBUTE_05"));
-					pstmt.setString(10, rs.getString("ATTRIBUTE_06"));
-					pstmt.setString(11, rs.getString("ATTRIBUTE_07"));
-					pstmt.setString(12, rs.getString("ATTRIBUTE_08"));
-					pstmt.setString(13, rs.getString("ATTRIBUTE_09"));
-					pstmt.setDate(14, rs.getDate("ATTRIBUTE_10"));
-					pstmt.setString(15, rs.getString("ATTRIBUTE_11"));
-					pstmt.setString(16, rs.getString("ATTRIBUTE_12"));
-					pstmt.setString(17, rs.getString("ATTRIBUTE_13"));
-					pstmt.setString(18, rs.getString("ATTRIBUTE_14"));
-					pstmt.setString(19, rs.getString("ATTRIBUTE_15"));
-					pstmt.setString(20, rs.getString("ATTRIBUTE_16"));
-					pstmt.setString(21, rs.getString("ATTRIBUTE_17"));
-					pstmt.setDate(22, rs.getDate("ATTRIBUTE_18"));
-					pstmt.setString(23, rs.getString("ATTRIBUTE_19"));
-					pstmt.setString(24, rs.getString("ATTRIBUTE_20"));
-					pstmt.setString(25, rs.getString("ATTRIBUTE_21"));
-					pstmt.setString(26, rs.getString("ATTRIBUTE_22"));
-					pstmt.setString(27, rs.getString("ATTRIBUTE_23"));
-					pstmt.setString(28, rs.getString("ATTRIBUTE_24"));
-					pstmt.setString(29, rs.getString("ATTRIBUTE_34"));
-					pstmt.setString(30, rs.getString("ATTRIBUTE_35"));
+
+					if(rs.getString("REQUEST_ID")!=null && !(rs.getString("REQUEST_ID").equals(""))){
+						pstmt.setString(1, rs.getString("REQUEST_ID"));
+					}else{
+						pstmt.setString(1,null);
+					}
+
+					if(rs.getString("REGION_ID")!=null && !(rs.getString("REGION_ID").equals(""))){
+						pstmt.setString(2, rs.getString("REGION_ID"));
+					}else{
+						pstmt.setString(2, null);
+					}
+
+					if(rs.getString("SYSTEM_ID")!=null && !(rs.getString("SYSTEM_ID").equals(""))){
+						pstmt.setString(3, rs.getString("SYSTEM_ID"));
+					}else{
+						pstmt.setString(3, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_01")!=null && !(rs.getString("ATTRIBUTE_01").equals(""))){
+						pstmt.setString(4, rs.getString("ATTRIBUTE_01"));
+					}else{
+						pstmt.setString(4, null);
+					}					
+
+					if(rs.getDate("ATTRIBUTE_02")!=null && !(rs.getDate("ATTRIBUTE_02").equals(""))){
+						pstmt.setDate(5, rs.getDate("ATTRIBUTE_02"));
+					}else{
+						pstmt.setDate(5, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_03")!=null && !(rs.getString("ATTRIBUTE_03").equals(""))){
+						pstmt.setString(6, rs.getString("ATTRIBUTE_03"));
+					}else{
+						pstmt.setString(6, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_04")!=null && !(rs.getString("ATTRIBUTE_04").equals(""))){
+						pstmt.setString(7, rs.getString("ATTRIBUTE_04"));
+					}else{
+						pstmt.setString(7, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_05")!=null && !(rs.getString("ATTRIBUTE_05").equals(""))){
+						pstmt.setString(8, rs.getString("ATTRIBUTE_05"));
+					}else{
+						pstmt.setString(8, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_06")!=null && !(rs.getString("ATTRIBUTE_06").equals(""))){
+						pstmt.setString(9, rs.getString("ATTRIBUTE_06"));
+					}else{
+						pstmt.setString(9, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_07")!=null && !(rs.getString("ATTRIBUTE_07").equals(""))){
+						pstmt.setString(10, rs.getString("ATTRIBUTE_07"));
+					}else{
+						pstmt.setString(10, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_08")!=null && !(rs.getString("ATTRIBUTE_08").equals(""))){
+						pstmt.setString(11, rs.getString("ATTRIBUTE_08"));
+					}else{
+						pstmt.setString(11, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_09")!=null && !(rs.getString("ATTRIBUTE_09").equals(""))){
+						pstmt.setString(12, rs.getString("ATTRIBUTE_09"));
+					}else{
+						pstmt.setString(12,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_10")!=null && !(rs.getDate("ATTRIBUTE_10").equals(""))){
+						pstmt.setDate(13, rs.getDate("ATTRIBUTE_10"));
+					}else{
+						pstmt.setDate(13, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_11")!=null && !(rs.getString("ATTRIBUTE_11").equals(""))){
+						pstmt.setString(14, rs.getString("ATTRIBUTE_11"));
+					}else{
+						pstmt.setString(14,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_12")!=null && !(rs.getString("ATTRIBUTE_12").equals(""))){
+						pstmt.setString(15, rs.getString("ATTRIBUTE_12"));
+					}else{
+						pstmt.setString(15, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_13")!=null && !(rs.getString("ATTRIBUTE_13").equals(""))){
+						pstmt.setString(16, rs.getString("ATTRIBUTE_13"));
+					}else{
+						pstmt.setString(16,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_14")!=null && !(rs.getString("ATTRIBUTE_14").equals(""))){
+						pstmt.setString(17, rs.getString("ATTRIBUTE_14"));
+					}else{
+						pstmt.setString(17,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_15")!=null && !(rs.getString("ATTRIBUTE_15").equals(""))){
+						pstmt.setString(18, rs.getString("ATTRIBUTE_15"));
+					}else{
+						pstmt.setString(18,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_16")!=null && !(rs.getString("ATTRIBUTE_16").equals(""))){
+						pstmt.setString(19, rs.getString("ATTRIBUTE_16"));
+					}else{
+						pstmt.setString(19,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_17")!=null && !(rs.getString("ATTRIBUTE_17").equals(""))){
+						pstmt.setString(20, rs.getString("ATTRIBUTE_17"));
+					}else{
+						pstmt.setString(20,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_18")!=null && !(rs.getDate("ATTRIBUTE_18").equals(""))){
+						pstmt.setDate(21, rs.getDate("ATTRIBUTE_18"));
+					}else{
+						pstmt.setDate(21,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_19")!=null && !(rs.getString("ATTRIBUTE_19").equals(""))){
+						pstmt.setString(22, rs.getString("ATTRIBUTE_19"));
+					}else{
+						pstmt.setString(22,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_20")!=null && !(rs.getString("ATTRIBUTE_20").equals(""))){
+						pstmt.setString(23, rs.getString("ATTRIBUTE_20"));
+					}else{
+						pstmt.setString(23,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_21")!=null && !(rs.getString("ATTRIBUTE_21").equals(""))){
+						pstmt.setString(24, rs.getString("ATTRIBUTE_21"));
+					}else{
+						pstmt.setString(24,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_22")!=null && !(rs.getString("ATTRIBUTE_22").equals(""))){
+						pstmt.setString(25, rs.getString("ATTRIBUTE_22"));
+					}else{
+						pstmt.setString(25,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_23")!=null && !(rs.getString("ATTRIBUTE_23").equals(""))){
+						pstmt.setString(26, rs.getString("ATTRIBUTE_23"));
+					}else{
+						pstmt.setString(26,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_24")!=null && !(rs.getString("ATTRIBUTE_24").equals(""))){
+						pstmt.setString(27, rs.getString("ATTRIBUTE_24"));
+					}else{
+						pstmt.setString(27,null);
+					}
+					String lockCode = rs.getString("ATTRIBUTE_34");
+
+					if(rs.getString("ATTRIBUTE_34")!=null && !(rs.getString("ATTRIBUTE_34").equals(""))){
+						pstmt.setString(28, rs.getString("ATTRIBUTE_34"));
+					}else{
+						pstmt.setString(28,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_35")!=null && !(rs.getString("ATTRIBUTE_35").equals(""))){
+						pstmt.setString(29, rs.getString("ATTRIBUTE_35"));
+					}else{
+						pstmt.setString(29,null);
+					}
 
 					Date curDate = new Date();
-					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
+					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yy");
 					String DateToStr = format.format(curDate);
 
-					pstmt.setString(31, "ACT  " + DateToStr);// Status
-					pstmt.setString(32, rs.getString("ATTRIBUTE_38"));
-					pstmt.setString(33, rs.getString("ATTRIBUTE_39"));
-					pstmt.setString(34, rs.getString("ATTRIBUTE_40"));
-					pstmt.setString(35, rs.getString("ATTRIBUTE_41"));
-					pstmt.setString(36, rs.getString("ATTRIBUTE_42"));
-					pstmt.setString(37, rs.getString("ATTRIBUTE_43"));
-					pstmt.setString(38, rs.getString("ATTRIBUTE_44"));
-					pstmt.setDate(39, rs.getDate("ATTRIBUTE_45"));
-					pstmt.setString(40, rs.getString("ATTRIBUTE_46"));
-					pstmt.setString(41, rs.getString("ATTRIBUTE_47"));
-					pstmt.setString(42, rs.getString("ATTRIBUTE_48"));
-					pstmt.setDate(43, rs.getDate("ATTRIBUTE_49"));
-					pstmt.setDate(44, rs.getDate("ATTRIBUTE_50"));
-					pstmt.setDate(45, rs.getDate("ATTRIBUTE_51"));
-					pstmt.setDate(46, rs.getDate("ATTRIBUTE_52"));
-					pstmt.setDate(47, rs.getDate("ATTRIBUTE_53"));
-					pstmt.setLong(48, rs.getLong("ATTRIBUTE_54")); // Number
-					pstmt.setLong(49, rs.getLong("ATTRIBUTE_55")); // Number
-					pstmt.setLong(50, rs.getLong("ATTRIBUTE_56")); // Number
-					pstmt.setLong(51, rs.getLong("ATTRIBUTE_57"));// Number
-					pstmt.setString(52, rs.getString("ATTRIBUTE_58"));
-					pstmt.setString(53, rs.getString("ATTRIBUTE_59"));
-					pstmt.setString(54, rs.getString("ATTRIBUTE_60"));
-					pstmt.setString(55, rs.getString("ATTRIBUTE_61"));
-					pstmt.setString(56, rs.getString("ATTRIBUTE_62"));
-					pstmt.setString(57, rs.getString("ATTRIBUTE_63"));
-					pstmt.setString(58, rs.getString("ATTRIBUTE_64"));
-					pstmt.setString(59, rs.getString("ATTRIBUTE_65"));
-					pstmt.setString(60, rs.getString("ATTRIBUTE_66"));
-					pstmt.setString(61, rs.getString("ATTRIBUTE_67"));
-					pstmt.setString(62, rs.getString("ATTRIBUTE_68"));
-					pstmt.setString(63, rs.getString("ATTRIBUTE_69"));
-					pstmt.setString(64, rs.getString("ATTRIBUTE_70"));
-					pstmt.setString(65, rs.getString("ATTRIBUTE_71"));
-					pstmt.setString(66, rs.getString("ATTRIBUTE_72"));
-					pstmt.setString(67, rs.getString("ATTRIBUTE_73"));
-					pstmt.setString(68, rs.getString("ATTRIBUTE_74"));
-					pstmt.setString(69, rs.getString("ATTRIBUTE_75"));
-					pstmt.setString(70, rs.getString("ATTRIBUTE_76"));
-					pstmt.setString(71, rs.getString("ATTRIBUTE_77"));
-					pstmt.setString(72, rs.getString("ATTRIBUTE_78"));
-					pstmt.setDate(73, rs.getDate("ATTRIBUTE_79"));
-					pstmt.setString(74, rs.getString("ATTRIBUTE_80"));
-					pstmt.setDate(75, rs.getDate("ATTRIBUTE_81"));
-					pstmt.setString(76, rs.getString("ATTRIBUTE_82"));
-					pstmt.setString(77, rs.getString("ATTRIBUTE_84"));
-					pstmt.setString(78, rs.getString("ATTRIBUTE_85"));
-					pstmt.setString(79, rs.getString("ATTRIBUTE_86"));
-					pstmt.setString(80, rs.getString("ATTRIBUTE_87"));
-					pstmt.setString(81, rs.getString("ATTRIBUTE_88"));
-					pstmt.setString(82, rs.getString("ATTRIBUTE_89"));
-					pstmt.setString(83, rs.getString("ATTRIBUTE_90"));
-					pstmt.setString(84, rs.getString("ATTRIBUTE_91"));
-					pstmt.setString(85, rs.getString("ATTRIBUTE_92"));
-					pstmt.setString(86, rs.getString("ATTRIBUTE_93"));
-					pstmt.setString(87, rs.getString("ATTRIBUTE_94"));
-					pstmt.setString(88, rs.getString("ATTRIBUTE_95"));
-					pstmt.setString(89, rs.getString("ATTRIBUTE_96"));
-					pstmt.setString(90, rs.getString("ATTRIBUTE_97"));
-					pstmt.setString(91, rs.getString("ATTRIBUTE_98"));
-					pstmt.setString(92, rs.getString("ATTRIBUTE_99"));
-					pstmt.setString(93, rs.getString("ATTRIBUTE_100"));
-					pstmt.setString(94, rs.getString("ATTRIBUTE_101"));
-					pstmt.setString(95, rs.getString("ATTRIBUTE_105"));
-					pstmt.setString(96, rs.getString("ATTRIBUTE_106"));
-					pstmt.setString(97, rs.getString("ATTRIBUTE_107"));
-					pstmt.setString(98, rs.getString("ATTRIBUTE_108"));
-					pstmt.setString(99, rs.getString("ATTRIBUTE_109"));
-					pstmt.setString(100, rs.getString("ATTRIBUTE_110"));
-					pstmt.setString(101, rs.getString("ATTRIBUTE_111"));
-					pstmt.setString(102, rs.getString("ATTRIBUTE_112"));
-					pstmt.setString(103, rs.getString("ATTRIBUTE_113"));
-					pstmt.setDate(104, rs.getDate("ATTRIBUTE_117"));
-					pstmt.setLong(105, rs.getLong("ATTRIBUTE_118"));// Number
-					pstmt.setDate(106, rs.getDate("ATTRIBUTE_114"));
-					pstmt.setDate(107, rs.getDate("ATTRIBUTE_115"));
-					pstmt.setString(108, rs.getString("ATTRIBUTE_116"));
-					pstmt.setString(109, rs.getString("ATTRIBUTE_119"));
-					pstmt.setString(110, rs.getString("ATTRIBUTE_120"));
-					pstmt.setString(111, rs.getString("ATTRIBUTE_121"));
-					pstmt.setString(112, rs.getString("ATTRIBUTE_122"));
-					pstmt.setString(113, rs.getString("ATTRIBUTE_123"));
+					pstmt.setString(30, "ACT     " + DateToStr);// Status
+					if(rs.getString("ATTRIBUTE_38")!=null && !(rs.getString("ATTRIBUTE_38").equals(""))){
+						pstmt.setString(31, rs.getString("ATTRIBUTE_38"));
+					}
+
+					if(rs.getString("ATTRIBUTE_39")!=null && !(rs.getString("ATTRIBUTE_39").equals(""))){
+						pstmt.setString(32, rs.getString("ATTRIBUTE_39"));
+					}else{
+						pstmt.setString(32,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_40")!=null && !(rs.getString("ATTRIBUTE_40").equals(""))){
+						pstmt.setString(33, rs.getString("ATTRIBUTE_40"));
+					}else{
+						pstmt.setString(33,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_41")!=null && !(rs.getString("ATTRIBUTE_41").equals(""))){
+						pstmt.setString(34, rs.getString("ATTRIBUTE_41"));
+					}else{
+						pstmt.setString(34,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_42")!=null && !(rs.getString("ATTRIBUTE_42").equals(""))){
+						pstmt.setString(35, rs.getString("ATTRIBUTE_42"));
+					}else{
+						pstmt.setString(35,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_43")!=null && !(rs.getString("ATTRIBUTE_43").equals(""))){
+						pstmt.setString(36, rs.getString("ATTRIBUTE_43"));
+					}else{
+						pstmt.setString(36,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_44")!=null && !(rs.getString("ATTRIBUTE_44").equals(""))){
+						pstmt.setString(37, rs.getString("ATTRIBUTE_44"));
+					}else{
+						pstmt.setString(37,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_45")!=null && !(rs.getDate("ATTRIBUTE_45").equals(""))){
+						pstmt.setDate(38, rs.getDate("ATTRIBUTE_45"));
+					}else{
+						pstmt.setString(38,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_46")!=null && !(rs.getString("ATTRIBUTE_46").equals(""))){
+						pstmt.setString(39, rs.getString("ATTRIBUTE_46"));
+					}else{
+						pstmt.setString(39,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_47")!=null && !(rs.getString("ATTRIBUTE_47").equals(""))){
+						pstmt.setString(40, rs.getString("ATTRIBUTE_47"));
+					}else{
+						pstmt.setString(40,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_48")!=null && !(rs.getString("ATTRIBUTE_48").equals(""))){
+						pstmt.setString(41, rs.getString("ATTRIBUTE_48"));
+					}else{
+						pstmt.setString(41,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_49")!=null && !(rs.getDate("ATTRIBUTE_49").equals(""))){
+						pstmt.setDate(42, rs.getDate("ATTRIBUTE_49"));
+					}else{
+						pstmt.setDate(42,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_50")!=null && !(rs.getDate("ATTRIBUTE_50").equals(""))){
+						pstmt.setDate(43, rs.getDate("ATTRIBUTE_50"));
+					}else{
+						pstmt.setDate(43,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_51")!=null && !(rs.getDate("ATTRIBUTE_51").equals(""))){
+						pstmt.setDate(44, rs.getDate("ATTRIBUTE_51"));
+					}else{
+						pstmt.setDate(44,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_52")!=null && !(rs.getDate("ATTRIBUTE_52").equals(""))){
+						pstmt.setDate(45, rs.getDate("ATTRIBUTE_52"));
+					}else{
+						pstmt.setDate(45,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_53")!=null && !(rs.getDate("ATTRIBUTE_53").equals(""))){
+						pstmt.setDate(46, rs.getDate("ATTRIBUTE_53"));
+					}else{
+						pstmt.setDate(46,null);
+					}
+
+					pstmt.setLong(47, rs.getLong("ATTRIBUTE_54")); // Number
+					pstmt.setLong(48, rs.getLong("ATTRIBUTE_55")); // Number
+					pstmt.setLong(49, rs.getLong("ATTRIBUTE_56")); // Number
+					pstmt.setLong(50, rs.getLong("ATTRIBUTE_57"));// Number
+
+					if(rs.getString("ATTRIBUTE_58")!=null && !(rs.getString("ATTRIBUTE_58").equals(""))){
+						pstmt.setString(51, rs.getString("ATTRIBUTE_58"));
+					}else{
+						pstmt.setString(51,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_59")!=null && !(rs.getString("ATTRIBUTE_59").equals(""))){
+						pstmt.setString(52, rs.getString("ATTRIBUTE_59"));
+					}else{
+						pstmt.setString(52,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_60")!=null && !(rs.getString("ATTRIBUTE_60").equals(""))){
+						pstmt.setString(53, rs.getString("ATTRIBUTE_60"));
+					}else{
+						pstmt.setString(53,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_61")!=null && !(rs.getString("ATTRIBUTE_61").equals(""))){
+						pstmt.setString(54, rs.getString("ATTRIBUTE_61"));
+					}else{
+						pstmt.setString(54,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_62")!=null && !(rs.getString("ATTRIBUTE_62").equals(""))){
+						pstmt.setString(55, rs.getString("ATTRIBUTE_62"));
+					}else{
+						pstmt.setString(55,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_63")!=null && !(rs.getString("ATTRIBUTE_63").equals(""))){
+						pstmt.setString(56, rs.getString("ATTRIBUTE_63"));
+					}else{
+						pstmt.setString(56,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_64")!=null && !(rs.getString("ATTRIBUTE_64").equals(""))){
+						pstmt.setString(57, rs.getString("ATTRIBUTE_64"));
+					}else{
+						pstmt.setString(57,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_65")!=null && !(rs.getString("ATTRIBUTE_65").equals(""))){
+						pstmt.setString(58, rs.getString("ATTRIBUTE_65"));
+					}else{
+						pstmt.setString(58,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_66")!=null && !(rs.getString("ATTRIBUTE_66").equals(""))){
+						pstmt.setString(59, rs.getString("ATTRIBUTE_66"));
+					}else{
+						pstmt.setString(59,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_67")!=null && !(rs.getString("ATTRIBUTE_67").equals(""))){
+						pstmt.setString(60, rs.getString("ATTRIBUTE_67"));
+					}else{
+						pstmt.setString(60,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_68")!=null && !(rs.getString("ATTRIBUTE_68").equals(""))){
+						pstmt.setString(61, rs.getString("ATTRIBUTE_68"));
+					}else{
+						pstmt.setString(61,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_69")!=null && !(rs.getString("ATTRIBUTE_69").equals(""))){
+						pstmt.setString(62, rs.getString("ATTRIBUTE_69"));
+					}else{
+						pstmt.setString(62,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_70")!=null && !(rs.getString("ATTRIBUTE_70").equals(""))){
+						pstmt.setString(63, rs.getString("ATTRIBUTE_70"));
+					}else{
+						pstmt.setString(63,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_71")!=null && !(rs.getString("ATTRIBUTE_71").equals(""))){
+						pstmt.setString(64, rs.getString("ATTRIBUTE_71"));
+					}else{
+						pstmt.setString(64,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_72")!=null && !(rs.getString("ATTRIBUTE_72").equals(""))){
+						pstmt.setString(65, rs.getString("ATTRIBUTE_72"));
+					}else{
+						pstmt.setString(65,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_73")!=null && !(rs.getString("ATTRIBUTE_73").equals(""))){
+						pstmt.setString(66, rs.getString("ATTRIBUTE_73"));
+					}else{
+						pstmt.setString(66,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_74")!=null && !(rs.getString("ATTRIBUTE_74").equals(""))){
+						pstmt.setString(67, rs.getString("ATTRIBUTE_74"));
+					}else{
+						pstmt.setString(67,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_75")!=null && !(rs.getString("ATTRIBUTE_75").equals(""))){
+						pstmt.setString(68, rs.getString("ATTRIBUTE_75"));
+					}else{
+						pstmt.setString(68,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_76")!=null && !(rs.getString("ATTRIBUTE_76").equals(""))){
+						pstmt.setString(69, rs.getString("ATTRIBUTE_76"));
+					}else{
+						pstmt.setString(69,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_77")!=null && !(rs.getString("ATTRIBUTE_77").equals(""))){
+						pstmt.setString(70, rs.getString("ATTRIBUTE_77"));
+					}else{
+						pstmt.setString(70,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_78")!=null && !(rs.getString("ATTRIBUTE_78").equals(""))){
+						pstmt.setString(71, rs.getString("ATTRIBUTE_78"));
+					}else{
+						pstmt.setString(71,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_79")!=null && !(rs.getDate("ATTRIBUTE_79").equals(""))){
+						pstmt.setDate(72, rs.getDate("ATTRIBUTE_79"));
+					}else{
+						pstmt.setDate(72,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_80")!=null && !(rs.getString("ATTRIBUTE_80").equals(""))){
+						pstmt.setString(73, rs.getString("ATTRIBUTE_80"));
+					}else{
+						pstmt.setString(73,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_81")!=null && !(rs.getDate("ATTRIBUTE_81").equals(""))){
+						pstmt.setDate(74, rs.getDate("ATTRIBUTE_81"));
+					}else{
+						pstmt.setDate(74,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_82")!=null && !(rs.getString("ATTRIBUTE_82").equals(""))){
+						pstmt.setString(75, rs.getString("ATTRIBUTE_82"));
+					}else{
+						pstmt.setString(75,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_84")!=null && !(rs.getString("ATTRIBUTE_84").equals(""))){
+						pstmt.setString(76, rs.getString("ATTRIBUTE_84"));
+					}else{
+						pstmt.setString(76,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_85")!=null && !(rs.getString("ATTRIBUTE_85").equals(""))){
+						pstmt.setString(77, rs.getString("ATTRIBUTE_85"));
+					}else{
+						pstmt.setString(77,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_86")!=null && !(rs.getString("ATTRIBUTE_86").equals(""))){
+						pstmt.setString(78, rs.getString("ATTRIBUTE_86"));
+					}else{
+						pstmt.setString(78,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_87")!=null && !(rs.getString("ATTRIBUTE_87").equals(""))){
+						pstmt.setString(79, rs.getString("ATTRIBUTE_87"));
+					}else{
+						pstmt.setString(79,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_88")!=null && !(rs.getString("ATTRIBUTE_88").equals(""))){
+						pstmt.setString(80, rs.getString("ATTRIBUTE_88"));
+					}else{
+						pstmt.setString(80,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_89")!=null && !(rs.getString("ATTRIBUTE_89").equals(""))){
+						pstmt.setString(81, rs.getString("ATTRIBUTE_89"));
+					}else{
+						pstmt.setString(81,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_90")!=null && !(rs.getString("ATTRIBUTE_90").equals(""))){
+						pstmt.setString(82, rs.getString("ATTRIBUTE_90"));
+					}else{
+						pstmt.setString(82,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_91")!=null && !(rs.getString("ATTRIBUTE_91").equals(""))){
+						pstmt.setString(83, rs.getString("ATTRIBUTE_91"));
+					}else{
+						pstmt.setString(83,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_92")!=null && !(rs.getString("ATTRIBUTE_92").equals(""))){
+						pstmt.setString(84, rs.getString("ATTRIBUTE_92"));
+					}else{
+						pstmt.setString(84,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_93")!=null && !(rs.getString("ATTRIBUTE_93").equals(""))){
+						pstmt.setString(85, rs.getString("ATTRIBUTE_93"));
+					}else{
+						pstmt.setString(85,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_94")!=null && !(rs.getString("ATTRIBUTE_94").equals(""))){
+						pstmt.setString(86, rs.getString("ATTRIBUTE_94"));
+					}else{
+						pstmt.setString(86,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_95")!=null && !(rs.getString("ATTRIBUTE_95").equals(""))){
+						pstmt.setString(87, rs.getString("ATTRIBUTE_95"));
+					}else{
+						pstmt.setString(87,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_96")!=null && !(rs.getString("ATTRIBUTE_96").equals(""))){
+						pstmt.setString(88, rs.getString("ATTRIBUTE_96"));
+					}else{
+						pstmt.setString(88,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_97")!=null && !(rs.getString("ATTRIBUTE_97").equals(""))){
+						pstmt.setString(89, rs.getString("ATTRIBUTE_97"));
+					}else{
+						pstmt.setString(89,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_98")!=null && !(rs.getString("ATTRIBUTE_98").equals(""))){
+						pstmt.setString(90, rs.getString("ATTRIBUTE_98"));
+					}else{
+						pstmt.setString(90,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_99")!=null && !(rs.getString("ATTRIBUTE_99").equals(""))){
+						pstmt.setString(91, rs.getString("ATTRIBUTE_99"));
+					}else{
+						pstmt.setString(91,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_100")!=null && !(rs.getString("ATTRIBUTE_100").equals(""))){
+						pstmt.setString(92, rs.getString("ATTRIBUTE_100"));
+					}else{
+						pstmt.setString(92,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_101")!=null && !(rs.getString("ATTRIBUTE_101").equals(""))){
+						pstmt.setString(93, rs.getString("ATTRIBUTE_101"));
+					}else{
+						pstmt.setString(93,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_105")!=null && !(rs.getString("ATTRIBUTE_105").equals(""))){
+						pstmt.setString(94, rs.getString("ATTRIBUTE_105"));
+					}else{
+						pstmt.setString(94,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_106")!=null && !(rs.getString("ATTRIBUTE_106").equals(""))){
+						pstmt.setString(95, rs.getString("ATTRIBUTE_106"));
+					}else{
+						pstmt.setString(95,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_107")!=null && !(rs.getString("ATTRIBUTE_107").equals(""))){
+						pstmt.setString(96, rs.getString("ATTRIBUTE_107"));
+					}else{
+						pstmt.setString(96,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_108")!=null && !(rs.getString("ATTRIBUTE_108").equals(""))){
+						pstmt.setString(97, rs.getString("ATTRIBUTE_108"));
+					}else{
+						pstmt.setString(97,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_109")!=null && !(rs.getString("ATTRIBUTE_109").equals(""))){
+						pstmt.setString(98, rs.getString("ATTRIBUTE_109"));
+					}else{
+						pstmt.setString(98,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_110")!=null && !(rs.getString("ATTRIBUTE_110").equals(""))){
+						pstmt.setString(99, rs.getString("ATTRIBUTE_110"));
+					}else{
+						pstmt.setString(99,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_111")!=null && !(rs.getString("ATTRIBUTE_111").equals(""))){
+						pstmt.setString(100, rs.getString("ATTRIBUTE_111"));
+					}else{
+						pstmt.setString(100,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_112")!=null && !(rs.getString("ATTRIBUTE_112").equals(""))){
+						pstmt.setString(101, rs.getString("ATTRIBUTE_112"));
+					}else{
+						pstmt.setString(101,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_113")!=null && !(rs.getString("ATTRIBUTE_113").equals(""))){
+						pstmt.setString(102, rs.getString("ATTRIBUTE_113"));
+					}else{
+						pstmt.setString(102,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_117")!=null && !(rs.getDate("ATTRIBUTE_117").equals(""))){
+						pstmt.setDate(103, rs.getDate("ATTRIBUTE_117"));
+					}else{
+						pstmt.setDate(103,null);
+					}
+
+					pstmt.setLong(104, rs.getLong("ATTRIBUTE_118"));// Number
+					if(rs.getDate("ATTRIBUTE_114")!=null && !(rs.getDate("ATTRIBUTE_114").equals(""))){
+						pstmt.setDate(105, rs.getDate("ATTRIBUTE_114"));
+					}else{
+						pstmt.setDate(105,null);
+					}
+
+					if(rs.getDate("ATTRIBUTE_115")!=null && !(rs.getDate("ATTRIBUTE_115").equals(""))){
+						pstmt.setDate(106, rs.getDate("ATTRIBUTE_115"));
+					}else{
+						pstmt.setDate(106,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_116")!=null && !(rs.getString("ATTRIBUTE_116").equals(""))){
+						pstmt.setString(107, rs.getString("ATTRIBUTE_116"));
+					}else{
+						pstmt.setString(107,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_119")!=null && !(rs.getString("ATTRIBUTE_119").equals(""))){
+						pstmt.setString(108, rs.getString("ATTRIBUTE_119"));
+					}else{
+						pstmt.setString(108,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_120")!=null && !(rs.getString("ATTRIBUTE_120").equals(""))){
+						pstmt.setString(109, rs.getString("ATTRIBUTE_120"));
+					}else{
+						pstmt.setString(109,null);
+					}
+
+
+					if(rs.getString("ATTRIBUTE_121")!=null && !(rs.getString("ATTRIBUTE_121").equals(""))){
+						pstmt.setString(110, rs.getString("ATTRIBUTE_121"));
+					}else{
+						pstmt.setString(110,null);
+					}
+
+					if(rs.getString("ATTRIBUTE_122")!=null && !(rs.getString("ATTRIBUTE_122").equals(""))){
+						pstmt.setString(111, rs.getString("ATTRIBUTE_122"));
+					}else{
+						pstmt.setString(111, null);
+					}
+
+					if(rs.getString("ATTRIBUTE_123")!=null && !(rs.getString("ATTRIBUTE_123").equals(""))){
+						pstmt.setString(112, rs.getString("ATTRIBUTE_123"));
+					}else{
+						pstmt.setString(112,null);
+					}
+
+					pstmt.setString(113, pCBASerialNoUPdateQueryInput.getSerialNoOut());
 
 					boolean status = pstmt.execute();
 
@@ -256,9 +788,9 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 					if (!status) {
 
-						String updateOldserialNOStatus = "update upd.UPD_SN_REPOS set ATTRIBUTE_37='SCR  "
+						String updateOldserialNOStatus = "update upd.UPD_SN_REPOS set ATTRIBUTE_34='"+lockCode+"SCR',ATTRIBUTE_37='SCR     "
 								+ DateToStr
-								+ "',ATTRIBUTE_41='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"' where serial_no='"
+								+ "',ATTRIBUTE_41='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"',LAST_MOD_BY='pcba_pgm_SwapUpdate',LAST_MOD_DATETIME=sysdate where serial_no='"
 								+ pCBASerialNoUPdateQueryInput.getSerialNoIn()
 								+ "'";
 						pstmt1 = connection
@@ -410,153 +942,671 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 			if (rs.next()) {
 
-
-				SQLInnerQuery
-				.append("insert into upd.UPD_SN_REPOS(SERIAL_NO, REQUEST_ID, REGION_ID, SYSTEM_ID, ATTRIBUTE_01, ATTRIBUTE_02, ATTRIBUTE_03, ATTRIBUTE_04, ATTRIBUTE_05,ATTRIBUTE_06,  ATTRIBUTE_07,  ATTRIBUTE_08,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_09, ATTRIBUTE_10,   ATTRIBUTE_11,  ATTRIBUTE_12,  ATTRIBUTE_13,  ATTRIBUTE_14, ATTRIBUTE_15,  ATTRIBUTE_16,  ATTRIBUTE_17,  ATTRIBUTE_18,  ATTRIBUTE_19,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_20,  ATTRIBUTE_21,  ATTRIBUTE_22,  ATTRIBUTE_23,  ATTRIBUTE_24,  ATTRIBUTE_34, ATTRIBUTE_35,  ATTRIBUTE_37,  ATTRIBUTE_38,  ATTRIBUTE_39,  ATTRIBUTE_40,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_41,  ATTRIBUTE_42,  ATTRIBUTE_43,  ATTRIBUTE_44,  ATTRIBUTE_45,  ATTRIBUTE_46, ATTRIBUTE_47,  ATTRIBUTE_48,  ATTRIBUTE_49,  ATTRIBUTE_50,  ATTRIBUTE_51,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_52,  ATTRIBUTE_53,  ATTRIBUTE_54,  ATTRIBUTE_55,  ATTRIBUTE_56,  ATTRIBUTE_57, ATTRIBUTE_58,  ATTRIBUTE_59,  ATTRIBUTE_60,  ATTRIBUTE_61,  ATTRIBUTE_62,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_63,  ATTRIBUTE_64,  ATTRIBUTE_65,  ATTRIBUTE_66,  ATTRIBUTE_67,  ATTRIBUTE_68, ATTRIBUTE_69,  ATTRIBUTE_70,  ATTRIBUTE_71,  ATTRIBUTE_72,  ATTRIBUTE_73,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_74,  ATTRIBUTE_75,  ATTRIBUTE_76,  ATTRIBUTE_77,  ATTRIBUTE_78,  ATTRIBUTE_79, ATTRIBUTE_80,  ATTRIBUTE_81,  ATTRIBUTE_82,  ATTRIBUTE_84,  ATTRIBUTE_85,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_86,  ATTRIBUTE_87,  ATTRIBUTE_88,  ATTRIBUTE_89,  ATTRIBUTE_90,  ATTRIBUTE_91, ATTRIBUTE_92,  ATTRIBUTE_93,  ATTRIBUTE_94,  ATTRIBUTE_95,  ATTRIBUTE_96,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_97,  ATTRIBUTE_98,  ATTRIBUTE_99,  ATTRIBUTE_100, ATTRIBUTE_101, ATTRIBUTE_105,ATTRIBUTE_106, ATTRIBUTE_107, ATTRIBUTE_108, ATTRIBUTE_109, ATTRIBUTE_110,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_111, ATTRIBUTE_112, ATTRIBUTE_113, ATTRIBUTE_117, ATTRIBUTE_118, ATTRIBUTE_114,ATTRIBUTE_115, ATTRIBUTE_116, ATTRIBUTE_119, ATTRIBUTE_120, ATTRIBUTE_121,");
-				SQLInnerQuery
-				.append("ATTRIBUTE_122, ATTRIBUTE_123) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				SQLInnerQuery.append("update upd.UPD_SN_REPOS SET REQUEST_ID=?,REGION_ID=?,SYSTEM_ID=?,ATTRIBUTE_01=?,ATTRIBUTE_02=?,ATTRIBUTE_03=?,ATTRIBUTE_04=?,ATTRIBUTE_05=?,ATTRIBUTE_06=?,ATTRIBUTE_07=?,ATTRIBUTE_08=?,");
+				SQLInnerQuery.append("ATTRIBUTE_09=?,  ATTRIBUTE_10=?,  ATTRIBUTE_11=?,  ATTRIBUTE_12=?,  ATTRIBUTE_13=?,  ATTRIBUTE_14=?, ATTRIBUTE_15=?,  ATTRIBUTE_16=?,  ATTRIBUTE_17=?,  ATTRIBUTE_18=?,  ATTRIBUTE_19=?,");
+				SQLInnerQuery.append("ATTRIBUTE_20=?,  ATTRIBUTE_21=?,  ATTRIBUTE_22=?,  ATTRIBUTE_23=?,  ATTRIBUTE_24=?,  ATTRIBUTE_34=?, ATTRIBUTE_35=?,  ATTRIBUTE_37=?,  ATTRIBUTE_38=?,  ATTRIBUTE_39=?,  ATTRIBUTE_40=?,");
+				SQLInnerQuery.append("ATTRIBUTE_41=?,  ATTRIBUTE_42=?,  ATTRIBUTE_43=?,  ATTRIBUTE_44=?,  ATTRIBUTE_45=?,  ATTRIBUTE_46=?, ATTRIBUTE_47=?,  ATTRIBUTE_48=?,  ATTRIBUTE_49=?,  ATTRIBUTE_50=?,  ATTRIBUTE_51=?,");
+				SQLInnerQuery.append("ATTRIBUTE_52=?,  ATTRIBUTE_53=?,  ATTRIBUTE_54=?,  ATTRIBUTE_55=?,  ATTRIBUTE_56=?,  ATTRIBUTE_57=?, ATTRIBUTE_58=?,  ATTRIBUTE_59=?,  ATTRIBUTE_60=?,  ATTRIBUTE_61=?,  ATTRIBUTE_62=?,");
+				SQLInnerQuery.append("ATTRIBUTE_63=?,  ATTRIBUTE_64=?,  ATTRIBUTE_65=?,  ATTRIBUTE_66=?,  ATTRIBUTE_67=?,  ATTRIBUTE_68=?, ATTRIBUTE_69=?,  ATTRIBUTE_70=?,  ATTRIBUTE_71=?,  ATTRIBUTE_72=?,  ATTRIBUTE_73=?,");
+				SQLInnerQuery.append("ATTRIBUTE_74=?,  ATTRIBUTE_75=?,  ATTRIBUTE_76=?,  ATTRIBUTE_77=?,  ATTRIBUTE_78=?,  ATTRIBUTE_79=?, ATTRIBUTE_80=?,  ATTRIBUTE_81=?,  ATTRIBUTE_82=?,  ATTRIBUTE_84=?,  ATTRIBUTE_85=?,");
+				SQLInnerQuery.append("ATTRIBUTE_86=?,  ATTRIBUTE_87=?,  ATTRIBUTE_88=?,  ATTRIBUTE_89=?,  ATTRIBUTE_90=?,  ATTRIBUTE_91=?, ATTRIBUTE_92=?,  ATTRIBUTE_93=?,  ATTRIBUTE_94=?,  ATTRIBUTE_95=?,  ATTRIBUTE_96=?,");
+				SQLInnerQuery.append("ATTRIBUTE_97=?,  ATTRIBUTE_98=?,  ATTRIBUTE_99=?,  ATTRIBUTE_100=?, ATTRIBUTE_101=?, ATTRIBUTE_105=?,ATTRIBUTE_106=?, ATTRIBUTE_107=?, ATTRIBUTE_108=?, ATTRIBUTE_109=?, ATTRIBUTE_110=?,");
+				SQLInnerQuery.append("ATTRIBUTE_111=?, ATTRIBUTE_112=?, ATTRIBUTE_113=?, ATTRIBUTE_117=?, ATTRIBUTE_118=?, ATTRIBUTE_114=?,ATTRIBUTE_115=?, ATTRIBUTE_116=?, ATTRIBUTE_119=?, ATTRIBUTE_120=?, ATTRIBUTE_121=?,");
+				SQLInnerQuery.append("ATTRIBUTE_122=?, ATTRIBUTE_123=?, LAST_MOD_BY='pcba_pgm_SwapUpdate',LAST_MOD_DATETIME=sysdate  where SERIAL_NO=?");
 
 				logger.info(" Before Shipment Table Insert SQL:"+SQLInnerQuery.toString());
 
 				pstUpdate = connection2.prepareStatement(SQLInnerQuery
 						.toString());
 
-				pstUpdate.setString(1, serialNoOut);
-				pstUpdate.setString(2, rs.getString("REQUEST_ID"));
-				pstUpdate.setString(3, rs.getString("REGION_ID"));
-				pstUpdate.setString(4, rs.getString("SYSTEM_ID"));
-				pstUpdate.setString(5, rs.getString("ATTRIBUTE_01"));
-				pstUpdate.setDate(6, rs.getDate("ATTRIBUTE_02"));
-				pstUpdate.setString(7, rs.getString("ATTRIBUTE_03"));
-				pstUpdate.setString(8, rs.getString("ATTRIBUTE_04"));
-				pstUpdate.setString(9, rs.getString("ATTRIBUTE_05"));
-				pstUpdate.setString(10, rs.getString("ATTRIBUTE_06"));
-				pstUpdate.setString(11, rs.getString("ATTRIBUTE_07"));
-				pstUpdate.setString(12, rs.getString("ATTRIBUTE_08"));
-				pstUpdate.setString(13, rs.getString("ATTRIBUTE_09"));
-				pstUpdate.setDate(14, rs.getDate("ATTRIBUTE_10"));
-				pstUpdate.setString(15, rs.getString("ATTRIBUTE_11"));
-				pstUpdate.setString(16, rs.getString("ATTRIBUTE_12"));
-				pstUpdate.setString(17, rs.getString("ATTRIBUTE_13"));
-				pstUpdate.setString(18, rs.getString("ATTRIBUTE_14"));
-				pstUpdate.setString(19, rs.getString("ATTRIBUTE_15"));
-				pstUpdate.setString(20, rs.getString("ATTRIBUTE_16"));
-				pstUpdate.setString(21, rs.getString("ATTRIBUTE_17"));
-				pstUpdate.setDate(22, rs.getDate("ATTRIBUTE_18"));
-				pstUpdate.setString(23, rs.getString("ATTRIBUTE_19"));
-				pstUpdate.setString(24, rs.getString("ATTRIBUTE_20"));
-				pstUpdate.setString(25, rs.getString("ATTRIBUTE_21"));
-				pstUpdate.setString(26, rs.getString("ATTRIBUTE_22"));
-				pstUpdate.setString(27, rs.getString("ATTRIBUTE_23"));
-				pstUpdate.setString(28, rs.getString("ATTRIBUTE_24"));
-				pstUpdate.setString(29, rs.getString("ATTRIBUTE_34"));
-				pstUpdate.setString(30, rs.getString("ATTRIBUTE_35"));
+
+				if(rs.getString("REQUEST_ID")!=null && !(rs.getString("REQUEST_ID").equals(""))){
+					pstUpdate.setString(1, rs.getString("REQUEST_ID"));
+				}else{
+					pstUpdate.setString(1,null);
+				}
+
+				if(rs.getString("REGION_ID")!=null && !(rs.getString("REGION_ID").equals(""))){
+					pstUpdate.setString(2, rs.getString("REGION_ID"));
+				}else{
+					pstUpdate.setString(2, null);
+				}
+
+				if(rs.getString("SYSTEM_ID")!=null && !(rs.getString("SYSTEM_ID").equals(""))){
+					pstUpdate.setString(3, rs.getString("SYSTEM_ID"));
+				}else{
+					pstUpdate.setString(3, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_01")!=null && !(rs.getString("ATTRIBUTE_01").equals(""))){
+					pstUpdate.setString(4, rs.getString("ATTRIBUTE_01"));
+				}else{
+					pstUpdate.setString(4, null);
+				}					
+
+				if(rs.getDate("ATTRIBUTE_02")!=null && !(rs.getDate("ATTRIBUTE_02").equals(""))){
+					pstUpdate.setDate(5, rs.getDate("ATTRIBUTE_02"));
+				}else{
+					pstUpdate.setDate(5, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_03")!=null && !(rs.getString("ATTRIBUTE_03").equals(""))){
+					pstUpdate.setString(6, rs.getString("ATTRIBUTE_03"));
+				}else{
+					pstUpdate.setString(6, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_04")!=null && !(rs.getString("ATTRIBUTE_04").equals(""))){
+					pstUpdate.setString(7, rs.getString("ATTRIBUTE_04"));
+				}else{
+					pstUpdate.setString(7, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_05")!=null && !(rs.getString("ATTRIBUTE_05").equals(""))){
+					pstUpdate.setString(8, rs.getString("ATTRIBUTE_05"));
+				}else{
+					pstUpdate.setString(8, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_06")!=null && !(rs.getString("ATTRIBUTE_06").equals(""))){
+					pstUpdate.setString(9, rs.getString("ATTRIBUTE_06"));
+				}else{
+					pstUpdate.setString(9, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_07")!=null && !(rs.getString("ATTRIBUTE_07").equals(""))){
+					pstUpdate.setString(10, rs.getString("ATTRIBUTE_07"));
+				}else{
+					pstUpdate.setString(10, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_08")!=null && !(rs.getString("ATTRIBUTE_08").equals(""))){
+					pstUpdate.setString(11, rs.getString("ATTRIBUTE_08"));
+				}else{
+					pstUpdate.setString(11, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_09")!=null && !(rs.getString("ATTRIBUTE_09").equals(""))){
+					pstUpdate.setString(12, rs.getString("ATTRIBUTE_09"));
+				}else{
+					pstUpdate.setString(12,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_10")!=null && !(rs.getDate("ATTRIBUTE_10").equals(""))){
+					pstUpdate.setDate(13, rs.getDate("ATTRIBUTE_10"));
+				}else{
+					pstUpdate.setDate(13, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_11")!=null && !(rs.getString("ATTRIBUTE_11").equals(""))){
+					pstUpdate.setString(14, rs.getString("ATTRIBUTE_11"));
+				}else{
+					pstUpdate.setString(14,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_12")!=null && !(rs.getString("ATTRIBUTE_12").equals(""))){
+					pstUpdate.setString(15, rs.getString("ATTRIBUTE_12"));
+				}else{
+					pstUpdate.setString(15, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_13")!=null && !(rs.getString("ATTRIBUTE_13").equals(""))){
+					pstUpdate.setString(16, rs.getString("ATTRIBUTE_13"));
+				}else{
+					pstUpdate.setString(16,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_14")!=null && !(rs.getString("ATTRIBUTE_14").equals(""))){
+					pstUpdate.setString(17, rs.getString("ATTRIBUTE_14"));
+				}else{
+					pstUpdate.setString(17,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_15")!=null && !(rs.getString("ATTRIBUTE_15").equals(""))){
+					pstUpdate.setString(18, rs.getString("ATTRIBUTE_15"));
+				}else{
+					pstUpdate.setString(18,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_16")!=null && !(rs.getString("ATTRIBUTE_16").equals(""))){
+					pstUpdate.setString(19, rs.getString("ATTRIBUTE_16"));
+				}else{
+					pstUpdate.setString(19,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_17")!=null && !(rs.getString("ATTRIBUTE_17").equals(""))){
+					pstUpdate.setString(20, rs.getString("ATTRIBUTE_17"));
+				}else{
+					pstUpdate.setString(20,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_18")!=null && !(rs.getDate("ATTRIBUTE_18").equals(""))){
+					pstUpdate.setDate(21, rs.getDate("ATTRIBUTE_18"));
+				}else{
+					pstUpdate.setDate(21,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_19")!=null && !(rs.getString("ATTRIBUTE_19").equals(""))){
+					pstUpdate.setString(22, rs.getString("ATTRIBUTE_19"));
+				}else{
+					pstUpdate.setString(22,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_20")!=null && !(rs.getString("ATTRIBUTE_20").equals(""))){
+					pstUpdate.setString(23, rs.getString("ATTRIBUTE_20"));
+				}else{
+					pstUpdate.setString(23,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_21")!=null && !(rs.getString("ATTRIBUTE_21").equals(""))){
+					pstUpdate.setString(24, rs.getString("ATTRIBUTE_21"));
+				}else{
+					pstUpdate.setString(24,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_22")!=null && !(rs.getString("ATTRIBUTE_22").equals(""))){
+					pstUpdate.setString(25, rs.getString("ATTRIBUTE_22"));
+				}else{
+					pstUpdate.setString(25,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_23")!=null && !(rs.getString("ATTRIBUTE_23").equals(""))){
+					pstUpdate.setString(26, rs.getString("ATTRIBUTE_23"));
+				}else{
+					pstUpdate.setString(26,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_24")!=null && !(rs.getString("ATTRIBUTE_24").equals(""))){
+					pstUpdate.setString(27, rs.getString("ATTRIBUTE_24"));
+				}else{
+					pstUpdate.setString(27,null);
+				}
+				String lockCode = rs.getString("ATTRIBUTE_34");
+
+				if(rs.getString("ATTRIBUTE_34")!=null && !(rs.getString("ATTRIBUTE_34").equals(""))){
+					pstUpdate.setString(28, rs.getString("ATTRIBUTE_34"));
+				}else{
+					pstUpdate.setString(28,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_35")!=null && !(rs.getString("ATTRIBUTE_35").equals(""))){
+					pstUpdate.setString(29, rs.getString("ATTRIBUTE_35"));
+				}else{
+					pstUpdate.setString(29,null);
+				}
 
 				Date curDate = new Date();
-				SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
+				SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yy");
 				String DateToStr = format.format(curDate);
 
-				pstUpdate.setString(31, "ACT  " + DateToStr);// Status
-				pstUpdate.setString(32, rs.getString("ATTRIBUTE_38"));
-				pstUpdate.setString(33, rs.getString("ATTRIBUTE_39"));
-				pstUpdate.setString(34, rs.getString("ATTRIBUTE_40"));
-				pstUpdate.setString(35, rs.getString("ATTRIBUTE_41"));
-				pstUpdate.setString(36, rs.getString("ATTRIBUTE_42"));
-				pstUpdate.setString(37, rs.getString("ATTRIBUTE_43"));
-				pstUpdate.setString(38, rs.getString("ATTRIBUTE_44"));
-				pstUpdate.setDate(39, rs.getDate("ATTRIBUTE_45"));
-				pstUpdate.setString(40, rs.getString("ATTRIBUTE_46"));
-				pstUpdate.setString(41, rs.getString("ATTRIBUTE_47"));
-				pstUpdate.setString(42, rs.getString("ATTRIBUTE_48"));
-				pstUpdate.setDate(43, rs.getDate("ATTRIBUTE_49"));
-				pstUpdate.setDate(44, rs.getDate("ATTRIBUTE_50"));
-				pstUpdate.setDate(45, rs.getDate("ATTRIBUTE_51"));
-				pstUpdate.setDate(46, rs.getDate("ATTRIBUTE_52"));
-				pstUpdate.setDate(47, rs.getDate("ATTRIBUTE_53"));
-				pstUpdate.setLong(48, rs.getLong("ATTRIBUTE_54")); // Number
-				pstUpdate.setLong(49, rs.getLong("ATTRIBUTE_55")); // Number
-				pstUpdate.setLong(50, rs.getLong("ATTRIBUTE_56")); // Number
-				pstUpdate.setLong(51, rs.getLong("ATTRIBUTE_57"));// Number
-				pstUpdate.setString(52, rs.getString("ATTRIBUTE_58"));
-				pstUpdate.setString(53, rs.getString("ATTRIBUTE_59"));
-				pstUpdate.setString(54, rs.getString("ATTRIBUTE_60"));
-				pstUpdate.setString(55, rs.getString("ATTRIBUTE_61"));
-				pstUpdate.setString(56, rs.getString("ATTRIBUTE_62"));
-				pstUpdate.setString(57, rs.getString("ATTRIBUTE_63"));
-				pstUpdate.setString(58, rs.getString("ATTRIBUTE_64"));
-				pstUpdate.setString(59, rs.getString("ATTRIBUTE_65"));
-				pstUpdate.setString(60, rs.getString("ATTRIBUTE_66"));
-				pstUpdate.setString(61, rs.getString("ATTRIBUTE_67"));
-				pstUpdate.setString(62, rs.getString("ATTRIBUTE_68"));
-				pstUpdate.setString(63, rs.getString("ATTRIBUTE_69"));
-				pstUpdate.setString(64, rs.getString("ATTRIBUTE_70"));
-				pstUpdate.setString(65, rs.getString("ATTRIBUTE_71"));
-				pstUpdate.setString(66, rs.getString("ATTRIBUTE_72"));
-				pstUpdate.setString(67, rs.getString("ATTRIBUTE_73"));
-				pstUpdate.setString(68, rs.getString("ATTRIBUTE_74"));
-				pstUpdate.setString(69, rs.getString("ATTRIBUTE_75"));
-				pstUpdate.setString(70, rs.getString("ATTRIBUTE_76"));
-				pstUpdate.setString(71, rs.getString("ATTRIBUTE_77"));
-				pstUpdate.setString(72, rs.getString("ATTRIBUTE_78"));
-				pstUpdate.setDate(73, rs.getDate("ATTRIBUTE_79"));
-				pstUpdate.setString(74, rs.getString("ATTRIBUTE_80"));
-				pstUpdate.setDate(75, rs.getDate("ATTRIBUTE_81"));
-				pstUpdate.setString(76, rs.getString("ATTRIBUTE_82"));
-				pstUpdate.setString(77, rs.getString("ATTRIBUTE_84"));
-				pstUpdate.setString(78, rs.getString("ATTRIBUTE_85"));
-				pstUpdate.setString(79, rs.getString("ATTRIBUTE_86"));
-				pstUpdate.setString(80, rs.getString("ATTRIBUTE_87"));
-				pstUpdate.setString(81, rs.getString("ATTRIBUTE_88"));
-				pstUpdate.setString(82, rs.getString("ATTRIBUTE_89"));
-				pstUpdate.setString(83, rs.getString("ATTRIBUTE_90"));
-				pstUpdate.setString(84, rs.getString("ATTRIBUTE_91"));
-				pstUpdate.setString(85, rs.getString("ATTRIBUTE_92"));
-				pstUpdate.setString(86, rs.getString("ATTRIBUTE_93"));
-				pstUpdate.setString(87, rs.getString("ATTRIBUTE_94"));
-				pstUpdate.setString(88, rs.getString("ATTRIBUTE_95"));
-				pstUpdate.setString(89, rs.getString("ATTRIBUTE_96"));
-				pstUpdate.setString(90, rs.getString("ATTRIBUTE_97"));
-				pstUpdate.setString(91, rs.getString("ATTRIBUTE_98"));
-				pstUpdate.setString(92, rs.getString("ATTRIBUTE_99"));
-				pstUpdate.setString(93, rs.getString("ATTRIBUTE_100"));
-				pstUpdate.setString(94, rs.getString("ATTRIBUTE_101"));
-				pstUpdate.setString(95, rs.getString("ATTRIBUTE_105"));
-				pstUpdate.setString(96, rs.getString("ATTRIBUTE_106"));
-				pstUpdate.setString(97, rs.getString("ATTRIBUTE_107"));
-				pstUpdate.setString(98, rs.getString("ATTRIBUTE_108"));
-				pstUpdate.setString(99, rs.getString("ATTRIBUTE_109"));
-				pstUpdate.setString(100, rs.getString("ATTRIBUTE_110"));
-				pstUpdate.setString(101, rs.getString("ATTRIBUTE_111"));
-				pstUpdate.setString(102, rs.getString("ATTRIBUTE_112"));
-				pstUpdate.setString(103, rs.getString("ATTRIBUTE_113"));
-				pstUpdate.setDate(104, rs.getDate("ATTRIBUTE_117"));
-				pstUpdate.setLong(105, rs.getLong("ATTRIBUTE_118"));// Number
-				pstUpdate.setDate(106, rs.getDate("ATTRIBUTE_114"));
-				pstUpdate.setDate(107, rs.getDate("ATTRIBUTE_115"));
-				pstUpdate.setString(108, rs.getString("ATTRIBUTE_116"));
-				pstUpdate.setString(109, rs.getString("ATTRIBUTE_119"));
-				pstUpdate.setString(110, rs.getString("ATTRIBUTE_120"));
-				pstUpdate.setString(111, rs.getString("ATTRIBUTE_121"));
-				pstUpdate.setString(112, rs.getString("ATTRIBUTE_122"));
-				pstUpdate.setString(113, rs.getString("ATTRIBUTE_123"));
+				pstUpdate.setString(30, "ACT     " + DateToStr);// Status
+				if(rs.getString("ATTRIBUTE_38")!=null && !(rs.getString("ATTRIBUTE_38").equals(""))){
+					pstUpdate.setString(31, rs.getString("ATTRIBUTE_38"));
+				}
+
+				if(rs.getString("ATTRIBUTE_39")!=null && !(rs.getString("ATTRIBUTE_39").equals(""))){
+					pstUpdate.setString(32, rs.getString("ATTRIBUTE_39"));
+				}else{
+					pstUpdate.setString(32,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_40")!=null && !(rs.getString("ATTRIBUTE_40").equals(""))){
+					pstUpdate.setString(33, rs.getString("ATTRIBUTE_40"));
+				}else{
+					pstUpdate.setString(33,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_41")!=null && !(rs.getString("ATTRIBUTE_41").equals(""))){
+					pstUpdate.setString(34, rs.getString("ATTRIBUTE_41"));
+				}else{
+					pstUpdate.setString(34,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_42")!=null && !(rs.getString("ATTRIBUTE_42").equals(""))){
+					pstUpdate.setString(35, rs.getString("ATTRIBUTE_42"));
+				}else{
+					pstUpdate.setString(35,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_43")!=null && !(rs.getString("ATTRIBUTE_43").equals(""))){
+					pstUpdate.setString(36, rs.getString("ATTRIBUTE_43"));
+				}else{
+					pstUpdate.setString(36,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_44")!=null && !(rs.getString("ATTRIBUTE_44").equals(""))){
+					pstUpdate.setString(37, rs.getString("ATTRIBUTE_44"));
+				}else{
+					pstUpdate.setString(37,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_45")!=null && !(rs.getDate("ATTRIBUTE_45").equals(""))){
+					pstUpdate.setDate(38, rs.getDate("ATTRIBUTE_45"));
+				}else{
+					pstUpdate.setString(38,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_46")!=null && !(rs.getString("ATTRIBUTE_46").equals(""))){
+					pstUpdate.setString(39, rs.getString("ATTRIBUTE_46"));
+				}else{
+					pstUpdate.setString(39,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_47")!=null && !(rs.getString("ATTRIBUTE_47").equals(""))){
+					pstUpdate.setString(40, rs.getString("ATTRIBUTE_47"));
+				}else{
+					pstUpdate.setString(40,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_48")!=null && !(rs.getString("ATTRIBUTE_48").equals(""))){
+					pstUpdate.setString(41, rs.getString("ATTRIBUTE_48"));
+				}else{
+					pstUpdate.setString(41,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_49")!=null && !(rs.getDate("ATTRIBUTE_49").equals(""))){
+					pstUpdate.setDate(42, rs.getDate("ATTRIBUTE_49"));
+				}else{
+					pstUpdate.setDate(42,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_50")!=null && !(rs.getDate("ATTRIBUTE_50").equals(""))){
+					pstUpdate.setDate(43, rs.getDate("ATTRIBUTE_50"));
+				}else{
+					pstUpdate.setDate(43,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_51")!=null && !(rs.getDate("ATTRIBUTE_51").equals(""))){
+					pstUpdate.setDate(44, rs.getDate("ATTRIBUTE_51"));
+				}else{
+					pstUpdate.setDate(44,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_52")!=null && !(rs.getDate("ATTRIBUTE_52").equals(""))){
+					pstUpdate.setDate(45, rs.getDate("ATTRIBUTE_52"));
+				}else{
+					pstUpdate.setDate(45,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_53")!=null && !(rs.getDate("ATTRIBUTE_53").equals(""))){
+					pstUpdate.setDate(46, rs.getDate("ATTRIBUTE_53"));
+				}else{
+					pstUpdate.setDate(46,null);
+				}
+
+				pstUpdate.setLong(47, rs.getLong("ATTRIBUTE_54")); // Number
+				pstUpdate.setLong(48, rs.getLong("ATTRIBUTE_55")); // Number
+				pstUpdate.setLong(49, rs.getLong("ATTRIBUTE_56")); // Number
+				pstUpdate.setLong(50, rs.getLong("ATTRIBUTE_57"));// Number
+
+				if(rs.getString("ATTRIBUTE_58")!=null && !(rs.getString("ATTRIBUTE_58").equals(""))){
+					pstUpdate.setString(51, rs.getString("ATTRIBUTE_58"));
+				}else{
+					pstUpdate.setString(51,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_59")!=null && !(rs.getString("ATTRIBUTE_59").equals(""))){
+					pstUpdate.setString(52, rs.getString("ATTRIBUTE_59"));
+				}else{
+					pstUpdate.setString(52,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_60")!=null && !(rs.getString("ATTRIBUTE_60").equals(""))){
+					pstUpdate.setString(53, rs.getString("ATTRIBUTE_60"));
+				}else{
+					pstUpdate.setString(53,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_61")!=null && !(rs.getString("ATTRIBUTE_61").equals(""))){
+					pstUpdate.setString(54, rs.getString("ATTRIBUTE_61"));
+				}else{
+					pstUpdate.setString(54,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_62")!=null && !(rs.getString("ATTRIBUTE_62").equals(""))){
+					pstUpdate.setString(55, rs.getString("ATTRIBUTE_62"));
+				}else{
+					pstUpdate.setString(55,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_63")!=null && !(rs.getString("ATTRIBUTE_63").equals(""))){
+					pstUpdate.setString(56, rs.getString("ATTRIBUTE_63"));
+				}else{
+					pstUpdate.setString(56,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_64")!=null && !(rs.getString("ATTRIBUTE_64").equals(""))){
+					pstUpdate.setString(57, rs.getString("ATTRIBUTE_64"));
+				}else{
+					pstUpdate.setString(57,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_65")!=null && !(rs.getString("ATTRIBUTE_65").equals(""))){
+					pstUpdate.setString(58, rs.getString("ATTRIBUTE_65"));
+				}else{
+					pstUpdate.setString(58,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_66")!=null && !(rs.getString("ATTRIBUTE_66").equals(""))){
+					pstUpdate.setString(59, rs.getString("ATTRIBUTE_66"));
+				}else{
+					pstUpdate.setString(59,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_67")!=null && !(rs.getString("ATTRIBUTE_67").equals(""))){
+					pstUpdate.setString(60, rs.getString("ATTRIBUTE_67"));
+				}else{
+					pstUpdate.setString(60,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_68")!=null && !(rs.getString("ATTRIBUTE_68").equals(""))){
+					pstUpdate.setString(61, rs.getString("ATTRIBUTE_68"));
+				}else{
+					pstUpdate.setString(61,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_69")!=null && !(rs.getString("ATTRIBUTE_69").equals(""))){
+					pstUpdate.setString(62, rs.getString("ATTRIBUTE_69"));
+				}else{
+					pstUpdate.setString(62,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_70")!=null && !(rs.getString("ATTRIBUTE_70").equals(""))){
+					pstUpdate.setString(63, rs.getString("ATTRIBUTE_70"));
+				}else{
+					pstUpdate.setString(63,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_71")!=null && !(rs.getString("ATTRIBUTE_71").equals(""))){
+					pstUpdate.setString(64, rs.getString("ATTRIBUTE_71"));
+				}else{
+					pstUpdate.setString(64,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_72")!=null && !(rs.getString("ATTRIBUTE_72").equals(""))){
+					pstUpdate.setString(65, rs.getString("ATTRIBUTE_72"));
+				}else{
+					pstUpdate.setString(65,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_73")!=null && !(rs.getString("ATTRIBUTE_73").equals(""))){
+					pstUpdate.setString(66, rs.getString("ATTRIBUTE_73"));
+				}else{
+					pstUpdate.setString(66,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_74")!=null && !(rs.getString("ATTRIBUTE_74").equals(""))){
+					pstUpdate.setString(67, rs.getString("ATTRIBUTE_74"));
+				}else{
+					pstUpdate.setString(67,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_75")!=null && !(rs.getString("ATTRIBUTE_75").equals(""))){
+					pstUpdate.setString(68, rs.getString("ATTRIBUTE_75"));
+				}else{
+					pstUpdate.setString(68,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_76")!=null && !(rs.getString("ATTRIBUTE_76").equals(""))){
+					pstUpdate.setString(69, rs.getString("ATTRIBUTE_76"));
+				}else{
+					pstUpdate.setString(69,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_77")!=null && !(rs.getString("ATTRIBUTE_77").equals(""))){
+					pstUpdate.setString(70, rs.getString("ATTRIBUTE_77"));
+				}else{
+					pstUpdate.setString(70,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_78")!=null && !(rs.getString("ATTRIBUTE_78").equals(""))){
+					pstUpdate.setString(71, rs.getString("ATTRIBUTE_78"));
+				}else{
+					pstUpdate.setString(71,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_79")!=null && !(rs.getDate("ATTRIBUTE_79").equals(""))){
+					pstUpdate.setDate(72, rs.getDate("ATTRIBUTE_79"));
+				}else{
+					pstUpdate.setDate(72,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_80")!=null && !(rs.getString("ATTRIBUTE_80").equals(""))){
+					pstUpdate.setString(73, rs.getString("ATTRIBUTE_80"));
+				}else{
+					pstUpdate.setString(73,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_81")!=null && !(rs.getDate("ATTRIBUTE_81").equals(""))){
+					pstUpdate.setDate(74, rs.getDate("ATTRIBUTE_81"));
+				}else{
+					pstUpdate.setDate(74,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_82")!=null && !(rs.getString("ATTRIBUTE_82").equals(""))){
+					pstUpdate.setString(75, rs.getString("ATTRIBUTE_82"));
+				}else{
+					pstUpdate.setString(75,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_84")!=null && !(rs.getString("ATTRIBUTE_84").equals(""))){
+					pstUpdate.setString(76, rs.getString("ATTRIBUTE_84"));
+				}else{
+					pstUpdate.setString(76,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_85")!=null && !(rs.getString("ATTRIBUTE_85").equals(""))){
+					pstUpdate.setString(77, rs.getString("ATTRIBUTE_85"));
+				}else{
+					pstUpdate.setString(77,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_86")!=null && !(rs.getString("ATTRIBUTE_86").equals(""))){
+					pstUpdate.setString(78, rs.getString("ATTRIBUTE_86"));
+				}else{
+					pstUpdate.setString(78,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_87")!=null && !(rs.getString("ATTRIBUTE_87").equals(""))){
+					pstUpdate.setString(79, rs.getString("ATTRIBUTE_87"));
+				}else{
+					pstUpdate.setString(79,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_88")!=null && !(rs.getString("ATTRIBUTE_88").equals(""))){
+					pstUpdate.setString(80, rs.getString("ATTRIBUTE_88"));
+				}else{
+					pstUpdate.setString(80,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_89")!=null && !(rs.getString("ATTRIBUTE_89").equals(""))){
+					pstUpdate.setString(81, rs.getString("ATTRIBUTE_89"));
+				}else{
+					pstUpdate.setString(81,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_90")!=null && !(rs.getString("ATTRIBUTE_90").equals(""))){
+					pstUpdate.setString(82, rs.getString("ATTRIBUTE_90"));
+				}else{
+					pstUpdate.setString(82,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_91")!=null && !(rs.getString("ATTRIBUTE_91").equals(""))){
+					pstUpdate.setString(83, rs.getString("ATTRIBUTE_91"));
+				}else{
+					pstUpdate.setString(83,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_92")!=null && !(rs.getString("ATTRIBUTE_92").equals(""))){
+					pstUpdate.setString(84, rs.getString("ATTRIBUTE_92"));
+				}else{
+					pstUpdate.setString(84,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_93")!=null && !(rs.getString("ATTRIBUTE_93").equals(""))){
+					pstUpdate.setString(85, rs.getString("ATTRIBUTE_93"));
+				}else{
+					pstUpdate.setString(85,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_94")!=null && !(rs.getString("ATTRIBUTE_94").equals(""))){
+					pstUpdate.setString(86, rs.getString("ATTRIBUTE_94"));
+				}else{
+					pstUpdate.setString(86,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_95")!=null && !(rs.getString("ATTRIBUTE_95").equals(""))){
+					pstUpdate.setString(87, rs.getString("ATTRIBUTE_95"));
+				}else{
+					pstUpdate.setString(87,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_96")!=null && !(rs.getString("ATTRIBUTE_96").equals(""))){
+					pstUpdate.setString(88, rs.getString("ATTRIBUTE_96"));
+				}else{
+					pstUpdate.setString(88,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_97")!=null && !(rs.getString("ATTRIBUTE_97").equals(""))){
+					pstUpdate.setString(89, rs.getString("ATTRIBUTE_97"));
+				}else{
+					pstUpdate.setString(89,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_98")!=null && !(rs.getString("ATTRIBUTE_98").equals(""))){
+					pstUpdate.setString(90, rs.getString("ATTRIBUTE_98"));
+				}else{
+					pstUpdate.setString(90,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_99")!=null && !(rs.getString("ATTRIBUTE_99").equals(""))){
+					pstUpdate.setString(91, rs.getString("ATTRIBUTE_99"));
+				}else{
+					pstUpdate.setString(91,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_100")!=null && !(rs.getString("ATTRIBUTE_100").equals(""))){
+					pstUpdate.setString(92, rs.getString("ATTRIBUTE_100"));
+				}else{
+					pstUpdate.setString(92,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_101")!=null && !(rs.getString("ATTRIBUTE_101").equals(""))){
+					pstUpdate.setString(93, rs.getString("ATTRIBUTE_101"));
+				}else{
+					pstUpdate.setString(93,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_105")!=null && !(rs.getString("ATTRIBUTE_105").equals(""))){
+					pstUpdate.setString(94, rs.getString("ATTRIBUTE_105"));
+				}else{
+					pstUpdate.setString(94,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_106")!=null && !(rs.getString("ATTRIBUTE_106").equals(""))){
+					pstUpdate.setString(95, rs.getString("ATTRIBUTE_106"));
+				}else{
+					pstUpdate.setString(95,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_107")!=null && !(rs.getString("ATTRIBUTE_107").equals(""))){
+					pstUpdate.setString(96, rs.getString("ATTRIBUTE_107"));
+				}else{
+					pstUpdate.setString(96,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_108")!=null && !(rs.getString("ATTRIBUTE_108").equals(""))){
+					pstUpdate.setString(97, rs.getString("ATTRIBUTE_108"));
+				}else{
+					pstUpdate.setString(97,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_109")!=null && !(rs.getString("ATTRIBUTE_109").equals(""))){
+					pstUpdate.setString(98, rs.getString("ATTRIBUTE_109"));
+				}else{
+					pstUpdate.setString(98,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_110")!=null && !(rs.getString("ATTRIBUTE_110").equals(""))){
+					pstUpdate.setString(99, rs.getString("ATTRIBUTE_110"));
+				}else{
+					pstUpdate.setString(99,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_111")!=null && !(rs.getString("ATTRIBUTE_111").equals(""))){
+					pstUpdate.setString(100, rs.getString("ATTRIBUTE_111"));
+				}else{
+					pstUpdate.setString(100,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_112")!=null && !(rs.getString("ATTRIBUTE_112").equals(""))){
+					pstUpdate.setString(101, rs.getString("ATTRIBUTE_112"));
+				}else{
+					pstUpdate.setString(101,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_113")!=null && !(rs.getString("ATTRIBUTE_113").equals(""))){
+					pstUpdate.setString(102, rs.getString("ATTRIBUTE_113"));
+				}else{
+					pstUpdate.setString(102,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_117")!=null && !(rs.getDate("ATTRIBUTE_117").equals(""))){
+					pstUpdate.setDate(103, rs.getDate("ATTRIBUTE_117"));
+				}else{
+					pstUpdate.setDate(103,null);
+				}
+
+				pstUpdate.setLong(104, rs.getLong("ATTRIBUTE_118"));// Number
+				if(rs.getDate("ATTRIBUTE_114")!=null && !(rs.getDate("ATTRIBUTE_114").equals(""))){
+					pstUpdate.setDate(105, rs.getDate("ATTRIBUTE_114"));
+				}else{
+					pstUpdate.setDate(105,null);
+				}
+
+				if(rs.getDate("ATTRIBUTE_115")!=null && !(rs.getDate("ATTRIBUTE_115").equals(""))){
+					pstUpdate.setDate(106, rs.getDate("ATTRIBUTE_115"));
+				}else{
+					pstUpdate.setDate(106,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_116")!=null && !(rs.getString("ATTRIBUTE_116").equals(""))){
+					pstUpdate.setString(107, rs.getString("ATTRIBUTE_116"));
+				}else{
+					pstUpdate.setString(107,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_119")!=null && !(rs.getString("ATTRIBUTE_119").equals(""))){
+					pstUpdate.setString(108, rs.getString("ATTRIBUTE_119"));
+				}else{
+					pstUpdate.setString(108,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_120")!=null && !(rs.getString("ATTRIBUTE_120").equals(""))){
+					pstUpdate.setString(109, rs.getString("ATTRIBUTE_120"));
+				}else{
+					pstUpdate.setString(109,null);
+				}
+
+
+				if(rs.getString("ATTRIBUTE_121")!=null && !(rs.getString("ATTRIBUTE_121").equals(""))){
+					pstUpdate.setString(110, rs.getString("ATTRIBUTE_121"));
+				}else{
+					pstUpdate.setString(110,null);
+				}
+
+				if(rs.getString("ATTRIBUTE_122")!=null && !(rs.getString("ATTRIBUTE_122").equals(""))){
+					pstUpdate.setString(111, rs.getString("ATTRIBUTE_122"));
+				}else{
+					pstUpdate.setString(111, null);
+				}
+
+				if(rs.getString("ATTRIBUTE_123")!=null && !(rs.getString("ATTRIBUTE_123").equals(""))){
+					pstUpdate.setString(112, rs.getString("ATTRIBUTE_123"));
+				}else{
+					pstUpdate.setString(112,null);
+				}
+				pstUpdate.setString(113, serialNoOut);
 
 				boolean status = pstUpdate.execute();
 
@@ -564,9 +1614,9 @@ PCBASwapUPDUpdateInterfaceDAO {
 
 				if (!status) {
 
-					String updateOldserialNOStatus = "update upd.UPD_SN_REPOS set ATTRIBUTE_37='SCR  "
+					String updateOldserialNOStatus = "update upd.UPD_SN_REPOS set ATTRIBUTE_34='"+lockCode+"SCR',ATTRIBUTE_37='SCR     "
 							+ DateToStr
-							+ "',ATTRIBUTE_41='"+serialNoOut+"' where serial_no='"
+							+ "',ATTRIBUTE_41='"+serialNoOut+"',LAST_MOD_BY='pcba_pgm_SwapUpdate',LAST_MOD_DATETIME=sysdate where serial_no='"
 							+ serialNoIn
 							+ "'";
 					pstmt1 = connection2
