@@ -178,7 +178,7 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 	}
-	public static String checkValidSerialNumber(String serialNoIn,String inputType){
+	public static String checkValidSerialNumber(String serialNoIn,String inputType) throws MEIDException{
 
 		Pattern pattren = Pattern.compile("[^a-zA-Z0-9 ]", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattren.matcher(serialNoIn);
@@ -188,8 +188,8 @@ public class DBUtil {
 			serialNoValue = ServiceMessageCodes.INVALID+inputType;	
 		}
 		else{
-			serialNoValue = serialNoIn;
-		}
+			serialNoValue =MeidUtils.validateMEID(serialNoIn);
+		}		
 		return serialNoValue;
 	}
 
