@@ -232,7 +232,7 @@ public class UPDDispatchSerialRestWebservice {
 		 */
 
 		hasSpecial = checkForSpecialCharacter(dispatchSerialRequestPOJO
-				.getMascID());
+				.getMascID(),"-._");
 		if (hasSpecial) {
 			logger.debug("Invalid MascID");
 			logger.info("Invalid MascID");
@@ -681,7 +681,7 @@ public class UPDDispatchSerialRestWebservice {
 	 */
 	private boolean checkBuildType(
 			DispatchSerialRequestPOJO dispatchSerialRequestPOJO) {
-		if (dispatchSerialRequestPOJO.getBuildType() == null
+		if (dispatchSerialRequestPOJO.getBuildType() == ""
 				|| dispatchSerialRequestPOJO.getBuildType() == null) {
 			return true;
 		}
