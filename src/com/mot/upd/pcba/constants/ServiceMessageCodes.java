@@ -110,8 +110,8 @@ public class ServiceMessageCodes {
 	public static final String PCBA_INPUT_PARAM_MISSING = "Following Fields are mandatory- ClientIP,mascID,serialNoIn,serialNoOut,serialNoType,repairdate.Please re-enter and try again.";
 	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG = "Old Serialno not found in Shipment table";
 	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG = "Old Serialno not found in warranty info table";
-	public static final String DUAL_SERIAL_NOT_FOUND_MSG = "Required both DualSerialNoIn and DualSerialNoOut.";
-	public static final String TRI_SERIAL_NOT_FOUND_MSG = "Required TriSerialNoIn,TriSerialNoOut,DualSerialNoIn and DualSerialNoOut.";
+	public static final String DUAL_SERIAL_NOT_FOUND_MSG = "Required  DualSerialNoIn,DualSerialNoOut and DualSerialNoType.";
+	public static final String TRI_SERIAL_NOT_FOUND_MSG = "Required TriSerialNoIn,TriSerialNoOut,TriSerialNoType,DualSerialNoIn,DualSerialNoOut and DualSerialNoType.";
 	public static final String EMAIL_MSG_CODE = "8002";
 	public static final String EMAIL_MSG = "Error - Contact Support Team.";
 	public static final String DUAL_SERIAL_NO_CODE = "5022";
@@ -120,6 +120,10 @@ public class ServiceMessageCodes {
 	public static final String TRI_SERIAL_NO_CODE_MSG = "This TriSerialNoIn is not eligible for Tri Case.";
 	public static final String INVALID = "invalid ";
 	public static final String INVALID_SERIAL_NO_CODE = "5024";
+	public static final String SERIAL_IN_OUT_DIFF="5026";
+	public static final String SERIAL_IN_OUT_DIFF_MSG="SerialNoIn and SreialNoOut are should different";
+	public static final String DUAL_SERIAL_IN_OUT_DIFF="5027";
+	public static final String DUAL_SERIAL_IN_OUT_DIFF_MSG="SerialNoIn,SreialNoOut,DualSerialNoIn and DualSerialNoOut should different";
 	// R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";
