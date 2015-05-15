@@ -1673,7 +1673,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 			if (rs.next()) {
 
 				SQLInnerQuery
-				.append("INSERT INTO upd.upd_sn_repos_ref (SERIAL_NO,REFERENCE_KEY,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME) VALUES (?,?,'pcba_pgm',sysdate,'pcba_pgm',sysdate)");
+				.append("INSERT INTO upd.upd_sn_repos_ref (SERIAL_NO,REFERENCE_KEY,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME) VALUES (?,?,'pcba_pgm_SwapUpdate',sysdate,'pcba_pgm',sysdate)");
 				pstUpdate = con.prepareStatement(SQLInnerQuery.toString());
 				pstUpdate.setString(1, serialNoOut);
 				pstUpdate.setString(2, rs.getString("REFERENCE_KEY"));

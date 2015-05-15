@@ -124,6 +124,9 @@ public class ServiceMessageCodes {
 	public static final String SERIAL_IN_OUT_DIFF_MSG="SerialNoIn and SreialNoOut are should different";
 	public static final String DUAL_SERIAL_IN_OUT_DIFF="5027";
 	public static final String DUAL_SERIAL_IN_OUT_DIFF_MSG="SerialNoIn,SreialNoOut,DualSerialNoIn and DualSerialNoOut should different";
+	public static final String TRI_SERIAL_IN_OUT_DIFF="5028";
+	public static final String TRI_SERIAL_IN_OUT_DIFF_MSG="SerialNoIn,SreialNoOut,DualSerialNoIn,DualSerialNoOut,TriSerialNoIn and TriSerialNoOut should different";
+
 	// R12 scrap serial
 	public static final String OLD_SERIAL_FOUND_SUCCSS_MSG = "Success";
 	public static final String OLD_SN_SUCCESS = "0000";
