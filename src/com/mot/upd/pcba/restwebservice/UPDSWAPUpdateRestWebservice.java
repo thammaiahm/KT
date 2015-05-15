@@ -193,7 +193,12 @@ public class UPDSWAPUpdateRestWebservice {
 
 		if(pCBASerialNoUPdateQueryInput.getDualSerialNoIn()!=null &&!(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().equals(""))){
 			int dualSerialCount = pcbaSwapUPDUpdateInterfaceDAO.checkValidSerialNoIn(pCBASerialNoUPdateQueryInput.getDualSerialNoIn());
-			if(dualSerialCount!=2){
+			int triSerilalCount=0;
+			if(pCBASerialNoUPdateQueryInput.getTriSerialNoIn()!=null && !(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().equals(""))){
+				triSerilalCount = pcbaSwapUPDUpdateInterfaceDAO.checkValidSerialNoIn(pCBASerialNoUPdateQueryInput.getDualSerialNoIn());
+			}
+			
+			if(dualSerialCount!=2 && triSerilalCount!=3){
 				pcbaSerialNoUPdateResponse.setResponseCode(""+ServiceMessageCodes.DUAL_SERIAL_NO_CODE);
 				pcbaSerialNoUPdateResponse.setResponseMessage(ServiceMessageCodes.DUAL_SERIAL_NO_CODE_MSG);
 				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
