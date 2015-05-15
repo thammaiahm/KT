@@ -55,8 +55,7 @@ public class R12SnSwapOracleDAO {
 		PCBASerialNumberModel pCBASerialNumberModel = new PCBASerialNumberModel();
 		R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
 			try {
-				
-				ds = DBUtil.getOracleDataSource();
+						ds = DBUtil.getOracleDataSource();
 				} catch (NamingException e) {
 					
 				pCBASerialNumberModel.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);

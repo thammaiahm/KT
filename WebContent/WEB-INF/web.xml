@@ -54,18 +54,14 @@
 		</servlet-class>
 		<init-param>
         <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <param-value>/swapOldSerialFetchRS</param-value>
+        <param-value>/swapSerial</param-value>
     </init-param>       
     <init-param>
         <param-name>resteasy.resources</param-name>
         <param-value>com.mot.upd.pcba.restwebservice.R12SnSwapUpdateRestWebservice</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>UPDSWAPUpdateRestWebservice</servlet-name>
-    <url-pattern>/swapUpdate/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
+   <servlet-mapping>
     <servlet-name>UPDDispatchSerialRestWebservice</servlet-name>
     <url-pattern>/dispatch/*</url-pattern>
   </servlet-mapping>
@@ -74,7 +70,11 @@
     <url-pattern>/successFailure/*</url-pattern>
   </servlet-mapping>
    <servlet-mapping>
+    <servlet-name>UPDSWAPUpdateRestWebservice</servlet-name>
+    <url-pattern>/swapUpdate/*</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
     <servlet-name>R12SnSwapUpdateRestWebservice</servlet-name>
-    <url-pattern>/swapOldSerialFetchRS/*</url-pattern>
+    <url-pattern>/swapSerial/*</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @Path("/")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Rs_R12UpdateQueryInput",propOrder={"serialNO"},namespace="java:com.mot.upd.pcba.pojo")
+@XmlType(name = "r12SnSwapUpdateQueryInput",propOrder={"serialNO"},namespace="java:com.mot.upd.pcba.pojo")
 public class R12SnSwapUpdateQueryInput implements Serializable{
 	
 	@XmlElement(name = "serialNO", nillable=true,required=true,namespace="java:com.mot.upd.pcba.pojo")
@@ -27,6 +27,6 @@ public class R12SnSwapUpdateQueryInput implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "Rs_R12UpdateQueryInput [serialNO=" + serialNO + "]";
+		return "R12SnSwapUpdateQueryInput [serialNO=" + serialNO + "]";
 	}
 }

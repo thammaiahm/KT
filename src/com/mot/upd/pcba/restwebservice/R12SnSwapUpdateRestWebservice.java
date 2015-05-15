@@ -28,7 +28,7 @@ import com.mot.upd.pcba.utils.MeidUtils;
  * @author Quinnox Dev Team
  *
  */
-
+@Path("/serialFetchRS")
 public class R12SnSwapUpdateRestWebservice {
 	private static final Logger logger = Logger.getLogger(R12SnSwapUpdateRestWebservice.class);
 	
@@ -47,7 +47,7 @@ public class R12SnSwapUpdateRestWebservice {
 		//String serialOut = null;
 		//serialIn = "353339060930372";
 
-		logger.info(" Request serialIn value from rest webservice = " +serialIn);
+		logger.info(" Input serial number = " +serialIn);
 		PCBASerialNumberModel pCBASerialNumberModel =null;
 		R12SnSwapUpdateQueryInput r12UpdateQueryInput = new R12SnSwapUpdateQueryInput();
 		R12SnSwapUpdateQueryResult r12UpdateQueryResult = new R12SnSwapUpdateQueryResult();
