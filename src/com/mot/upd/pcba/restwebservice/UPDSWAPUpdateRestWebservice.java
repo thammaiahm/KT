@@ -358,7 +358,6 @@ public class UPDSWAPUpdateRestWebservice {
 	}
 
 
-
 	private boolean validateSerialNoIn(
 			PCBASerialNoUPdateQueryInput pCBASerialNoUPdateQueryInput) {
 		// TODO Auto-generated method stub

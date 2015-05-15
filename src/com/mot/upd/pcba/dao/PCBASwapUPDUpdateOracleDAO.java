@@ -1669,6 +1669,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 			rs = pst.executeQuery();
 
 			logger.info("Reading Data Inside Shipment table(Status) SQL:"+sbuffer.toString());
+			
 
 			if (rs.next()) {
 
