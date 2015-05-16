@@ -103,20 +103,6 @@ public class UPDSWAPUpdateRestWebservice {
 
 			}
 		}
-		//Check Valid serialNoOut
-
-		if(pCBASerialNoUPdateQueryInput.getSerialNoOut()!=null && !(pCBASerialNoUPdateQueryInput.getSerialNoOut().equals(""))){
-			String statusOfSerialNoOut = DBUtil.checkValidSerialNumber(pCBASerialNoUPdateQueryInput.getSerialNoOut(),"SerialNoOut");
-			if(statusOfSerialNoOut.length() == 15){
-				pCBASerialNoUPdateQueryInput.setSerialNoOut(statusOfSerialNoOut);
-			}else{
-				pcbaSerialNoUPdateResponse.setResponseCode(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
-				pcbaSerialNoUPdateResponse.setResponseMessage(statusOfSerialNoOut);
-				return Response.status(200).entity(pcbaSerialNoUPdateResponse).build();
-
-			}
-		}
-
 
 
 		//check if SerialNoIN is valid

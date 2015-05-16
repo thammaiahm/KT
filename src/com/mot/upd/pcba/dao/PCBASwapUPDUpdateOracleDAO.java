@@ -313,8 +313,11 @@ PCBASwapUPDUpdateInterfaceDAO {
 					String DateToStr = format.format(curDate);
 
 					pstmt.setString(30, "ACT     " + DateToStr);// Status
+					
 					if(rs.getString("ATTRIBUTE_38")!=null && !(rs.getString("ATTRIBUTE_38").equals(""))){
 						pstmt.setString(31, rs.getString("ATTRIBUTE_38"));
+					}else{
+						pstmt.setString(31,null);
 					}
 
 					if(rs.getString("ATTRIBUTE_39")!=null && !(rs.getString("ATTRIBUTE_39").equals(""))){
@@ -731,6 +734,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 					}
 
 					pstmt.setLong(104, rs.getLong("ATTRIBUTE_118"));// Number
+					
 					if(rs.getDate("ATTRIBUTE_114")!=null && !(rs.getDate("ATTRIBUTE_114").equals(""))){
 						pstmt.setDate(105, rs.getDate("ATTRIBUTE_114"));
 					}else{
@@ -785,6 +789,22 @@ PCBASwapUPDUpdateInterfaceDAO {
 					boolean status = pstmt.execute();
 
 					logger.info("After Inserting Shipment Table SQL"+SQLQuery.toString());
+					
+					//Update SwapDate in MEID Table.
+					pstmt = null;
+					String serialMEIDupdate="update upd.upd_pcba_pgm_meid set SWAP_DATE=sysdate where serial_no='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"'";
+					pstmt = connection.prepareStatement(serialMEIDupdate);
+					pstmt.execute();
+					
+					logger.info("serialNormalCase MEIDupdate SQL:"+serialMEIDupdate);
+					
+					//Update swapDate in IMEI Table 
+					pstmt = null;
+					String serialIMEIupdate="update upd.upd_pcba_pgm_imei set SWAP_DATE=sysdate where serial_no='"+pCBASerialNoUPdateQueryInput.getSerialNoOut()+"'";
+					pstmt = connection.prepareStatement(serialIMEIupdate);
+					pstmt.execute();
+					
+					logger.info("serialNormalCase IMEIupdate SQL:"+serialIMEIupdate);
 
 					if (!status) {
 
@@ -1142,6 +1162,8 @@ PCBASwapUPDUpdateInterfaceDAO {
 				pstUpdate.setString(30, "ACT     " + DateToStr);// Status
 				if(rs.getString("ATTRIBUTE_38")!=null && !(rs.getString("ATTRIBUTE_38").equals(""))){
 					pstUpdate.setString(31, rs.getString("ATTRIBUTE_38"));
+				}else{
+					pstUpdate.setString(31,null);
 				}
 
 				if(rs.getString("ATTRIBUTE_39")!=null && !(rs.getString("ATTRIBUTE_39").equals(""))){
@@ -1558,6 +1580,7 @@ PCBASwapUPDUpdateInterfaceDAO {
 				}
 
 				pstUpdate.setLong(104, rs.getLong("ATTRIBUTE_118"));// Number
+				
 				if(rs.getDate("ATTRIBUTE_114")!=null && !(rs.getDate("ATTRIBUTE_114").equals(""))){
 					pstUpdate.setDate(105, rs.getDate("ATTRIBUTE_114"));
 				}else{
@@ -1611,6 +1634,22 @@ PCBASwapUPDUpdateInterfaceDAO {
 				boolean status = pstUpdate.execute();
 
 				logger.info(" After Shipment Table Insert SQL:"+SQLInnerQuery.toString());
+				
+				//Update SwapDate in MEID Table.
+				pstUpdate = null;
+				String serialMEIDupdate="update upd.upd_pcba_pgm_meid set SWAP_DATE=sysdate where serial_no='"+serialNoOut+"'";
+				pstUpdate = connection2.prepareStatement(serialMEIDupdate);
+				pstUpdate.execute();
+				
+				logger.info("serialMEIDupdate SQL:"+serialMEIDupdate);
+				
+				//Update swapDate in IMEI Table 
+				pstUpdate = null;
+				String serialIMEIupdate="update upd.upd_pcba_pgm_imei set SWAP_DATE=sysdate where serial_no='"+serialNoOut+"'";
+				pstUpdate = connection2.prepareStatement(serialIMEIupdate);
+				pstUpdate.execute();
+				
+				logger.info("serialIMEIupdate SQL:"+serialIMEIupdate);
 
 				if (!status) {
 
