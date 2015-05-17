@@ -12,6 +12,7 @@ public class DispatchSerialMEID {
 	private static String aKey2Value;
 	private static String masterSubLockCode;
 	private static String oneTimeSublockCode;
+	private static String requestID;
 	public static String getaKey1Type() {
 		return aKey1Type;
 	}
@@ -47,6 +48,12 @@ public class DispatchSerialMEID {
 	}
 	public static void setOneTimeSublockCode(String oneTimeSublockCode) {
 		DispatchSerialMEID.oneTimeSublockCode = oneTimeSublockCode;
+	}
+	public static String getRequestID() {
+		return requestID;
+	}
+	public static void setRequestID(String requestID) {
+		DispatchSerialMEID.requestID = requestID;
 	}
 
 }
