@@ -358,6 +358,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 					response.setBuildType(rs.getString("BUILD_TYPE"));
 					response.setGppdID(rs.getString("GPPD_ID"));
 					response.setCustomer(rs.getString("CUSTOMER"));
+					DispatchSerialMEID.setRequestID(rs.getString("REQUEST_ID"));
 				} while (rs.next());
 
 			} else {
@@ -463,6 +464,8 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			}
 			preparedStmt.setString(9, dispatchSerialRequestPOJO.getTrackID());
 			preparedStmt.setString(10, dispatchSerialRequestPOJO.getGppdID());
+			preparedStmt.setString(11, DispatchSerialMEID.getRequestID());
+			preparedStmt.setString(12, PCBADataDictionary.PROGRAM_FACILITY);
 			
 			preparedStmt.executeUpdate();
 
@@ -695,6 +698,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 					DispatchSerialMEID.setaKey2Value(rs.getString("AKEY2_VALUE"));
 					DispatchSerialMEID.setMasterSubLockCode(rs.getString("MASTER_SUBLOCK_CODE"));
 					DispatchSerialMEID.setOneTimeSublockCode(rs.getString("ONETIME_SBLOCK_CODE"));
+					DispatchSerialMEID.setRequestID(rs.getString("REQUEST_ID"));
 					
 
 				} while (rs.next());
@@ -826,6 +830,8 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			
 			preparedStmt.setString(15, DispatchSerialMEID.getMasterSubLockCode());
 			preparedStmt.setString(16, DispatchSerialMEID.getOneTimeSublockCode());
+			preparedStmt.setString(17, DispatchSerialMEID.getRequestID());
+			preparedStmt.setString(18, PCBADataDictionary.PROGRAM_FACILITY);
 			
 			
 			
