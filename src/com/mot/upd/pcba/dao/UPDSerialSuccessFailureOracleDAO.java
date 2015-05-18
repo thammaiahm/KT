@@ -63,7 +63,7 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 				sb.append("ATTRIBUTE_29='"+pcbaProgramQueryInput.getServicePassCode()+"',");
 			}
 
-			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
+			sb.append("LAST_MOD_DATETIME=sysdate,ATTRIBUTE_60='GSM' WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 			logger.info("IMEI SQL Query:"+sb.toString());
@@ -126,7 +126,7 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 			if(pcbaProgramQueryInput.getServicePassCode()!=null && !(pcbaProgramQueryInput.getServicePassCode().equals(""))){
 				sb.append("ATTRIBUTE_29='"+pcbaProgramQueryInput.getServicePassCode()+"',");
 			}
-			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
+			sb.append("LAST_MOD_DATETIME=sysdate,ATTRIBUTE_60='GSM' WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
@@ -178,7 +178,7 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 
 			StringBuffer sb=new StringBuffer();
 			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_success',");
-			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
+			sb.append("LAST_MOD_DATETIME=sysdate,ATTRIBUTE_60='CDMA' WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 
@@ -231,7 +231,7 @@ public class UPDSerialSuccessFailureOracleDAO implements UPDSerialSuccessFailure
 
 			StringBuffer sb=new StringBuffer();
 			sb.append("update upd.UPD_SN_REPOS set LAST_MOD_BY='pcba_pgm_failure',");
-			sb.append("LAST_MOD_DATETIME=sysdate WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
+			sb.append("LAST_MOD_DATETIME=sysdate,ATTRIBUTE_60='CDMA' WHERE serial_no='"+pcbaProgramQueryInput.getSerialNO()+"'");
 			preparedStmt = con.prepareStatement(sb.toString());
 			preparedStmt.execute();
 

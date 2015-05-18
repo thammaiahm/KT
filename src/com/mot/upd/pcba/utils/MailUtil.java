@@ -84,6 +84,7 @@ public class MailUtil {
 
 			// Send message
 			Transport.send(message);
+			logger.info("Sent Email successfully....");
 			System.out.println("Sent message successfully....");
 			isMailSent = true;
 		}catch (MessagingException mex) {
