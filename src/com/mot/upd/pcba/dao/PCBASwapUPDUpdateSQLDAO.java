@@ -76,7 +76,7 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 			if (rs.next()) {
 
 				String serialNoStatus=rs.getString("status_code");				
-				if(serialNoStatus.startsWith("VOI")){
+				if(!serialNoStatus.startsWith("ACT")){
 					StringBuffer stb = new StringBuffer();
 					stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
 					prestmt = con.prepareStatement(stb.toString());
@@ -101,92 +101,383 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 				}else{				
 
 
-					String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
-							+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
-							+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
-							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updFactoryShipmentInfo = "update upd.upd_factory_shipment_info set factory_code,gen_date=?,protocol=?,apc=?,trans_model=?,cust_model=?,mkt_model=?,item_code=?,warr_code=?,"
+							+ "ship_date=?,ship_to_cust_id=?,ship_to_cust_addr=?,ship_to_cust_name=?,ship_to_cust_city=?,ship_to_cust_country=?,sold_to_cust_id=?,sold_to_cust_name=?,sold_date=?,"
+							+ "cit=?,ta_no=?,carton_id=?,po_no=?,so_no=?,fo_sequence=?,msn=?,assign_date=?,gpp_id=?,product_type=?,location_type=?,packing_list=?,fab_date=?,imc_mfg_location=?,)"
+							+ "guid=?,pdb_id=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					con1 = DBUtil.getConnection(ds);
 					con1.setAutoCommit(false);
+
 					pstmt1 = con1.prepareStatement(MySql_updFactoryShipmentInfo);
 
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("factory_code"));
-					pstmt1.setDate(3, rs.getDate("gen_date"));
-					pstmt1.setString(4, rs.getString("protocol"));
-					pstmt1.setString(5, rs.getString("apc"));
-					pstmt1.setString(6, rs.getString("trans_model"));
-					pstmt1.setString(7, rs.getString("cust_model"));
-					pstmt1.setString(8, rs.getString("mkt_model"));
-					pstmt1.setString(9, rs.getString("item_code"));
-					pstmt1.setString(10, rs.getString("warr_code"));
-					pstmt1.setDate(11, rs.getDate("ship_date"));
-					pstmt1.setString(12, rs.getString("ship_to_cust_id"));
-					pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
-					pstmt1.setString(14, rs.getString("ship_to_cust_name"));
-					pstmt1.setString(15, rs.getString("ship_to_cust_city"));
-					pstmt1.setString(16, rs.getString("ship_to_cust_country"));
-					pstmt1.setString(17, rs.getString("sold_to_cust_id"));
-					pstmt1.setString(18, rs.getString("sold_to_cust_name"));
-					pstmt1.setDate(19, rs.getDate("sold_date"));
-					pstmt1.setString(20, rs.getString("cit"));
-					pstmt1.setString(21, rs.getString("ta_no"));
-					pstmt1.setString(22, rs.getString("carton_id"));
-					pstmt1.setString(23, rs.getString("po_no"));
-					pstmt1.setString(24, rs.getString("so_no"));
-					pstmt1.setString(25, rs.getString("fo_sequence"));
-					pstmt1.setString(26, rs.getString("msn"));
-					pstmt1.setDate(27, rs.getDate("assign_date"));
-					pstmt1.setString(28, rs.getString("gpp_id"));
-					pstmt1.setString(29, rs.getString("product_type"));
-					pstmt1.setString(30, rs.getString("location_type"));
-					pstmt1.setString(31, rs.getString("packing_list"));
-					pstmt1.setDate(32, rs.getDate("fab_date"));
-					pstmt1.setString(33, rs.getString("imc_mfg_location"));
-					pstmt1.setString(34, rs.getString("guid"));
-					pstmt1.setString(35, "pdb_id");
+					if(rs.getString("factory_code")!=null && !(rs.getString("factory_code").equals(""))){
+						pstmt1.setString(1, rs.getString("factory_code"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getDate("gen_date")!=null && !(rs.getDate("gen_date").equals(""))){
+						pstmt1.setDate(2, rs.getDate("gen_date"));
+					}else{
+						pstmt1.setDate(2,null);
+					}
+
+					if(rs.getString("protocol")!=null && !(rs.getString("protocol").equals(""))){
+						pstmt1.setString(3, rs.getString("protocol"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("apc")!=null && !(rs.getString("apc").equals(""))){
+						pstmt1.setString(4, rs.getString("apc"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("trans_model")!=null && !(rs.getString("trans_model").equals(""))){
+						pstmt1.setString(5, rs.getString("trans_model"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("cust_model")!=null && !(rs.getString("cust_model").equals(""))){
+						pstmt1.setString(6, rs.getString("cust_model"));
+					}else{
+						pstmt1.setString(6,null);	
+					}
+
+					if(rs.getString("mkt_model")!=null && !(rs.getString("mkt_model").equals(""))){
+						pstmt1.setString(7, rs.getString("mkt_model"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("item_code")!=null && !(rs.getString("item_code").equals(""))){
+						pstmt1.setString(8, rs.getString("item_code"));
+					}else{
+						pstmt1.setString(8,null);	
+					}
+
+					if(rs.getString("warr_code")!=null && !(rs.getString("warr_code").equals(""))){
+						pstmt1.setString(9, rs.getString("warr_code"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+					if(rs.getDate("ship_date")!=null && !(rs.getDate("ship_date").equals(""))){
+						pstmt1.setDate(10, rs.getDate("ship_date"));
+					}else{
+						pstmt1.setDate(10,null);	
+					}
+
+					if(rs.getString("ship_to_cust_id")!=null && !(rs.getString("ship_to_cust_id").equals(""))){
+						pstmt1.setString(11, rs.getString("ship_to_cust_id"));
+					}else{
+						pstmt1.setString(11,null);
+					}
+
+					if(rs.getString("ship_to_cust_addr")!=null && !(rs.getString("ship_to_cust_addr").equals(""))){
+						pstmt1.setString(12, rs.getString("ship_to_cust_addr"));
+					}else{
+						pstmt1.setString(12,null);	
+					}
+
+					if(rs.getString("ship_to_cust_name")!=null && !(rs.getString("ship_to_cust_name").equals(""))){
+						pstmt1.setString(13, rs.getString("ship_to_cust_name"));
+					}else{
+						pstmt1.setString(13,null);
+					}
+
+					if(rs.getString("ship_to_cust_city")!=null && !(rs.getString("ship_to_cust_city").equals(""))){
+						pstmt1.setString(14, rs.getString("ship_to_cust_city"));
+					}else{
+						pstmt1.setString(14,null);
+					}
+
+					if(rs.getString("ship_to_cust_country")!=null && !(rs.getString("ship_to_cust_country").equals(""))){
+						pstmt1.setString(15, rs.getString("ship_to_cust_country"));
+					}else{
+						pstmt1.setString(15,null);
+					}
+
+					if(rs.getString("sold_to_cust_id")!=null && !(rs.getString("sold_to_cust_id").equals(""))){
+						pstmt1.setString(16, rs.getString("sold_to_cust_id"));
+					}else{
+						pstmt1.setString(16,null);
+					}
+
+					if(rs.getString("sold_to_cust_name")!=null && !(rs.getString("sold_to_cust_name").equals(""))){
+						pstmt1.setString(17, rs.getString("sold_to_cust_name"));
+					}else{
+						pstmt1.setString(17,null);
+					}
+
+					if(rs.getDate("sold_date")!=null && !(rs.getDate("sold_date").equals(""))){
+						pstmt1.setDate(18, rs.getDate("sold_date"));
+					}else{
+						pstmt1.setDate(18,null);
+					}
+
+					if(rs.getString("cit")!=null && !(rs.getString("cit").equals(""))){
+						pstmt1.setString(19, rs.getString("cit"));
+					}else{
+						pstmt1.setString(19,null);
+					}
+
+					if(rs.getString("ta_no")!=null && !(rs.getString("ta_no").equals(""))){
+						pstmt1.setString(20, rs.getString("ta_no"));
+					}else{
+						pstmt1.setString(20,null);	
+					}
+
+					if(rs.getString("carton_id")!=null){
+						pstmt1.setString(21, rs.getString("carton_id"));
+					}else{
+						pstmt1.setString(21,null);	
+					}
+
+					if(rs.getString("po_no")!=null && !(rs.getString("po_no").equals(""))){
+						pstmt1.setString(22, rs.getString("po_no"));
+					}else{
+						pstmt1.setString(22,null);	
+					}
+
+					if(rs.getString("so_no")!=null && !(rs.getString("so_no").equals(""))){
+						pstmt1.setString(23, rs.getString("so_no"));
+					}else{
+						pstmt1.setString(23,null);
+					}
+
+					if(rs.getString("fo_sequence")!=null && !(rs.getString("fo_sequence").equals(""))){
+						pstmt1.setString(24, rs.getString("fo_sequence"));
+					}else{
+						pstmt1.setString(24,null);
+					}
+
+					if(rs.getString("msn")!=null && !(rs.getString("msn").equals(""))){
+						pstmt1.setString(25, rs.getString("msn"));
+					}else{
+						pstmt1.setString(25,null);	
+					}
+
+					if(rs.getDate("assign_date")!=null && !(rs.getDate("assign_date").equals(""))){
+						pstmt1.setDate(26, rs.getDate("assign_date"));
+					}else{
+						pstmt1.setDate(26,null);
+					}
+
+					if(rs.getString("gpp_id")!=null && !(rs.getString("gpp_id").equals(""))){
+						pstmt1.setString(27, rs.getString("gpp_id"));
+					}else{
+						pstmt1.setString(27,null);	
+					}
+
+					if(rs.getString("product_type")!=null && !(rs.getString("product_type").equals(""))){
+						pstmt1.setString(28, rs.getString("product_type"));
+					}else{
+						pstmt1.setString(28,null);
+					}
+
+					if(rs.getString("location_type")!=null && !(rs.getString("location_type").equals(""))){
+						pstmt1.setString(29, rs.getString("location_type"));
+					}else{
+						pstmt1.setString(29,null);
+					}
+
+					if(rs.getString("packing_list")!=null && !(rs.getString("packing_list").equals(""))){
+						pstmt1.setString(30, rs.getString("packing_list"));
+					}else{
+						pstmt1.setString(30,null);	
+					}
+
+					if(rs.getDate("fab_date")!=null && !(rs.getDate("fab_date").equals(""))){
+						pstmt1.setDate(31, rs.getDate("fab_date"));
+					}else{
+						pstmt1.setDate(31,null);
+					}
+
+					if(rs.getString("imc_mfg_location")!=null && !(rs.getString("imc_mfg_location").equals(""))){
+						pstmt1.setString(32, rs.getString("imc_mfg_location"));
+					}else{
+						pstmt1.setString(32,null);
+					}
+
+					if(rs.getString("guid")!=null && !(rs.getString("guid").equals(""))){
+						pstmt1.setString(33, rs.getString("guid"));
+					}else{
+						pstmt1.setString(33,null);
+					}
+
+					if(rs.getString("pdb_id")!=null && !(rs.getString("pdb_id").equals(""))){
+						pstmt1.setString(34, rs.getString("pdb_id"));
+					}else{
+						pstmt1.setString(34,null);
+					}
+
+					pstmt1.setString(35, pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status1 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
-							+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
-							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updRepair = "update upd.upd_repair set cancel_code=?,swap_ref_no=?,swap_count=?,delete_flag=?,org_code=?,upd_time=?,dn=?,era=?,rma=?,receive_date=?,"
+							+ "delivery_date=?,return_date=?,rma_date=?,scrap_date=?,cust_id=?,warehouse_id=?,shop_id=?,status_id=?,action=?,remarks=?,csn=?,last_repair_date=?,repair_count=?,swap_date=?,)"
+							+ "last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con1.prepareStatement(MySql_updRepair);
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("cancel_code"));
-					pstmt1.setString(3, rs.getString("swap_ref_no"));
-					pstmt1.setString(4, rs.getString("swap_count"));
-					pstmt1.setString(5, rs.getString("delete_flag"));
-					pstmt1.setString(6, rs.getString("org_code"));
-					pstmt1.setString(7, rs.getString("upd_time"));
-					pstmt1.setString(8, rs.getString("dn"));
-					pstmt1.setString(9, rs.getString("era"));
-					pstmt1.setString(10, rs.getString("rma"));
-					pstmt1.setDate(11, rs.getDate("receive_date"));
-					pstmt1.setDate(12, rs.getDate("delivery_date"));
-					pstmt1.setDate(13, rs.getDate("return_date"));
-					pstmt1.setDate(14, rs.getDate("rma_date"));
-					pstmt1.setDate(15, rs.getDate("scrap_date"));
-					pstmt1.setString(16, rs.getString("cust_id"));
-					pstmt1.setString(17, rs.getString("warehouse_id"));
-					pstmt1.setString(18, rs.getString("shop_id"));
-					pstmt1.setString(19, rs.getString("status_id"));
-					pstmt1.setString(20, rs.getString("action"));
-					pstmt1.setString(21, rs.getString("remarks"));
-					pstmt1.setString(22, rs.getString("csn"));
-					pstmt1.setDate(23, rs.getDate("last_repair_date"));
-					pstmt1.setString(24, rs.getString("repair_count"));
-					pstmt1.setDate(25, rs.getDate("swap_date"));
+
+					if(rs.getString("cancel_code")!=null && !(rs.getString("cancel_code").equals(""))){
+						pstmt1.setString(1, rs.getString("cancel_code"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("swap_ref_no")!=null && !(rs.getString("swap_ref_no").equals(""))){
+						pstmt1.setString(2, rs.getString("swap_ref_no"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("swap_count")!=null && !(rs.getString("swap_count").equals(""))){
+						pstmt1.setString(3, rs.getString("swap_count"));
+					}else{
+						pstmt1.setString(3,null);	
+					}
+
+					if(rs.getString("delete_flag")!=null && !(rs.getString("delete_flag").equals(""))){
+						pstmt1.setString(4, rs.getString("delete_flag"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("org_code")!=null && !(rs.getString("org_code").equals(""))){
+						pstmt1.setString(5, rs.getString("org_code"));
+					}else{
+						pstmt1.setString(5,null);	
+					}
+
+					if(rs.getString("upd_time")!=null && !(rs.getString("upd_time").equals(""))){
+						pstmt1.setString(6, rs.getString("upd_time"));
+					}else{
+						pstmt1.setString(6,null);	
+					}
+
+					if(rs.getString("dn")!=null && !(rs.getString("dn").equals(""))){
+						pstmt1.setString(7, rs.getString("dn"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("era")!=null && !(rs.getString("era").equals(""))){
+						pstmt1.setString(8, rs.getString("era"));
+					}else{
+						pstmt1.setString(8,null);
+					}
+
+					if(rs.getString("rma")!=null && !(rs.getString("rma").equals(""))){
+						pstmt1.setString(9, rs.getString("rma"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getDate("receive_date")!=null && !(rs.getDate("receive_date").equals(""))){
+						pstmt1.setDate(10, rs.getDate("receive_date"));
+					}else{
+						pstmt1.setDate(10,null);
+					}
+
+					if(rs.getDate("delivery_date")!=null && !(rs.getDate("delivery_date").equals(""))){
+						pstmt1.setDate(11, rs.getDate("delivery_date"));
+					}else{
+						pstmt1.setDate(11,null);	
+					}
+
+					if(rs.getDate("return_date")!=null && !(rs.getDate("return_date").equals(""))){
+						pstmt1.setDate(12, rs.getDate("return_date"));
+					}else{
+						pstmt1.setDate(12,null);
+					}
+
+					if(rs.getDate("rma_date")!=null && !(rs.getDate("rma_date").equals(""))){
+						pstmt1.setDate(13, rs.getDate("rma_date"));
+					}else{
+						pstmt1.setDate(13,null);
+					}
+
+					if(rs.getDate("scrap_date")!=null && !(rs.getDate("scrap_date").equals(""))){
+						pstmt1.setDate(14, rs.getDate("scrap_date"));
+					}else{
+						pstmt1.setDate(14,null);	
+					}
+
+					if(rs.getString("cust_id")!=null && !(rs.getString("cust_id").equals(""))){
+						pstmt1.setString(15, rs.getString("cust_id"));
+					}else{
+						pstmt1.setString(15,null);
+					}
+
+					if(rs.getString("warehouse_id")!=null && !(rs.getString("warehouse_id").equals(""))){
+						pstmt1.setString(16, rs.getString("warehouse_id"));
+					}else{
+						pstmt1.setString(16,null);
+					}
+
+					if(rs.getString("shop_id")!=null && !(rs.getString("shop_id").equals(""))){
+						pstmt1.setString(17, rs.getString("shop_id"));
+					}else{
+						pstmt1.setString(17,null);	
+					}
+
+					if(rs.getString("status_id")!=null && !(rs.getString("status_id").equals(""))){
+						pstmt1.setString(18, rs.getString("status_id"));
+					}else{
+						pstmt1.setString(18,null);
+					}
+
+					if(rs.getString("action")!=null && !(rs.getString("action").equals(""))){
+						pstmt1.setString(19, rs.getString("action"));
+					}else{
+						pstmt1.setString(19,null);
+					}
+
+					if(rs.getString("remarks")!=null && !(rs.getString("remarks").equals(""))){
+						pstmt1.setString(20, rs.getString("remarks"));
+					}else{
+						pstmt1.setString(20,null);
+					}
+
+					if(rs.getString("csn")!=null && !(rs.getString("csn").equals(""))){
+						pstmt1.setString(21, rs.getString("csn"));
+					}else{
+						pstmt1.setString(21,null);	
+					}
+
+					if(rs.getDate("last_repair_date")!=null && !(rs.getDate("last_repair_date").equals(""))){
+						pstmt1.setDate(22, rs.getDate("last_repair_date"));
+					}else{
+						pstmt1.setDate(22,null);
+					}
+
+					if(rs.getString("repair_count")!=null && !(rs.getString("repair_count").equals(""))){
+						pstmt1.setString(23, rs.getString("repair_count"));
+					}else{
+						pstmt1.setString(23,null);
+					}
+
+					if(rs.getDate("swap_date")!=null && !(rs.getDate("swap_date").equals(""))){
+						pstmt1.setDate(24, rs.getDate("swap_date"));
+					}else{
+						pstmt1.setDate(24,null);
+					}
+
+					pstmt1.setString(25,pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status2 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
-							+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updWarrantyInfo = "update upd.upd_warranty_info set status_code=?,orig_warr_eff_date=?,ren_warr_code=?,warr_country_code=?,warr_region=?,orig_ship_date=?,reference_key=?,"
+							+ "pop_in_sysdate=?,pop_date=?,pop_identifier=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con1.prepareStatement(MySql_updWarrantyInfo);
 
@@ -194,92 +485,318 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
 					String DateToStr = format.format(curDate);
 
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, "ACT  " + DateToStr);
-					pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
-					pstmt1.setString(4, rs.getString("ren_warr_code"));
-					pstmt1.setString(5, rs.getString("warr_country_code"));
-					pstmt1.setString(6, rs.getString("warr_region"));
-					pstmt1.setString(7, rs.getString("orig_ship_date"));
-					pstmt1.setString(8, rs.getString("reference_key"));
-					pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
-					pstmt1.setDate(10, rs.getDate("pop_date"));
-					pstmt1.setString(11, rs.getString("pop_identifier"));
+
+					pstmt1.setString(1, "ACT     " + DateToStr);
+
+					if(rs.getDate("orig_warr_eff_date")!=null && !(rs.getDate("orig_warr_eff_date").equals(""))){
+						pstmt1.setDate(2, rs.getDate("orig_warr_eff_date"));
+					}else{
+						pstmt1.setDate(2,null);
+					}
+
+					if(rs.getString("ren_warr_code")!=null && !(rs.getString("ren_warr_code").equals(""))){
+						pstmt1.setString(3, rs.getString("ren_warr_code"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("warr_country_code")!=null && !(rs.getString("warr_country_code").equals(""))){
+						pstmt1.setString(4, rs.getString("warr_country_code"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("warr_region")!=null && !(rs.getString("warr_region").equals(""))){
+						pstmt1.setString(5, rs.getString("warr_region"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("orig_ship_date")!=null && !(rs.getString("orig_ship_date").equals(""))){
+						pstmt1.setString(6, rs.getString("orig_ship_date"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("reference_key")!=null && !(rs.getString("reference_key").equals(""))){
+						pstmt1.setString(7, rs.getString("reference_key"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getDate("pop_in_sysdate")!=null && !(rs.getDate("pop_in_sysdate").equals(""))){
+						pstmt1.setDate(8, rs.getDate("pop_in_sysdate"));
+					}else{
+						pstmt1.setDate(8, null);	
+					}
+
+					if(rs.getDate("pop_date")!=null && !(rs.getDate("pop_date").equals(""))){
+						pstmt1.setDate(9, rs.getDate("pop_date"));
+					}else{
+						pstmt1.setDate(9,null);
+					}
+
+					if(rs.getString("pop_identifier")!=null && !(rs.getString("pop_identifier").equals(""))){
+						pstmt1.setString(10, rs.getString("pop_identifier"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					pstmt1.setString(11,pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status3 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
-							+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updDeviceConfig = "update upd.upd_device_config set handset_type=?,flex_option=?,flex_sw=?,hw=?,icc_id=?,software_version=?,wimax=?,hsn=?,flash_uid=?,dual_serial_no=?,"
+							+ "dual_serial_no_type=?,fastt_id=?,base_processor_id=?,wlan=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 
 					pstmt1 = con1.prepareStatement(MySql_updDeviceConfig);
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("handset_type"));
-					pstmt1.setString(3, rs.getString("flex_option"));
-					pstmt1.setString(4, rs.getString("flex_sw"));
-					pstmt1.setString(5, rs.getString("hw"));
-					pstmt1.setString(6, rs.getString("icc_id"));
-					pstmt1.setString(7, rs.getString("software_version"));
-					pstmt1.setString(8, rs.getString("wimax"));
-					pstmt1.setString(9, rs.getString("hsn"));
-					pstmt1.setString(10, rs.getString("flash_uid"));
-					pstmt1.setString(11, rs.getString("dual_serial_no"));
-					pstmt1.setString(12, rs.getString("dual_serial_no_type"));
-					pstmt1.setString(13, rs.getString("fastt_id"));
-					pstmt1.setString(14, rs.getString("base_processor_id"));
-					pstmt1.setString(15, rs.getString("wlan"));
+
+					if(rs.getString("handset_type")!=null && !(rs.getString("handset_type").equals(""))){
+						pstmt1.setString(1, rs.getString("handset_type"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("flex_option")!=null && !(rs.getString("flex_option").equals(""))){
+						pstmt1.setString(2, rs.getString("flex_option"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("flex_sw")!=null){
+						pstmt1.setString(3, rs.getString("flex_sw"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("hw")!=null && !(rs.getString("hw").equals(""))){
+						pstmt1.setString(4, rs.getString("hw"));
+					}else{
+						pstmt1.setString(4,null);	
+					}
+
+					if(rs.getString("icc_id")!=null && !(rs.getString("icc_id").equals(""))){
+						pstmt1.setString(5, rs.getString("icc_id"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("software_version")!=null && !(rs.getString("software_version").equals(""))){
+						pstmt1.setString(6, rs.getString("software_version"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("wimax")!=null && !(rs.getString("wimax").equals(""))){
+						pstmt1.setString(7, rs.getString("wimax"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("hsn")!=null && !(rs.getString("hsn").equals(""))){
+						pstmt1.setString(8, rs.getString("hsn"));
+					}else{
+						pstmt1.setString(8,null);
+					}
+
+					if(rs.getString("flash_uid")!=null && !(rs.getString("flash_uid").equals(""))){
+						pstmt1.setString(9, rs.getString("flash_uid"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getString("dual_serial_no")!=null && !(rs.getString("dual_serial_no").equals(""))){
+						pstmt1.setString(10, rs.getString("dual_serial_no"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					if(rs.getString("dual_serial_no_type")!=null && !(rs.getString("dual_serial_no_type").equals(""))){
+						pstmt1.setString(11, rs.getString("dual_serial_no_type"));
+					}else{
+						pstmt1.setString(11,null);
+					}
+
+					if(rs.getString("fastt_id")!=null && !(rs.getString("fastt_id").equals(""))){
+						pstmt1.setString(12, rs.getString("fastt_id"));
+					}else{
+						pstmt1.setString(12,null);
+					}
+
+					if(rs.getString("base_processor_id")!=null && !(rs.getString("base_processor_id").equals(""))){
+						pstmt1.setString(13, rs.getString("base_processor_id"));
+					}else{
+						pstmt1.setString(13,null);	
+					}
+
+					if(rs.getString("wlan")!=null && !(rs.getString("wlan").equals(""))){
+						pstmt1.setString(14, rs.getString("wlan"));
+					}else{
+						pstmt1.setString(14,null);	
+					}
+
+					pstmt1.setString(15,pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status4 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
-							+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updDirectShipment = "update upd.upd_direct_shipment set so_line_no=?,ds_region_code=?,ds_so_no=?,ds_po_no=?,ds_cust_id=?,ds_bill_to_id=?,ds_ship_to_id=?,ds_cust_country_code=?,"
+							+ "ds_cust_name=?,bill_to_id=?,shipment_no=?,phone_no=?,wip_dj=?,sale_date=?,last_imei=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con1.prepareStatement(MySql_updDirectShipment);
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("so_line_no"));
-					pstmt1.setString(3, rs.getString("ds_region_code"));
-					pstmt1.setString(4, rs.getString("ds_so_no"));
-					pstmt1.setString(5, rs.getString("ds_po_no"));
-					pstmt1.setString(6, rs.getString("ds_cust_id"));
-					pstmt1.setString(7, rs.getString("ds_bill_to_id"));
-					pstmt1.setString(8, rs.getString("ds_ship_to_id"));
-					pstmt1.setString(9, rs.getString("ds_cust_country_code"));
-					pstmt1.setString(10, rs.getString("ds_cust_name"));
-					pstmt1.setString(11, rs.getString("bill_to_id"));
-					pstmt1.setString(12, rs.getString("shipment_no"));
-					pstmt1.setString(13, rs.getString("phone_no"));
-					pstmt1.setString(14, rs.getString("wip_dj"));
-					pstmt1.setDate(15, rs.getDate("sale_date"));
-					pstmt1.setString(16, rs.getString("last_imei"));
+
+					if(rs.getString("so_line_no")!=null && !(rs.getString("so_line_no").equals(""))){
+						pstmt1.setString(1, rs.getString("so_line_no"));
+					}else{
+						pstmt1.setString(1,null);	
+					}
+
+					if(rs.getString("ds_region_code")!=null && !(rs.getString("ds_region_code").equals(""))){
+						pstmt1.setString(2, rs.getString("ds_region_code"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("ds_so_no")!=null && !(rs.getString("ds_so_no").equals(""))){
+						pstmt1.setString(3, rs.getString("ds_so_no"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("ds_po_no")!=null && !(rs.getString("ds_po_no").equals(""))){
+						pstmt1.setString(4, rs.getString("ds_po_no"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("ds_cust_id")!=null && !(rs.getString("ds_cust_id").equals(""))){
+						pstmt1.setString(5, rs.getString("ds_cust_id"));
+					}else{
+						pstmt1.setString(5,null);	
+					}
+
+					if(rs.getString("ds_bill_to_id")!=null && !(rs.getString("ds_bill_to_id").equals(""))){
+						pstmt1.setString(6, rs.getString("ds_bill_to_id"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("ds_ship_to_id")!=null && !(rs.getString("ds_ship_to_id").equals(""))){
+						pstmt1.setString(7, rs.getString("ds_ship_to_id"));
+					}else{
+						pstmt1.setString(7,null);	
+					}
+
+					if(rs.getString("ds_cust_country_code")!=null && !(rs.getString("ds_cust_country_code").equals(""))){
+						pstmt1.setString(8, rs.getString("ds_cust_country_code"));
+					}else{
+						pstmt1.setString(8,null);	
+					}
+
+					if(rs.getString("ds_cust_name")!=null && !(rs.getString("ds_cust_name").equals(""))){
+						pstmt1.setString(9, rs.getString("ds_cust_name"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getString("bill_to_id")!=null && !(rs.getString("bill_to_id").equals(""))){
+						pstmt1.setString(10, rs.getString("bill_to_id"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					if(rs.getString("shipment_no")!=null && !(rs.getString("shipment_no").equals(""))){
+						pstmt1.setString(11, rs.getString("shipment_no"));
+					}else{
+						pstmt1.setString(11,null);	
+					}
+
+					if(rs.getString("phone_no")!=null && !(rs.getString("phone_no").equals(""))){
+						pstmt1.setString(12, rs.getString("phone_no"));
+					}else{
+						pstmt1.setString(12,null);
+					}
+
+					if(rs.getString("wip_dj")!=null && !(rs.getString("wip_dj").equals(""))){
+						pstmt1.setString(13, rs.getString("wip_dj"));
+					}else{
+						pstmt1.setString(13,null);
+					}
+
+					if(rs.getDate("sale_date")!=null && !(rs.getDate("sale_date").equals(""))){
+						pstmt1.setDate(14, rs.getDate("sale_date"));
+					}else{
+						pstmt1.setDate(14,null);
+					}
+
+					if( rs.getString("last_imei")!=null && !( rs.getString("last_imei").equals(""))){
+						pstmt1.setString(15, rs.getString("last_imei"));
+					}else{
+						pstmt1.setString(15, null);
+					}
+
+					pstmt1.setString(16,pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status5 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updLockCode = "update upd.upd_lock_code set meid_evdo_password=?,meid_a_key2_type=?,meid_a_key2=?,imc_lock_code=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con1.prepareStatement(MySql_updLockCode);
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("meid_evdo_password"));
-					pstmt1.setString(3, rs.getString("meid_a_key2_type"));
-					pstmt1.setString(4, rs.getString("meid_a_key2"));
-					pstmt1.setString(5, rs.getString("imc_lock_code"));
+
+					if(rs.getString("meid_evdo_password")!=null && !(rs.getString("meid_evdo_password").equals(""))){
+						pstmt1.setString(1, rs.getString("meid_evdo_password"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("meid_a_key2_type")!=null && !(rs.getString("meid_a_key2_type").equals(""))){
+						pstmt1.setString(2, rs.getString("meid_a_key2_type"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("meid_a_key2")!=null && !(rs.getString("meid_a_key2").equals(""))){
+						pstmt1.setString(3, rs.getString("meid_a_key2"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if( rs.getString("imc_lock_code")!=null && !( rs.getString("imc_lock_code").equals(""))){
+						pstmt1.setString(4, rs.getString("imc_lock_code"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					pstmt1.setString(5,	pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status6 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
+					String Sql_updMeid = "update upd.upd_meid set a_key_index=?,cas_no=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con1.prepareStatement(Sql_updMeid);
-					pstmt1.setString(1,
-							pCBASerialNoUPdateQueryInput.getSerialNoOut());
-					pstmt1.setString(2, rs.getString("a_key_index"));
-					pstmt1.setString(3, rs.getString("cas_no"));
+
+					if(rs.getString("a_key_index")!=null && !(rs.getString("a_key_index").equals(""))){
+						pstmt1.setString(1, rs.getString("a_key_index"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("cas_no")!=null && !(rs.getString("cas_no").equals(""))){
+						pstmt1.setString(2, rs.getString("cas_no"));
+					}else{
+						pstmt1.setString(2,null);
+					}					
+
+					pstmt1.setString(3,pCBASerialNoUPdateQueryInput.getSerialNoOut());
+
 					boolean status7 = pstmt1.execute();
 
 					pstmt1 = null;
@@ -309,24 +826,6 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 			} else {
 
-				/*StringBuffer stb = new StringBuffer();
-				stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
-				prestmt = con1.prepareStatement(stb.toString());
-				prestmt.setString(1,
-						pCBASerialNoUPdateQueryInput.getSerialNoIn());
-				prestmt.setString(2,
-						pCBASerialNoUPdateQueryInput.getSerialNoOut());
-				prestmt.setString(3, "PCBA_PGM");
-				prestmt.setDate(4,
-						new java.sql.Date(System.currentTimeMillis()));
-				prestmt.setString(5, "PCBA_PGM");
-				prestmt.setDate(6,
-						new java.sql.Date(System.currentTimeMillis()));
-				prestmt.setString(7, "S");
-				prestmt.execute();
-
-				MailUtil.sendEmail();*/
-
 				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
 				return response;
@@ -336,24 +835,38 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 			if (pCBASerialNoUPdateQueryInput.getDualSerialNoIn() != null) {
 				if (!(pCBASerialNoUPdateQueryInput.getDualSerialNoIn() == "")) {
-					con1 = updateReferenceTable(
-							pCBASerialNoUPdateQueryInput.getSerialNoIn(),
-							pCBASerialNoUPdateQueryInput.getSerialNoOut(), con1);
-					con1 = updateBasedOnSerial(
-							pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),
-							pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),
-							ds, con1);
-					con1 = updateReferenceTable(
-							pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),
-							pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),
-							con1);
+					if (!(pCBASerialNoUPdateQueryInput.getDualSerialNoIn().trim() == "")) {
+						String DualStatus = getStatus(pCBASerialNoUPdateQueryInput.getDualSerialNoIn());
+						if(DualStatus!=null && DualStatus.startsWith("ACT")){
+							con1 = updateReferenceTable(
+									pCBASerialNoUPdateQueryInput.getSerialNoIn(),
+									pCBASerialNoUPdateQueryInput.getSerialNoOut(), con1);
+							con1 = updateBasedOnSerial(
+									pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),
+									pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),
+									ds, con1);
+							con1 = updateReferenceTable(
+									pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),
+									pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),
+									con1);
+						}else{
+							con1.rollback();
+							sendEmail(pCBASerialNoUPdateQueryInput.getDualSerialNoIn(),pCBASerialNoUPdateQueryInput.getDualSerialNoOut(),con1,prestmt);
+							response.setResponseCode(ServiceMessageCodes.EMAIL_MSG_CODE);
+							response.setResponseMessage(ServiceMessageCodes.EMAIL_MSG);
+							con1.commit();
+						}
+					}
 				}
 			}
 
 			// Tri Case
 			if (pCBASerialNoUPdateQueryInput.getTriSerialNoIn() != null) {
-				if (!(pCBASerialNoUPdateQueryInput.getTriSerialNoIn() == "")) {
+				if (!(pCBASerialNoUPdateQueryInput.getTriSerialNoIn().trim() == "")) {
 
+					String triStatus = getStatus(pCBASerialNoUPdateQueryInput.getTriSerialNoIn());
+
+					if(triStatus!=null && triStatus.startsWith("ACT")){
 					con1 = updateBasedOnSerial(
 							pCBASerialNoUPdateQueryInput.getTriSerialNoIn(),
 							pCBASerialNoUPdateQueryInput.getTriSerialNoOut(),
@@ -362,6 +875,13 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 							pCBASerialNoUPdateQueryInput.getTriSerialNoIn(),
 							pCBASerialNoUPdateQueryInput.getTriSerialNoOut(),
 							con1);
+					}else{
+						con1.rollback();
+						sendEmail(pCBASerialNoUPdateQueryInput.getTriSerialNoIn(),pCBASerialNoUPdateQueryInput.getTriSerialNoOut(),con1,prestmt);
+						con1.commit();
+						return response;
+						
+					}
 
 				}
 			}
@@ -441,91 +961,384 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					response.setResponseCode(ServiceMessageCodes.EMAIL_MSG_CODE);
 					response.setResponseMessage(ServiceMessageCodes.EMAIL_MSG);
 
-				}else{					
+				}else{
 
-					String MySql_updFactoryShipmentInfo = "insert into upd.upd_factory_shipment_info(serial_no,factory_code,gen_date,protocol,apc,trans_model,cust_model,mkt_model,item_code,warr_code,"
-							+ "ship_date,ship_to_cust_id,ship_to_cust_addr,ship_to_cust_name,ship_to_cust_city,ship_to_cust_country,sold_to_cust_id,sold_to_cust_name,sold_date,"
-							+ "cit,ta_no,carton_id,po_no,so_no,fo_sequence,msn,assign_date,gpp_id,product_type,location_type,packing_list,fab_date,imc_mfg_location,guid,pdb_id,created_datetime,created_by)"
-							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
 
+
+					String MySql_updFactoryShipmentInfo = "update upd.upd_factory_shipment_info set factory_code,gen_date=?,protocol=?,apc=?,trans_model=?,cust_model=?,mkt_model=?,item_code=?,warr_code=?,"
+							+ "ship_date=?,ship_to_cust_id=?,ship_to_cust_addr=?,ship_to_cust_name=?,ship_to_cust_city=?,ship_to_cust_country=?,sold_to_cust_id=?,sold_to_cust_name=?,sold_date=?,"
+							+ "cit=?,ta_no=?,carton_id=?,po_no=?,so_no=?,fo_sequence=?,msn=?,assign_date=?,gpp_id=?,product_type=?,location_type=?,packing_list=?,fab_date=?,imc_mfg_location=?,)"
+							+ "guid=?,pdb_id=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(MySql_updFactoryShipmentInfo);
 
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("factory_code"));
-					pstmt1.setDate(3, rs.getDate("gen_date"));
-					pstmt1.setString(4, rs.getString("protocol"));
-					pstmt1.setString(5, rs.getString("apc"));
-					pstmt1.setString(6, rs.getString("trans_model"));
-					pstmt1.setString(7, rs.getString("cust_model"));
-					pstmt1.setString(8, rs.getString("mkt_model"));
-					pstmt1.setString(9, rs.getString("item_code"));
-					pstmt1.setString(10, rs.getString("warr_code"));
-					pstmt1.setDate(11, rs.getDate("ship_date"));
-					pstmt1.setString(12, rs.getString("ship_to_cust_id"));
-					pstmt1.setString(13, rs.getString("ship_to_cust_addr"));
-					pstmt1.setString(14, rs.getString("ship_to_cust_name"));
-					pstmt1.setString(15, rs.getString("ship_to_cust_city"));
-					pstmt1.setString(16, rs.getString("ship_to_cust_country"));
-					pstmt1.setString(17, rs.getString("sold_to_cust_id"));
-					pstmt1.setString(18, rs.getString("sold_to_cust_name"));
-					pstmt1.setDate(19, rs.getDate("sold_date"));
-					pstmt1.setString(20, rs.getString("cit"));
-					pstmt1.setString(21, rs.getString("ta_no"));
-					pstmt1.setString(22, rs.getString("carton_id"));
-					pstmt1.setString(23, rs.getString("po_no"));
-					pstmt1.setString(24, rs.getString("so_no"));
-					pstmt1.setString(25, rs.getString("fo_sequence"));
-					pstmt1.setString(26, rs.getString("msn"));
-					pstmt1.setDate(27, rs.getDate("assign_date"));
-					pstmt1.setString(28, rs.getString("gpp_id"));
-					pstmt1.setString(29, rs.getString("product_type"));
-					pstmt1.setString(30, rs.getString("location_type"));
-					pstmt1.setString(31, rs.getString("packing_list"));
-					pstmt1.setDate(32, rs.getDate("fab_date"));
-					pstmt1.setString(33, rs.getString("imc_mfg_location"));
-					pstmt1.setString(34, rs.getString("guid"));
-					pstmt1.setString(35, "pdb_id");
+					if(rs.getString("factory_code")!=null && !(rs.getString("factory_code").equals(""))){
+						pstmt1.setString(1, rs.getString("factory_code"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getDate("gen_date")!=null && !(rs.getDate("gen_date").equals(""))){
+						pstmt1.setDate(2, rs.getDate("gen_date"));
+					}else{
+						pstmt1.setDate(2,null);
+					}
+
+					if(rs.getString("protocol")!=null && !(rs.getString("protocol").equals(""))){
+						pstmt1.setString(3, rs.getString("protocol"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("apc")!=null && !(rs.getString("apc").equals(""))){
+						pstmt1.setString(4, rs.getString("apc"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("trans_model")!=null && !(rs.getString("trans_model").equals(""))){
+						pstmt1.setString(5, rs.getString("trans_model"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("cust_model")!=null && !(rs.getString("cust_model").equals(""))){
+						pstmt1.setString(6, rs.getString("cust_model"));
+					}else{
+						pstmt1.setString(6,null);	
+					}
+
+					if(rs.getString("mkt_model")!=null && !(rs.getString("mkt_model").equals(""))){
+						pstmt1.setString(7, rs.getString("mkt_model"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("item_code")!=null && !(rs.getString("item_code").equals(""))){
+						pstmt1.setString(8, rs.getString("item_code"));
+					}else{
+						pstmt1.setString(8,null);	
+					}
+
+					if(rs.getString("warr_code")!=null && !(rs.getString("warr_code").equals(""))){
+						pstmt1.setString(9, rs.getString("warr_code"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+					if(rs.getDate("ship_date")!=null && !(rs.getDate("ship_date").equals(""))){
+						pstmt1.setDate(10, rs.getDate("ship_date"));
+					}else{
+						pstmt1.setDate(10,null);	
+					}
+
+					if(rs.getString("ship_to_cust_id")!=null && !(rs.getString("ship_to_cust_id").equals(""))){
+						pstmt1.setString(11, rs.getString("ship_to_cust_id"));
+					}else{
+						pstmt1.setString(11,null);
+					}
+
+					if(rs.getString("ship_to_cust_addr")!=null && !(rs.getString("ship_to_cust_addr").equals(""))){
+						pstmt1.setString(12, rs.getString("ship_to_cust_addr"));
+					}else{
+						pstmt1.setString(12,null);	
+					}
+
+					if(rs.getString("ship_to_cust_name")!=null && !(rs.getString("ship_to_cust_name").equals(""))){
+						pstmt1.setString(13, rs.getString("ship_to_cust_name"));
+					}else{
+						pstmt1.setString(13,null);
+					}
+
+					if(rs.getString("ship_to_cust_city")!=null && !(rs.getString("ship_to_cust_city").equals(""))){
+						pstmt1.setString(14, rs.getString("ship_to_cust_city"));
+					}else{
+						pstmt1.setString(14,null);
+					}
+
+					if(rs.getString("ship_to_cust_country")!=null && !(rs.getString("ship_to_cust_country").equals(""))){
+						pstmt1.setString(15, rs.getString("ship_to_cust_country"));
+					}else{
+						pstmt1.setString(15,null);
+					}
+
+					if(rs.getString("sold_to_cust_id")!=null && !(rs.getString("sold_to_cust_id").equals(""))){
+						pstmt1.setString(16, rs.getString("sold_to_cust_id"));
+					}else{
+						pstmt1.setString(16,null);
+					}
+
+					if(rs.getString("sold_to_cust_name")!=null && !(rs.getString("sold_to_cust_name").equals(""))){
+						pstmt1.setString(17, rs.getString("sold_to_cust_name"));
+					}else{
+						pstmt1.setString(17,null);
+					}
+
+					if(rs.getDate("sold_date")!=null && !(rs.getDate("sold_date").equals(""))){
+						pstmt1.setDate(18, rs.getDate("sold_date"));
+					}else{
+						pstmt1.setDate(18,null);
+					}
+
+					if(rs.getString("cit")!=null && !(rs.getString("cit").equals(""))){
+						pstmt1.setString(19, rs.getString("cit"));
+					}else{
+						pstmt1.setString(19,null);
+					}
+
+					if(rs.getString("ta_no")!=null && !(rs.getString("ta_no").equals(""))){
+						pstmt1.setString(20, rs.getString("ta_no"));
+					}else{
+						pstmt1.setString(20,null);	
+					}
+
+					if(rs.getString("carton_id")!=null){
+						pstmt1.setString(21, rs.getString("carton_id"));
+					}else{
+						pstmt1.setString(21,null);	
+					}
+
+					if(rs.getString("po_no")!=null && !(rs.getString("po_no").equals(""))){
+						pstmt1.setString(22, rs.getString("po_no"));
+					}else{
+						pstmt1.setString(22,null);	
+					}
+
+					if(rs.getString("so_no")!=null && !(rs.getString("so_no").equals(""))){
+						pstmt1.setString(23, rs.getString("so_no"));
+					}else{
+						pstmt1.setString(23,null);
+					}
+
+					if(rs.getString("fo_sequence")!=null && !(rs.getString("fo_sequence").equals(""))){
+						pstmt1.setString(24, rs.getString("fo_sequence"));
+					}else{
+						pstmt1.setString(24,null);
+					}
+
+					if(rs.getString("msn")!=null && !(rs.getString("msn").equals(""))){
+						pstmt1.setString(25, rs.getString("msn"));
+					}else{
+						pstmt1.setString(25,null);	
+					}
+
+					if(rs.getDate("assign_date")!=null && !(rs.getDate("assign_date").equals(""))){
+						pstmt1.setDate(26, rs.getDate("assign_date"));
+					}else{
+						pstmt1.setDate(26,null);
+					}
+
+					if(rs.getString("gpp_id")!=null && !(rs.getString("gpp_id").equals(""))){
+						pstmt1.setString(27, rs.getString("gpp_id"));
+					}else{
+						pstmt1.setString(27,null);	
+					}
+
+					if(rs.getString("product_type")!=null && !(rs.getString("product_type").equals(""))){
+						pstmt1.setString(28, rs.getString("product_type"));
+					}else{
+						pstmt1.setString(28,null);
+					}
+
+					if(rs.getString("location_type")!=null && !(rs.getString("location_type").equals(""))){
+						pstmt1.setString(29, rs.getString("location_type"));
+					}else{
+						pstmt1.setString(29,null);
+					}
+
+					if(rs.getString("packing_list")!=null && !(rs.getString("packing_list").equals(""))){
+						pstmt1.setString(30, rs.getString("packing_list"));
+					}else{
+						pstmt1.setString(30,null);	
+					}
+
+					if(rs.getDate("fab_date")!=null && !(rs.getDate("fab_date").equals(""))){
+						pstmt1.setDate(31, rs.getDate("fab_date"));
+					}else{
+						pstmt1.setDate(31,null);
+					}
+
+					if(rs.getString("imc_mfg_location")!=null && !(rs.getString("imc_mfg_location").equals(""))){
+						pstmt1.setString(32, rs.getString("imc_mfg_location"));
+					}else{
+						pstmt1.setString(32,null);
+					}
+
+					if(rs.getString("guid")!=null && !(rs.getString("guid").equals(""))){
+						pstmt1.setString(33, rs.getString("guid"));
+					}else{
+						pstmt1.setString(33,null);
+					}
+
+					if(rs.getString("pdb_id")!=null && !(rs.getString("pdb_id").equals(""))){
+						pstmt1.setString(34, rs.getString("pdb_id"));
+					}else{
+						pstmt1.setString(34,null);
+					}
+
+					pstmt1.setString(35, serialNoOut);
+
 					boolean status1 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updRepair = "insert into upd.upd_repair (serial_no,cancel_code,swap_ref_no,swap_count,delete_flag,org_code,upd_time,dn,era,rma,receive_date,"
-							+ "delivery_date,return_date,rma_date,scrap_date,cust_id,warehouse_id,shop_id,status_id,action,remarks,csn,last_repair_date,repair_count,swap_date,created_datetime,created_by)"
-							+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updRepair = "update upd.upd_repair set cancel_code=?,swap_ref_no=?,swap_count=?,delete_flag=?,org_code=?,upd_time=?,dn=?,era=?,rma=?,receive_date=?,"
+							+ "delivery_date=?,return_date=?,rma_date=?,scrap_date=?,cust_id=?,warehouse_id=?,shop_id=?,status_id=?,action=?,remarks=?,csn=?,last_repair_date=?,repair_count=?,swap_date=?,)"
+							+ "last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(MySql_updRepair);
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("cancel_code"));
-					pstmt1.setString(3, rs.getString("swap_ref_no"));
-					pstmt1.setString(4, rs.getString("swap_count"));
-					pstmt1.setString(5, rs.getString("delete_flag"));
-					pstmt1.setString(6, rs.getString("org_code"));
-					pstmt1.setString(7, rs.getString("upd_time"));
-					pstmt1.setString(8, rs.getString("dn"));
-					pstmt1.setString(9, rs.getString("era"));
-					pstmt1.setString(10, rs.getString("rma"));
-					pstmt1.setDate(11, rs.getDate("receive_date"));
-					pstmt1.setDate(12, rs.getDate("delivery_date"));
-					pstmt1.setDate(13, rs.getDate("return_date"));
-					pstmt1.setDate(14, rs.getDate("rma_date"));
-					pstmt1.setDate(15, rs.getDate("scrap_date"));
-					pstmt1.setString(16, rs.getString("cust_id"));
-					pstmt1.setString(17, rs.getString("warehouse_id"));
-					pstmt1.setString(18, rs.getString("shop_id"));
-					pstmt1.setString(19, rs.getString("status_id"));
-					pstmt1.setString(20, rs.getString("action"));
-					pstmt1.setString(21, rs.getString("remarks"));
-					pstmt1.setString(22, rs.getString("csn"));
-					pstmt1.setDate(23, rs.getDate("last_repair_date"));
-					pstmt1.setString(24, rs.getString("repair_count"));
-					pstmt1.setDate(25, rs.getDate("swap_date"));
+
+					if(rs.getString("cancel_code")!=null && !(rs.getString("cancel_code").equals(""))){
+						pstmt1.setString(1, rs.getString("cancel_code"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("swap_ref_no")!=null && !(rs.getString("swap_ref_no").equals(""))){
+						pstmt1.setString(2, rs.getString("swap_ref_no"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("swap_count")!=null && !(rs.getString("swap_count").equals(""))){
+						pstmt1.setString(3, rs.getString("swap_count"));
+					}else{
+						pstmt1.setString(3,null);	
+					}
+
+					if(rs.getString("delete_flag")!=null && !(rs.getString("delete_flag").equals(""))){
+						pstmt1.setString(4, rs.getString("delete_flag"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("org_code")!=null && !(rs.getString("org_code").equals(""))){
+						pstmt1.setString(5, rs.getString("org_code"));
+					}else{
+						pstmt1.setString(5,null);	
+					}
+
+					if(rs.getString("upd_time")!=null && !(rs.getString("upd_time").equals(""))){
+						pstmt1.setString(6, rs.getString("upd_time"));
+					}else{
+						pstmt1.setString(6,null);	
+					}
+
+					if(rs.getString("dn")!=null && !(rs.getString("dn").equals(""))){
+						pstmt1.setString(7, rs.getString("dn"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("era")!=null && !(rs.getString("era").equals(""))){
+						pstmt1.setString(8, rs.getString("era"));
+					}else{
+						pstmt1.setString(8,null);
+					}
+
+					if(rs.getString("rma")!=null && !(rs.getString("rma").equals(""))){
+						pstmt1.setString(9, rs.getString("rma"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getDate("receive_date")!=null && !(rs.getDate("receive_date").equals(""))){
+						pstmt1.setDate(10, rs.getDate("receive_date"));
+					}else{
+						pstmt1.setDate(10,null);
+					}
+
+					if(rs.getDate("delivery_date")!=null && !(rs.getDate("delivery_date").equals(""))){
+						pstmt1.setDate(11, rs.getDate("delivery_date"));
+					}else{
+						pstmt1.setDate(11,null);	
+					}
+
+					if(rs.getDate("return_date")!=null && !(rs.getDate("return_date").equals(""))){
+						pstmt1.setDate(12, rs.getDate("return_date"));
+					}else{
+						pstmt1.setDate(12,null);
+					}
+
+					if(rs.getDate("rma_date")!=null && !(rs.getDate("rma_date").equals(""))){
+						pstmt1.setDate(13, rs.getDate("rma_date"));
+					}else{
+						pstmt1.setDate(13,null);
+					}
+
+					if(rs.getDate("scrap_date")!=null && !(rs.getDate("scrap_date").equals(""))){
+						pstmt1.setDate(14, rs.getDate("scrap_date"));
+					}else{
+						pstmt1.setDate(14,null);	
+					}
+
+					if(rs.getString("cust_id")!=null && !(rs.getString("cust_id").equals(""))){
+						pstmt1.setString(15, rs.getString("cust_id"));
+					}else{
+						pstmt1.setString(15,null);
+					}
+
+					if(rs.getString("warehouse_id")!=null && !(rs.getString("warehouse_id").equals(""))){
+						pstmt1.setString(16, rs.getString("warehouse_id"));
+					}else{
+						pstmt1.setString(16,null);
+					}
+
+					if(rs.getString("shop_id")!=null && !(rs.getString("shop_id").equals(""))){
+						pstmt1.setString(17, rs.getString("shop_id"));
+					}else{
+						pstmt1.setString(17,null);	
+					}
+
+					if(rs.getString("status_id")!=null && !(rs.getString("status_id").equals(""))){
+						pstmt1.setString(18, rs.getString("status_id"));
+					}else{
+						pstmt1.setString(18,null);
+					}
+
+					if(rs.getString("action")!=null && !(rs.getString("action").equals(""))){
+						pstmt1.setString(19, rs.getString("action"));
+					}else{
+						pstmt1.setString(19,null);
+					}
+
+					if(rs.getString("remarks")!=null && !(rs.getString("remarks").equals(""))){
+						pstmt1.setString(20, rs.getString("remarks"));
+					}else{
+						pstmt1.setString(20,null);
+					}
+
+					if(rs.getString("csn")!=null && !(rs.getString("csn").equals(""))){
+						pstmt1.setString(21, rs.getString("csn"));
+					}else{
+						pstmt1.setString(21,null);	
+					}
+
+					if(rs.getDate("last_repair_date")!=null && !(rs.getDate("last_repair_date").equals(""))){
+						pstmt1.setDate(22, rs.getDate("last_repair_date"));
+					}else{
+						pstmt1.setDate(22,null);
+					}
+
+					if(rs.getString("repair_count")!=null && !(rs.getString("repair_count").equals(""))){
+						pstmt1.setString(23, rs.getString("repair_count"));
+					}else{
+						pstmt1.setString(23,null);
+					}
+
+					if(rs.getDate("swap_date")!=null && !(rs.getDate("swap_date").equals(""))){
+						pstmt1.setDate(24, rs.getDate("swap_date"));
+					}else{
+						pstmt1.setDate(24,null);
+					}
+
+					pstmt1.setString(25,serialNoOut);
+
 					boolean status2 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updWarrantyInfo = "insert into upd.upd_warranty_info (serial_no,status_code,orig_warr_eff_date,ren_warr_code,warr_country_code,warr_region,orig_ship_date,reference_key,"
-							+ "pop_in_sysdate,pop_date,pop_identifier,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updWarrantyInfo = "update upd.upd_warranty_info set status_code=?,orig_warr_eff_date=?,ren_warr_code=?,warr_country_code=?,warr_region=?,orig_ship_date=?,reference_key=?,"
+							+ "pop_in_sysdate=?,pop_date=?,pop_identifier=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(MySql_updWarrantyInfo);
 
@@ -533,87 +1346,318 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyy");
 					String DateToStr = format.format(curDate);
 
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, "ACT  " + DateToStr);
-					pstmt1.setDate(3, rs.getDate("orig_warr_eff_date"));
-					pstmt1.setString(4, rs.getString("ren_warr_code"));
-					pstmt1.setString(5, rs.getString("warr_country_code"));
-					pstmt1.setString(6, rs.getString("warr_region"));
-					pstmt1.setString(7, rs.getString("orig_ship_date"));
-					pstmt1.setString(8, rs.getString("reference_key"));
-					pstmt1.setDate(9, rs.getDate("pop_in_sysdate"));
-					pstmt1.setDate(10, rs.getDate("pop_date"));
-					pstmt1.setString(11, rs.getString("pop_identifier"));
+
+					pstmt1.setString(1, "ACT     " + DateToStr);
+
+					if(rs.getDate("orig_warr_eff_date")!=null && !(rs.getDate("orig_warr_eff_date").equals(""))){
+						pstmt1.setDate(2, rs.getDate("orig_warr_eff_date"));
+					}else{
+						pstmt1.setDate(2,null);
+					}
+
+					if(rs.getString("ren_warr_code")!=null && !(rs.getString("ren_warr_code").equals(""))){
+						pstmt1.setString(3, rs.getString("ren_warr_code"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("warr_country_code")!=null && !(rs.getString("warr_country_code").equals(""))){
+						pstmt1.setString(4, rs.getString("warr_country_code"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("warr_region")!=null && !(rs.getString("warr_region").equals(""))){
+						pstmt1.setString(5, rs.getString("warr_region"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("orig_ship_date")!=null && !(rs.getString("orig_ship_date").equals(""))){
+						pstmt1.setString(6, rs.getString("orig_ship_date"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("reference_key")!=null && !(rs.getString("reference_key").equals(""))){
+						pstmt1.setString(7, rs.getString("reference_key"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getDate("pop_in_sysdate")!=null && !(rs.getDate("pop_in_sysdate").equals(""))){
+						pstmt1.setDate(8, rs.getDate("pop_in_sysdate"));
+					}else{
+						pstmt1.setDate(8, null);	
+					}
+
+					if(rs.getDate("pop_date")!=null && !(rs.getDate("pop_date").equals(""))){
+						pstmt1.setDate(9, rs.getDate("pop_date"));
+					}else{
+						pstmt1.setDate(9,null);
+					}
+
+					if(rs.getString("pop_identifier")!=null && !(rs.getString("pop_identifier").equals(""))){
+						pstmt1.setString(10, rs.getString("pop_identifier"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					pstmt1.setString(11,serialNoOut);
+
 					boolean status3 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updDeviceConfig = "insert into upd.upd_device_config (serial_no,handset_type,flex_option,flex_sw,hw,icc_id,software_version,wimax,hsn,flash_uid,dual_serial_no,"
-							+ "dual_serial_no_type,fastt_id,base_processor_id,wlan,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updDeviceConfig = "update upd.upd_device_config set handset_type=?,flex_option=?,flex_sw=?,hw=?,icc_id=?,software_version=?,wimax=?,hsn=?,flash_uid=?,dual_serial_no=?,"
+							+ "dual_serial_no_type=?,fastt_id=?,base_processor_id=?,wlan=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 
 					pstmt1 = con12.prepareStatement(MySql_updDeviceConfig);
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("handset_type"));
-					pstmt1.setString(3, rs.getString("flex_option"));
-					pstmt1.setString(4, rs.getString("flex_sw"));
-					pstmt1.setString(5, rs.getString("hw"));
-					pstmt1.setString(6, rs.getString("icc_id"));
-					pstmt1.setString(7, rs.getString("software_version"));
-					pstmt1.setString(8, rs.getString("wimax"));
-					pstmt1.setString(9, rs.getString("hsn"));
-					pstmt1.setString(10, rs.getString("flash_uid"));
-					pstmt1.setString(11, rs.getString("dual_serial_no"));
-					pstmt1.setString(12, rs.getString("dual_serial_no_type"));
-					pstmt1.setString(13, rs.getString("fastt_id"));
-					pstmt1.setString(14, rs.getString("base_processor_id"));
-					pstmt1.setString(15, rs.getString("wlan"));
+
+					if(rs.getString("handset_type")!=null && !(rs.getString("handset_type").equals(""))){
+						pstmt1.setString(1, rs.getString("handset_type"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("flex_option")!=null && !(rs.getString("flex_option").equals(""))){
+						pstmt1.setString(2, rs.getString("flex_option"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("flex_sw")!=null){
+						pstmt1.setString(3, rs.getString("flex_sw"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("hw")!=null && !(rs.getString("hw").equals(""))){
+						pstmt1.setString(4, rs.getString("hw"));
+					}else{
+						pstmt1.setString(4,null);	
+					}
+
+					if(rs.getString("icc_id")!=null && !(rs.getString("icc_id").equals(""))){
+						pstmt1.setString(5, rs.getString("icc_id"));
+					}else{
+						pstmt1.setString(5,null);
+					}
+
+					if(rs.getString("software_version")!=null && !(rs.getString("software_version").equals(""))){
+						pstmt1.setString(6, rs.getString("software_version"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("wimax")!=null && !(rs.getString("wimax").equals(""))){
+						pstmt1.setString(7, rs.getString("wimax"));
+					}else{
+						pstmt1.setString(7,null);
+					}
+
+					if(rs.getString("hsn")!=null && !(rs.getString("hsn").equals(""))){
+						pstmt1.setString(8, rs.getString("hsn"));
+					}else{
+						pstmt1.setString(8,null);
+					}
+
+					if(rs.getString("flash_uid")!=null && !(rs.getString("flash_uid").equals(""))){
+						pstmt1.setString(9, rs.getString("flash_uid"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getString("dual_serial_no")!=null && !(rs.getString("dual_serial_no").equals(""))){
+						pstmt1.setString(10, rs.getString("dual_serial_no"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					if(rs.getString("dual_serial_no_type")!=null && !(rs.getString("dual_serial_no_type").equals(""))){
+						pstmt1.setString(11, rs.getString("dual_serial_no_type"));
+					}else{
+						pstmt1.setString(11,null);
+					}
+
+					if(rs.getString("fastt_id")!=null && !(rs.getString("fastt_id").equals(""))){
+						pstmt1.setString(12, rs.getString("fastt_id"));
+					}else{
+						pstmt1.setString(12,null);
+					}
+
+					if(rs.getString("base_processor_id")!=null && !(rs.getString("base_processor_id").equals(""))){
+						pstmt1.setString(13, rs.getString("base_processor_id"));
+					}else{
+						pstmt1.setString(13,null);	
+					}
+
+					if(rs.getString("wlan")!=null && !(rs.getString("wlan").equals(""))){
+						pstmt1.setString(14, rs.getString("wlan"));
+					}else{
+						pstmt1.setString(14,null);	
+					}
+
+					pstmt1.setString(15,serialNoOut);
+
 					boolean status4 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updDirectShipment = "insert into upd.upd_direct_shipment (serial_no,so_line_no,ds_region_code,ds_so_no,ds_po_no,ds_cust_id,ds_bill_to_id,ds_ship_to_id,ds_cust_country_code,"
-							+ "ds_cust_name,bill_to_id,shipment_no,phone_no,wip_dj,sale_date,last_imei,created_datetime,created_by) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updDirectShipment = "update upd.upd_direct_shipment set so_line_no=?,ds_region_code=?,ds_so_no=?,ds_po_no=?,ds_cust_id=?,ds_bill_to_id=?,ds_ship_to_id=?,ds_cust_country_code=?,"
+							+ "ds_cust_name=?,bill_to_id=?,shipment_no=?,phone_no=?,wip_dj=?,sale_date=?,last_imei=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(MySql_updDirectShipment);
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("so_line_no"));
-					pstmt1.setString(3, rs.getString("ds_region_code"));
-					pstmt1.setString(4, rs.getString("ds_so_no"));
-					pstmt1.setString(5, rs.getString("ds_po_no"));
-					pstmt1.setString(6, rs.getString("ds_cust_id"));
-					pstmt1.setString(7, rs.getString("ds_bill_to_id"));
-					pstmt1.setString(8, rs.getString("ds_ship_to_id"));
-					pstmt1.setString(9, rs.getString("ds_cust_country_code"));
-					pstmt1.setString(10, rs.getString("ds_cust_name"));
-					pstmt1.setString(11, rs.getString("bill_to_id"));
-					pstmt1.setString(12, rs.getString("shipment_no"));
-					pstmt1.setString(13, rs.getString("phone_no"));
-					pstmt1.setString(14, rs.getString("wip_dj"));
-					pstmt1.setDate(15, rs.getDate("sale_date"));
-					pstmt1.setString(16, rs.getString("last_imei"));
+
+					if(rs.getString("so_line_no")!=null && !(rs.getString("so_line_no").equals(""))){
+						pstmt1.setString(1, rs.getString("so_line_no"));
+					}else{
+						pstmt1.setString(1,null);	
+					}
+
+					if(rs.getString("ds_region_code")!=null && !(rs.getString("ds_region_code").equals(""))){
+						pstmt1.setString(2, rs.getString("ds_region_code"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("ds_so_no")!=null && !(rs.getString("ds_so_no").equals(""))){
+						pstmt1.setString(3, rs.getString("ds_so_no"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if(rs.getString("ds_po_no")!=null && !(rs.getString("ds_po_no").equals(""))){
+						pstmt1.setString(4, rs.getString("ds_po_no"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					if(rs.getString("ds_cust_id")!=null && !(rs.getString("ds_cust_id").equals(""))){
+						pstmt1.setString(5, rs.getString("ds_cust_id"));
+					}else{
+						pstmt1.setString(5,null);	
+					}
+
+					if(rs.getString("ds_bill_to_id")!=null && !(rs.getString("ds_bill_to_id").equals(""))){
+						pstmt1.setString(6, rs.getString("ds_bill_to_id"));
+					}else{
+						pstmt1.setString(6,null);
+					}
+
+					if(rs.getString("ds_ship_to_id")!=null && !(rs.getString("ds_ship_to_id").equals(""))){
+						pstmt1.setString(7, rs.getString("ds_ship_to_id"));
+					}else{
+						pstmt1.setString(7,null);	
+					}
+
+					if(rs.getString("ds_cust_country_code")!=null && !(rs.getString("ds_cust_country_code").equals(""))){
+						pstmt1.setString(8, rs.getString("ds_cust_country_code"));
+					}else{
+						pstmt1.setString(8,null);	
+					}
+
+					if(rs.getString("ds_cust_name")!=null && !(rs.getString("ds_cust_name").equals(""))){
+						pstmt1.setString(9, rs.getString("ds_cust_name"));
+					}else{
+						pstmt1.setString(9,null);
+					}
+
+					if(rs.getString("bill_to_id")!=null && !(rs.getString("bill_to_id").equals(""))){
+						pstmt1.setString(10, rs.getString("bill_to_id"));
+					}else{
+						pstmt1.setString(10,null);
+					}
+
+					if(rs.getString("shipment_no")!=null && !(rs.getString("shipment_no").equals(""))){
+						pstmt1.setString(11, rs.getString("shipment_no"));
+					}else{
+						pstmt1.setString(11,null);	
+					}
+
+					if(rs.getString("phone_no")!=null && !(rs.getString("phone_no").equals(""))){
+						pstmt1.setString(12, rs.getString("phone_no"));
+					}else{
+						pstmt1.setString(12,null);
+					}
+
+					if(rs.getString("wip_dj")!=null && !(rs.getString("wip_dj").equals(""))){
+						pstmt1.setString(13, rs.getString("wip_dj"));
+					}else{
+						pstmt1.setString(13,null);
+					}
+
+					if(rs.getDate("sale_date")!=null && !(rs.getDate("sale_date").equals(""))){
+						pstmt1.setDate(14, rs.getDate("sale_date"));
+					}else{
+						pstmt1.setDate(14,null);
+					}
+
+					if( rs.getString("last_imei")!=null && !( rs.getString("last_imei").equals(""))){
+						pstmt1.setString(15, rs.getString("last_imei"));
+					}else{
+						pstmt1.setString(15, null);
+					}
+
+					pstmt1.setString(16,serialNoOut);
+
 					boolean status5 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String MySql_updLockCode = "insert into upd.upd_lock_code (serial_no,meid_evdo_password,meid_a_key2_type,meid_a_key2,imc_lock_code,created_datetime,created_by) values(?,?,?,?,?,now(),'pcba_pgm_success')";
+					String MySql_updLockCode = "update upd.upd_lock_code set meid_evdo_password=?,meid_a_key2_type=?,meid_a_key2=?,imc_lock_code=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(MySql_updLockCode);
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("meid_evdo_password"));
-					pstmt1.setString(3, rs.getString("meid_a_key2_type"));
-					pstmt1.setString(4, rs.getString("meid_a_key2"));
-					pstmt1.setString(5, rs.getString("imc_lock_code"));
+
+					if(rs.getString("meid_evdo_password")!=null && !(rs.getString("meid_evdo_password").equals(""))){
+						pstmt1.setString(1, rs.getString("meid_evdo_password"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("meid_a_key2_type")!=null && !(rs.getString("meid_a_key2_type").equals(""))){
+						pstmt1.setString(2, rs.getString("meid_a_key2_type"));
+					}else{
+						pstmt1.setString(2,null);
+					}
+
+					if(rs.getString("meid_a_key2")!=null && !(rs.getString("meid_a_key2").equals(""))){
+						pstmt1.setString(3, rs.getString("meid_a_key2"));
+					}else{
+						pstmt1.setString(3,null);
+					}
+
+					if( rs.getString("imc_lock_code")!=null && !( rs.getString("imc_lock_code").equals(""))){
+						pstmt1.setString(4, rs.getString("imc_lock_code"));
+					}else{
+						pstmt1.setString(4,null);
+					}
+
+					pstmt1.setString(5,	serialNoOut);
+
 					boolean status6 = pstmt1.execute();
 
 					pstmt1 = null;
 
-					String Sql_updMeid = " insert into upd.upd_meid (serial_no,a_key_index,cas_no,created_datetime,created_by) values(?,?,?,now(),'pcba_pgm_success')";
+					String Sql_updMeid = "update upd.upd_meid set a_key_index=?,cas_no=?,last_mod_datetime=now(),last_mod_by='pcba_pgm_success' where serial_no=?";
 
 					pstmt1 = con12.prepareStatement(Sql_updMeid);
-					pstmt1.setString(1, serialNoOut);
-					pstmt1.setString(2, rs.getString("a_key_index"));
-					pstmt1.setString(3, rs.getString("cas_no"));
+
+					if(rs.getString("a_key_index")!=null && !(rs.getString("a_key_index").equals(""))){
+						pstmt1.setString(1, rs.getString("a_key_index"));
+					}else{
+						pstmt1.setString(1,null);
+					}
+
+					if(rs.getString("cas_no")!=null && !(rs.getString("cas_no").equals(""))){
+						pstmt1.setString(2, rs.getString("cas_no"));
+					}else{
+						pstmt1.setString(2,null);
+					}					
+
+					pstmt1.setString(3,serialNoOut);
+
 					boolean status7 = pstmt1.execute();
 
 					pstmt1 = null;
@@ -621,46 +1665,28 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 					if (!status1 && !status2 && !status3 && !status4 && !status5
 							&& !status6 && !status7) {
 						String statusCode = "SCR  " + DateToStr;
-						String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"
-								+ statusCode
-								+ "' where serial_no='"
-								+ serialNoIn
-								+ "'";
+
+						String statusUpdatingOldSerialNo = "update upd.upd_warranty_info set status_code='"+ statusCode+ "' where serial_no='"	+ serialNoIn + "'";
 						pstmt1 = con1.prepareStatement(statusUpdatingOldSerialNo);
 						pstmt1.execute();
-
 						pstmt1=null;
 
 						String statusOfnewSerialNO="update upd.upd_repair set swap_ref_no='"+serialNoOut+"' where serial_no='"+serialNoIn+"'";
 						pstmt1 = con1.prepareStatement(statusOfnewSerialNO);
 						pstmt1.execute();
-					}
 
-					// innerupdatecon.commit();
+					}
 
 					response.setResponseCode(ServiceMessageCodes.OLD_SN_SUCCESS);
 					response.setResponseMessage(ServiceMessageCodes.OPERATION_SUCCESS);
-				}
+
+}
 
 			} else {
 
-				/*StringBuffer stb = new StringBuffer();
-				stb.append("insert into upd.upd_shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
-				pstmt1 = con12.prepareStatement(stb.toString());
-				pstmt1.setString(1, serialNoIn);
-				pstmt1.setString(2, serialNoOut);
-				pstmt1.setString(3, "PCBA_PGM");
-				pstmt1.setDate(4, new java.sql.Date(System.currentTimeMillis()));
-				pstmt1.setString(5, "PCBA_PGM");
-				pstmt1.setDate(6, new java.sql.Date(System.currentTimeMillis()));
-				pstmt1.setString(7, "S");
-				pstmt1.execute();
-
-				MailUtil.sendEmail();*/
-
 				response.setResponseCode(""+ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE);
 				response.setResponseMessage(ServiceMessageCodes.OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG);
-
+				
 			}
 
 		} catch (Exception e) {
@@ -723,13 +1749,137 @@ public class PCBASwapUPDUpdateSQLDAO implements PCBASwapUPDUpdateInterfaceDAO {
 
 		return con;
 	}
+	
+	// need to check onces for mySql
 
 	@Override
 	public int checkValidSerialNoIn(String SerialNoIn) {
 		// TODO Auto-generated method stub
-		return 0;
+		Connection conn1=null;
+		Connection conn2=null;
+		PreparedStatement pstmt1=null;
+		PreparedStatement pstmt2=null;
+		ResultSet rs1=null;
+		ResultSet rs2=null;
+		int referenceKeyCount =0;
+		// TODO Auto-generated method stub
+		try {
+
+			ds = DBUtil.getMySqlDataSource();
+		} catch (NamingException e) {
+			logger.info("Data source not found in MEID:" + e);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG+e.getMessage());
+
+		}
+
+		try {
+			// get database connection
+			conn1 = DBUtil.getConnection(ds);
+			String query="select reference_key from upd.upd_warranty_info where serial_no=?";
+			pstmt1 = conn1.prepareStatement(query);
+			pstmt1.setString(1,SerialNoIn);
+			rs1 = pstmt1.executeQuery();
+
+			logger.info("Status of Serial No:"+query);
+
+			String referenceKey = null;
+			String referenceKeyQuery="select count(*) from upd.upd_sn_repos_ref where status is null and reference_key=?";
+
+			if (rs1.next()) {
+				referenceKey=rs1.getString("reference_key");
+				if(referenceKey!=null && !(referenceKey.equals(""))){
+
+					conn2 = DBUtil.getConnection(ds);
+					pstmt2 = conn2.prepareStatement(referenceKeyQuery);
+					pstmt2.setString(1, referenceKey);
+					rs2 = pstmt2.executeQuery();
+
+					logger.info("Reading Count of Serial No:"+referenceKeyQuery);
+
+					if(rs2.next()){
+						referenceKeyCount = rs2.getInt(1);
+					}
+
+
+				}
+			}
+
+		}catch(Exception e){
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG+e.getMessage());
+
+		}finally{
+			DBUtil.closeConnection(conn1, pstmt1, rs1);
+			DBUtil.connectionClosed(conn2, pstmt2);
+		}
+		return referenceKeyCount;
 	}
 
+	
+	public String getStatus(String serialNoIn){
+
+		Connection conn1=null;
+		PreparedStatement pstmt1=null;
+		ResultSet rs1=null;
+		String status=null;
+		// TODO Auto-generated method stub
+		try {
+
+			ds = DBUtil.getMySqlDataSource();
+		} catch (NamingException e) {
+			logger.info("Data source not found in MEID:" + e);
+			response.setResponseCode(""+ServiceMessageCodes.NO_DATASOURCE_FOUND);
+			response.setResponseMessage(ServiceMessageCodes.NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG+e.getMessage());
+
+		}
+
+		try {
+			// get database connection
+			conn1 = DBUtil.getConnection(ds);
+			String query="select status_code from upd.upd_warranty_info where serial_no=?";
+			pstmt1 = conn1.prepareStatement(query);
+			pstmt1.setString(1,serialNoIn);
+			rs1 = pstmt1.executeQuery();
+			if(rs1.next()){
+				status =rs.getString("status_code");
+			}
+
+			logger.info("Status of Serial No in Shipment:"+query);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			DBUtil.closeConnection(conn1, pstmt1, rs1);
+		}
+		return status;
+	}
+	public Connection sendEmail(String serialNoIn,String serialNoOut,Connection innerselectcon,PreparedStatement prestmt){
+		try{
+
+			StringBuffer stb = new StringBuffer();
+			stb.append("insert into upd.shipment_notavail_sn(SERIAL_NO_IN,SERIAL_NO_OUT,CREATED_BY,CREATION_DATETIME,LAST_MOD_BY,LAST_MOD_DATETIME,STATUS) values(?,?,?,?,?,?,?)");
+			prestmt = innerselectcon.prepareStatement(stb.toString());
+			prestmt.setString(1,serialNoIn);
+			prestmt.setString(2,serialNoOut);
+			prestmt.setString(3, "PCBA_PGM");
+			prestmt.setDate(4,
+					new java.sql.Date(System.currentTimeMillis()));
+			prestmt.setString(5, "PCBA_PGM");
+			prestmt.setDate(6,
+					new java.sql.Date(System.currentTimeMillis()));
+			prestmt.setString(7, "S");
+			prestmt.execute();
+
+			logger.info(" SQL Query:"+stb);
+
+			MailUtil.sendEmail(serialNoIn,serialNoOut);
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return innerselectcon;
+	}
 
 
 }
