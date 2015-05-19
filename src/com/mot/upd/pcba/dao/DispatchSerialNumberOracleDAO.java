@@ -435,9 +435,9 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getMascID());
 			preparedStmt.setString(4, PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.setString(5,null);
-			if(dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!=null || dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!="")
+			if(dispatchSerialRequestPOJO.getXcvrCode()!=null || dispatchSerialRequestPOJO.getXcvrCode()!="")
 			{
-				preparedStmt.setString(5,dispatchSerialRequestPOJO.getPcbAssemblyPartNumber());
+				preparedStmt.setString(5,dispatchSerialRequestPOJO.getXcvrCode());
 			}
 			preparedStmt.setString(6, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());
@@ -782,9 +782,9 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getMascID());
 			preparedStmt.setString(4, PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.setString(5,null);
-			if(dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!=null || dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!="")
+			if(dispatchSerialRequestPOJO.getXcvrCode()!=null || dispatchSerialRequestPOJO.getXcvrCode()!="")
 			{
-				preparedStmt.setString(5,dispatchSerialRequestPOJO.getPcbAssemblyPartNumber());
+				preparedStmt.setString(5,dispatchSerialRequestPOJO.getXcvrCode());
 			}
 			preparedStmt.setString(6, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());

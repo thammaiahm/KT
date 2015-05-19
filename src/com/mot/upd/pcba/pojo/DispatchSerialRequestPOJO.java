@@ -8,6 +8,7 @@ public class DispatchSerialRequestPOJO {
 
 	
 
+
 	@Override
 	public String toString() {
 		return "DispatchSerialRequestPOJO [modelName=" + modelName
@@ -16,9 +17,8 @@ public class DispatchSerialRequestPOJO {
 				+ numberOfUlma + ", gppdID=" + gppdID + ", mascID=" + mascID
 				+ ", rsdID=" + rsdID + ", buildType=" + buildType
 				+ ", protocol=" + protocol + ", trackID=" + trackID
-				+ ", pcbAssemblyPartNumber=" + pcbAssemblyPartNumber + "]";
+				+ ", xcvrCode=" + xcvrCode + "]";
 	}
-
 	private String modelName;
 	private String customer;
 	private String requestType;
@@ -30,7 +30,8 @@ public class DispatchSerialRequestPOJO {
 	private String buildType;
 	private String protocol;
 	private String trackID;
-	private String pcbAssemblyPartNumber;
+	//private String pcbAssemblyPartNumber;
+	private String xcvrCode;
 	public String getModelName() {
 		return modelName;
 	}
@@ -97,11 +98,17 @@ public class DispatchSerialRequestPOJO {
 	public void setTrackID(String trackID) {
 		this.trackID = trackID;
 	}
-	public String getPcbAssemblyPartNumber() {
+	/*public String getPcbAssemblyPartNumber() {
 		return pcbAssemblyPartNumber;
 	}
 	public void setPcbAssemblyPartNumber(String pcbAssemblyPartNumber) {
 		this.pcbAssemblyPartNumber = pcbAssemblyPartNumber;
+	}*/
+	public String getXcvrCode() {
+		return xcvrCode;
+	}
+	public void setXcvrCode(String xcvrCode) {
+		this.xcvrCode = xcvrCode;
 	}
 	
 	
