@@ -434,8 +434,14 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, dispatchSerialRequestPOJO.getRsdID());
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getMascID());
 			preparedStmt.setString(4, PCBADataDictionary.MODIFIED_BY);
-			preparedStmt.setString(5, dispatchSerialResponsePOJO
+			preparedStmt.setString(5,null);
+			if(dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!=null || dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!="")
+			{
+				preparedStmt.setString(5,dispatchSerialRequestPOJO.getPcbAssemblyPartNumber());
+			}
+			preparedStmt.setString(6, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());
+			
 			preparedStmt.executeUpdate();
 
 			// inerst SN Repos table
@@ -466,6 +472,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(10, dispatchSerialRequestPOJO.getGppdID());
 			preparedStmt.setString(11, DispatchSerialMEID.getRequestID());
 			preparedStmt.setString(12, PCBADataDictionary.PROGRAM_FACILITY);
+			preparedStmt.setString(13, PCBADataDictionary.IMEI_ATTRIBUTE);
 			
 			preparedStmt.executeUpdate();
 
@@ -774,8 +781,14 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, dispatchSerialRequestPOJO.getRsdID());
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getMascID());
 			preparedStmt.setString(4, PCBADataDictionary.MODIFIED_BY);
-			preparedStmt.setString(5, dispatchSerialResponsePOJO
+			preparedStmt.setString(5,null);
+			if(dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!=null || dispatchSerialRequestPOJO.getPcbAssemblyPartNumber()!="")
+			{
+				preparedStmt.setString(5,dispatchSerialRequestPOJO.getPcbAssemblyPartNumber());
+			}
+			preparedStmt.setString(6, dispatchSerialResponsePOJO
 					.getNewSerialNo().trim());
+			
 			preparedStmt.executeUpdate();
 
 			// inerst SN Repos table
@@ -832,6 +845,7 @@ public class DispatchSerialNumberOracleDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(16, DispatchSerialMEID.getOneTimeSublockCode());
 			preparedStmt.setString(17, DispatchSerialMEID.getRequestID());
 			preparedStmt.setString(18, PCBADataDictionary.PROGRAM_FACILITY);
+			preparedStmt.setString(19, PCBADataDictionary.MEID_ATTRIBUTE);
 			
 			
 			
