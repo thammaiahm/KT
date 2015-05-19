@@ -22,6 +22,7 @@ public class PCBADataDictionary {
 	public static final String STAYUS_F="F";
 	public static final String DEFAULT_CUSTOMER="ANY";
 	public static final String PROGRAM_FACILITY="PCBA_PGM_AGENT";
-	
+	public static final String MEID_ATTRIBUTE="CDMA";
+	public static final String IMEI_ATTRIBUTE="GSM";
 
 }
