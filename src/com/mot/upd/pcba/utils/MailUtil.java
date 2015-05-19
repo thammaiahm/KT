@@ -14,6 +14,7 @@ import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -30,70 +31,61 @@ public class MailUtil {
 	private static PropertyResourceBundle bundle = InitProperty.getProperty("pcbaMail.properties");
 
 
-	public static  boolean sendEmail(String serialNoIn,String SerialNoOut)throws Exception{
+	public static  void sendEmail(String serialNoIn,String SerialNoOut)throws Exception{
 
-		boolean isMailSent = false;
-		String email = bundle.getString("email");
-		final String username = bundle.getString("username");
-		final String password = bundle.getString("password");
-		String server=bundle.getString("server");
-		String portNO=bundle.getString("portNO");
-		// Sender's email ID needs to be mentioned
-		String from = bundle.getString("from");
-		String emailSubject=bundle.getString("emailSubject");
-		String emailBody=bundle.getString("emailBody");
-		emailBody = MessageFormat.format(emailBody, serialNoIn,SerialNoOut);
+		final String USER_NAME = bundle.getString("username");
+		final String server=bundle.getString("server");
+		final String portNO=bundle.getString("portNO");
+		final String RECIPIENT=bundle.getString("recipient");
+		String subject=bundle.getString("emailSubject");
 
-		// Recipient's email ID needs to be mentioned.
-		String to = email;
-		// Get system properties
-		Properties properties = System.getProperties();
-		// Setup mail server
-		properties.setProperty("mail.smtp.auth", "true");
-		properties.setProperty("mail.smtp.starttls.enable", "true");
-		properties.setProperty("mail.smtp.host", server);
-		properties.setProperty("mail.smtp.port", portNO);
+		String body=bundle.getString("emailBody");
+		body = MessageFormat.format(body, serialNoIn,SerialNoOut);
 
-		// Get the default Session object.
-		Session session = Session.getInstance(properties,
-				new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		});
 
-		try{
-			// Create a default MimeMessage object.
-			Multipart mp = new MimeMultipart();
-			MimeMessage message = new MimeMessage(session);
+		String from = USER_NAME;
 
-			// Set From: header field of the header.
+		String[] to = { RECIPIENT }; // list of recipient email addresses
+
+		Properties props = System.getProperties();
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", server);
+		props.put("mail.smtp.user", from);
+		props.put("mail.smtp.port", portNO);
+		props.put("mail.smtp.auth", "false");
+
+		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+
+		try {
 			message.setFrom(new InternetAddress(from));
-			message.setSubject(emailSubject);
-			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(to));
-			BodyPart messageBodyPart = new MimeBodyPart();
+			InternetAddress[] toAddress = new InternetAddress[to.length];
 
-			messageBodyPart.setContent(emailBody, "text/html");
-			mp.addBodyPart(messageBodyPart);
-			// Set Subject: header field
-			message.setContent(mp);
+			// To get the array of addresses
+			for( int i = 0; i < to.length; i++ ) {
+				toAddress[i] = new InternetAddress(to[i]);
+			}
 
+			for( int i = 0; i < toAddress.length; i++) {
+				message.addRecipient(Message.RecipientType.TO, toAddress[i]);
+			}
 
-
-			// Send message
-			Transport.send(message);
-			logger.info("Sent Email successfully....");
-			System.out.println("Sent message successfully....");
-			isMailSent = true;
-		}catch (MessagingException mex) {
-			mex.printStackTrace();
-			throw mex;
+			message.setSubject(subject);  
+			message.setContent(body, "text/html");
+			Transport transport = session.getTransport("smtp");
+			transport.connect(server, from);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();
+			logger.info("Sent an E-Mail successfully....");
 		}
-
-
-		return isMailSent;
+		catch (AddressException ae) {
+			logger.info("Reading AddressException"+ae.getMessage());
+			ae.printStackTrace();
+		}
+		catch (MessagingException me) {
+			logger.info("Reading MessagingException:"+me.getMessage());
+			me.printStackTrace();
+		}
 
 	} 
 
