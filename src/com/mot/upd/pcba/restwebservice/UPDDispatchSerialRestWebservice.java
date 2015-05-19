@@ -181,7 +181,7 @@ public class UPDDispatchSerialRestWebservice {
 					.build();
 		}
 
-		isValid = validate(dispatchSerialRequestPOJO.getTrackID());
+		/*isValid = validate(dispatchSerialRequestPOJO.getTrackID());
 		if (!isValid) {
 			logger.debug("Invalid TrackID");
 			logger.info("Invalid TrackID");
@@ -195,9 +195,9 @@ public class UPDDispatchSerialRestWebservice {
 					+ dispatchSerialResponsePOJO.toString());
 			return Response.status(200).entity(dispatchSerialResponsePOJO)
 					.build();
-		}
+		}*/
 
-		isValid = validate(dispatchSerialRequestPOJO.getRsdID());
+		/*isValid = validate(dispatchSerialRequestPOJO.getRsdID());
 		if (!isValid) {
 			logger.debug("Invalid RSDID");
 			logger.info("Invalid RSDID");
@@ -211,23 +211,11 @@ public class UPDDispatchSerialRestWebservice {
 					+ dispatchSerialResponsePOJO.toString());
 			return Response.status(200).entity(dispatchSerialResponsePOJO)
 					.build();
-		}
+		}*/
 
-		/*
-		 * isValid =validate(dispatchSerialRequestPOJO.getMascID()); if
-		 * (!isValid) { logger.debug("Invalid MascID");
-		 * logger.info("Invalid MascID"); dispatchSerialResponsePOJO
-		 * .setResponseCode(ServiceMessageCodes.INVALID_MASCID);
-		 * dispatchSerialResponsePOJO
-		 * .setResponseMsg(ServiceMessageCodes.INVALID_MASCID_MSG);
-		 * logger.info("Returning response" +
-		 * dispatchSerialResponsePOJO.toString());
-		 * logger.debug("Returning response" +
-		 * dispatchSerialResponsePOJO.toString()); return
-		 * Response.status(200).entity(dispatchSerialResponsePOJO) .build(); }
-		 */
+		
 
-		hasSpecial = checkForSpecialCharacter(dispatchSerialRequestPOJO
+		/*hasSpecial = checkForSpecialCharacter(dispatchSerialRequestPOJO
 				.getMascID(),"-._");
 		if (hasSpecial) {
 			logger.debug("Invalid MascID");
@@ -242,7 +230,7 @@ public class UPDDispatchSerialRestWebservice {
 					+ dispatchSerialResponsePOJO.toString());
 			return Response.status(200).entity(dispatchSerialResponsePOJO)
 					.build();
-		}
+		}*/
 
 		isValid = validate(dispatchSerialRequestPOJO.getNumberOfUlma());
 		if (!isValid) {
