@@ -106,7 +106,7 @@ public class ServiceMessageCodes {
 	public static final String NO_DATASOURCE_FOUND_FOR_SERIAL_NO_MSG = "No DataSource found for SerialNO.";
 	public static final String IMEI_SUCCES_MSG = "Success";
 	public static final String IMEI_FAILURE_MSG = "pcba pgm failure";
-	public static final String PCBA_INPUT_PARAM_MISSING_MSG = "Following Fields are mandatory- Serial Number,rsdID,mascID,status,snType and either one is mandatory msl,otksl and servicePassCode.Please re-enter and try again.";
+	public static final String PCBA_INPUT_PARAM_SERIAL_NO_MSG = "serialno can`t be balnk.";
 	public static final String PCBA_INPUT_PARAM_MISSING = "Following Fields are mandatory- ClientIP,mascID,serialNoIn,serialNoOut,serialNoType,repairdate.Please re-enter and try again.";
 	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_SHIPMENT_TABLE_MSG = "Old Serialno not found in Shipment table";
 	public static final String OLD_SERIAL_NO_NOT_FOUND_IN_WARRANTY_INFO_TABLE_MSG = "Old Serialno not found in warranty info table";
@@ -126,6 +126,15 @@ public class ServiceMessageCodes {
 	public static final String DUAL_SERIAL_IN_OUT_DIFF_MSG="SerialNoIn,SreialNoOut,DualSerialNoIn and DualSerialNoOut should different";
 	public static final String TRI_SERIAL_IN_OUT_DIFF="5028";
 	public static final String TRI_SERIAL_IN_OUT_DIFF_MSG="SerialNoIn,SreialNoOut,DualSerialNoIn,DualSerialNoOut,TriSerialNoIn and TriSerialNoOut should different";
+	public static final String SNTYPE_CODE="5029";
+	public static final String SNTYPE_MSG="snType can`t be balnk.";
+	public static final String STATUS_CODE="5030";
+	public static final String STATUS_MSG="status can`t be balnk.";
+	public static final String MANDATORY_STATUS_CODE="5031";
+	public static final String MANDATORY_STATUS_MSG="Any of msl,otksl,servicePassCode is mandatory";
+	
+	
+	
 
 	
 	// R12 scrap serial

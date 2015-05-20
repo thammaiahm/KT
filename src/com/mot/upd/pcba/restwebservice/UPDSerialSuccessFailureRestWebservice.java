@@ -64,14 +64,41 @@ public class UPDSerialSuccessFailureRestWebservice {
 		boolean isMissing=false;
 		boolean isValidSerial=false;
 		boolean isValidStatus=false;
+		boolean isValidsntype=false;
+		boolean isValidStatusCheck=false;
+		boolean isValidSntypeCheck=false;
 
-		//Check for Mandatory Fields in input
-		isMissing =validateMandatoryInputParam(pcbaProgramQueryInput);
+		//Check for serialNo Mandatory Field
+		isMissing =validateMandatoryInputSerialNO(pcbaProgramQueryInput);
 		if(isMissing){
 			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
 			pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INPUT_PARAM_MISSING);
-			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_MISSING_MSG);
+			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.PCBA_INPUT_PARAM_SERIAL_NO_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
+		}
+		//check for sntype=IMEI and status=s
+		isValidsntype = validateMandatoryInputsntype(pcbaProgramQueryInput);
+		if(isValidsntype){
+
+
+			boolean isValid =false;
+			if(pcbaProgramQueryInput.getMsl()!=null && !pcbaProgramQueryInput.getMsl().equals("")){
+				isValid = true;
+			}if(pcbaProgramQueryInput.getOtksl()!=null && !pcbaProgramQueryInput.getOtksl().equals("")){
+				isValid = true;
+			}
+			if(pcbaProgramQueryInput.getServicePassCode()!=null && !pcbaProgramQueryInput.getServicePassCode().equals("")){
+				isValid = true;
+			}
+
+			if(!isValid){
+				pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
+				pcbaProgramResponse.setResponseCode(ServiceMessageCodes.MANDATORY_STATUS_CODE);
+				pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.MANDATORY_STATUS_MSG);
+				return Response.status(200).entity(pcbaProgramResponse).build();
+
+			}
+
 		}
 
 		//Check Valid serialNo
@@ -81,8 +108,8 @@ public class UPDSerialSuccessFailureRestWebservice {
 			try {
 				statusOfSerialNoIn = DBUtil.checkValidSerialNumber(pcbaProgramQueryInput.getSerialNO(),"SerialNo");
 			} catch (MEIDException e) {
-				pcbaProgramResponse.setResponseCode(""+ServiceMessageCodes.INVALID_SN_TYPE);
-				pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
+				pcbaProgramResponse.setResponseCode(ServiceMessageCodes.INVALID+"SerialNO");
+				pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SERIAL_NO_CODE);
 			}
 			if(statusOfSerialNoIn.length() == 15){
 				pcbaProgramQueryInput.setSerialNO(statusOfSerialNoIn);
@@ -94,6 +121,15 @@ public class UPDSerialSuccessFailureRestWebservice {
 
 			}
 		}
+		//mandatory filed check for SN Type
+		isValidSntypeCheck=validateMandatroySNType(pcbaProgramQueryInput);
+
+		if(isValidSntypeCheck){
+			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
+			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.SNTYPE_CODE);
+			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.SNTYPE_MSG);
+			return Response.status(200).entity(pcbaProgramResponse).build();
+		}
 
 		//check if sn type is valid
 		isValidSerial=validateSNType(pcbaProgramQueryInput);
@@ -104,6 +140,20 @@ public class UPDSerialSuccessFailureRestWebservice {
 			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.INVALID_SN_TYPE_MSG);
 			return Response.status(200).entity(pcbaProgramResponse).build();
 		}
+
+
+		isValidStatusCheck=validStatusCheck(pcbaProgramQueryInput);
+
+		if(isValidStatusCheck){
+			pcbaProgramResponse.setSerialNO(pcbaProgramQueryInput.getSerialNO());
+			pcbaProgramResponse.setResponseCode(ServiceMessageCodes.STATUS_CODE);
+			pcbaProgramResponse.setResponseMessage(ServiceMessageCodes.STATUS_MSG);
+			return Response.status(200).entity(pcbaProgramResponse).build();
+		}
+
+
+
+		//
 		// check if ststus is valid
 		isValidStatus=validateStatus(pcbaProgramQueryInput);
 		if(!isValidStatus){
@@ -157,21 +207,47 @@ public class UPDSerialSuccessFailureRestWebservice {
 	}
 
 
-	private boolean validateMandatoryInputParam(
+	private boolean validateMandatoryInputSerialNO(
 			PCBAProgramQueryInput pcbaProgramQueryInput) {
 		// TODO Auto-generated method stub
-		if(pcbaProgramQueryInput.getSerialNO()==null || pcbaProgramQueryInput.getRsdID()==null || pcbaProgramQueryInput.getMascID()==null || pcbaProgramQueryInput.getStatus()==null || pcbaProgramQueryInput.getSnType()==null){
+
+		if(pcbaProgramQueryInput.getSerialNO()==null){
 			return true;
 		}
-		if(pcbaProgramQueryInput.getSerialNO().equals("") || pcbaProgramQueryInput.getRsdID().equals("") || pcbaProgramQueryInput.getMascID().equals("") || pcbaProgramQueryInput.getStatus().equals("") || pcbaProgramQueryInput.getSnType().equals("")){
+		if(pcbaProgramQueryInput.getSerialNO().equals("")){
 			return true;
 		}
 
-		if(pcbaProgramQueryInput.getMsl()==null && pcbaProgramQueryInput.getOtksl()==null && pcbaProgramQueryInput.getServicePassCode()==null){
+		return false;
+	}
+
+	private boolean validateMandatoryInputsntype(PCBAProgramQueryInput pcbaProgramQueryInput) {
+		if(pcbaProgramQueryInput.getSnType()!=null && pcbaProgramQueryInput.getStatus()!=null){
+			if(((!(pcbaProgramQueryInput.getSnType().equals(""))) && (pcbaProgramQueryInput.getSnType().equals("IMEI"))) && (((!(pcbaProgramQueryInput.getStatus().equals(""))) && pcbaProgramQueryInput.getStatus().equals("S")))){
+				return true;	
+			}
+		}
+
+		return false;
+	}
+
+	private boolean validateMandatroySNType(
+			PCBAProgramQueryInput pcbaProgramQueryInput) {
+		if(pcbaProgramQueryInput.getSnType()==null){
+			return true;
+		}
+		if(pcbaProgramQueryInput.getSnType().equals("")){
 			return true;
 		}
 
-		if(pcbaProgramQueryInput.getMsl().equals("") && pcbaProgramQueryInput.getOtksl().equals("") && pcbaProgramQueryInput.getServicePassCode().equals("")){
+		return false;
+	}
+	private boolean validStatusCheck(
+			PCBAProgramQueryInput pcbaProgramQueryInput) {
+		if(pcbaProgramQueryInput.getStatus()==null){
+			return true;
+		}
+		if(pcbaProgramQueryInput.getStatus().equals("")){
 			return true;
 		}
 
