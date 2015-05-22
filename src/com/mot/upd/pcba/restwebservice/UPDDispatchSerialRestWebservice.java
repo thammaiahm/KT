@@ -364,7 +364,7 @@ public class UPDDispatchSerialRestWebservice {
 
 		// Oracle
 		if (updConfig.equals("YES")) {
-			dispatchSerialNumberDAO = new DispatchSerialNumberOracleDAO();
+			dispatchSerialNumberDAO = new DispatchSerialNumberMySQLDAO();
 		}
 		// MySQL
 		else {

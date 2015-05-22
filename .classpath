@@ -8,9 +8,11 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/soft/Wildfly/wildfly-8.0.0.CR1/wildfly-8.0.0.CR1/modules/system/layers/base/org/jboss/log4j/logmanager/main/log4j-jboss-logmanager-1.0.2.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/murugan/.ssh/pcba/WebContent/WEB-INF/lib/jaxrs-api-3.0.6.Final.jar"/>
-	<classpathentry kind="lib" path="C:/PCB/Git_PCBA_tammy/27042015/pcba-master/pcba-master/WebContent/WEB-INF/lib/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/murugan/.ssh/pcba/WebContent/WEB-INF/lib/mail.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jaxrs-api-3.0.6.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-jboss-logmanager-1.0.2.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

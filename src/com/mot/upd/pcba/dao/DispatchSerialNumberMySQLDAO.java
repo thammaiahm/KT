@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.mot.upd.pcba.constants.PCBADataDictionary;
 import com.mot.upd.pcba.constants.ServiceMessageCodes;
+import com.mot.upd.pcba.pojo.DispatchSerialMEID;
 import com.mot.upd.pcba.pojo.DispatchSerialRequestPOJO;
 import com.mot.upd.pcba.pojo.DispatchSerialResponsePOJO;
 import com.mot.upd.pcba.utils.DBUtil;
@@ -46,7 +47,7 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
 		try {
 
-			ds = DBUtil.getOracleDataSource();
+			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.error(e.getMessage());
 			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
@@ -115,7 +116,7 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateCustomerIMEI");
 		try {
 
-			ds = DBUtil.getOracleDataSource();
+			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.error(e.getMessage());
 			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
@@ -183,7 +184,7 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDIMEI");
 		try {
 
-			ds = DBUtil.getOracleDataSource();
+			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.error(e.getMessage());
 			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
@@ -252,7 +253,7 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 		logger.info("DispatchSerialNumberOracleDAO:Entered Method validateGPPIDMEID");
 		try {
 
-			ds = DBUtil.getOracleDataSource();
+			ds = DBUtil.getMySqlDataSource();
 		} catch (NamingException e) {
 			logger.error(e.getMessage());
 			response.setResponseCode(ServiceMessageCodes.NO_DATASOURCE_FOUND);
@@ -345,6 +346,8 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, dispatchSerialRequestPOJO.getCustomer());
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
+			preparedStmt.setString(5, PCBADataDictionary.PROGRAM_FACILITY);
+			
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
@@ -442,6 +445,37 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 					dispatchSerialResponsePOJO.getNewSerialNo());
 			preparedStmt.setString(2, PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.setString(3, PCBADataDictionary.MODIFIED_BY);
+			preparedStmt.executeUpdate();
+			
+			//insert to ULMA device_config
+			preparedStmt = null;
+			String insertULMA  = bundle.getString("WS.insertULMA");
+			preparedStmt = con.prepareStatement(insertULMA);
+			preparedStmt.setString(1,dispatchSerialResponsePOJO.getNewSerialNo());
+			preparedStmt.setString(2,null);
+			preparedStmt.setString(3,null);
+			preparedStmt.setString(4,null);
+			preparedStmt.setString(5,null);
+			preparedStmt.setString(6,null);
+			preparedStmt.setString(7,PCBADataDictionary.MODIFIED_BY);
+			
+			List<String> ulmaAddresses = dispatchSerialResponsePOJO.getUlmaAddress();
+			int i=2;
+			for (String ulma : ulmaAddresses) {
+				
+				preparedStmt.setString(i, ulma);
+				i++;
+			}
+			preparedStmt.executeUpdate();
+			
+			//insert GPPID and TrackID
+			preparedStmt = null;
+			String insertGPPID  = bundle.getString("WS.insertGPP");
+			preparedStmt = con.prepareStatement(insertGPPID);
+			preparedStmt.setString(1,dispatchSerialResponsePOJO.getNewSerialNo());
+			preparedStmt.setString(2,dispatchSerialRequestPOJO.getGppdID());
+			preparedStmt.setString(3,dispatchSerialRequestPOJO.getTrackID());
+			preparedStmt.setString(4,PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.executeUpdate();
 
 			/*
@@ -657,6 +691,7 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(3, dispatchSerialRequestPOJO.getBuildType());
 			preparedStmt.setString(4, PCBADataDictionary.UNDISPATCHED);
 			preparedStmt.setString(5, dispatchSerialRequestPOJO.getProtocol());
+			preparedStmt.setString(6, PCBADataDictionary.PROGRAM_FACILITY);
 
 			rs = preparedStmt.executeQuery();
 			if (rs.next()) {
@@ -665,6 +700,13 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 					response.setBuildType(rs.getString("BUILD_TYPE"));
 					response.setGppdID(rs.getString("GPPD_ID"));
 					response.setCustomer(rs.getString("CUSTOMER"));
+					DispatchSerialMEID.setaKey1Type(rs.getString("AKEY1_TYPE"));
+					DispatchSerialMEID.setaKey1Value(rs.getString("AKEY1_VALUE"));
+					DispatchSerialMEID.setaKey2Type(rs.getString("AKEY2_TYPE"));
+					DispatchSerialMEID.setaKey2Value(rs.getString("AKEY2_VALUE"));
+					DispatchSerialMEID.setMasterSubLockCode(rs.getString("MASTER_SUBLOCK_CODE"));
+					DispatchSerialMEID.setOneTimeSublockCode(rs.getString("ONETIME_SBLOCK_CODE"));
+					DispatchSerialMEID.setRequestID(rs.getString("REQUEST_ID"));
 
 				} while (rs.next());
 
@@ -753,6 +795,70 @@ public class DispatchSerialNumberMySQLDAO implements DispatchSerialNumberDAO {
 			preparedStmt.setString(2, PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.setString(3, PCBADataDictionary.MODIFIED_BY);
 			preparedStmt.executeUpdate();
+			
+			//insert to ULMA device_config
+			preparedStmt = null;
+			String insertULMA  = bundle.getString("WS.insertULMA");
+			preparedStmt = con.prepareStatement(insertULMA);
+			preparedStmt.setString(1,dispatchSerialResponsePOJO.getNewSerialNo());
+			preparedStmt.setString(2,null);
+			preparedStmt.setString(3,null);
+			preparedStmt.setString(4,null);
+			preparedStmt.setString(5,null);
+			preparedStmt.setString(6,null);
+			preparedStmt.setString(7,PCBADataDictionary.MODIFIED_BY);
+			
+			List<String> ulmaAddresses = dispatchSerialResponsePOJO.getUlmaAddress();
+			int i=2;
+			for (String ulma : ulmaAddresses) {
+				
+				preparedStmt.setString(i, ulma);
+				i++;
+			}
+			preparedStmt.executeUpdate();
+			
+			//insert GPPID and TrackID
+			preparedStmt = null;
+			String insertGPPID  = bundle.getString("WS.insertGPP");
+			preparedStmt = con.prepareStatement(insertGPPID);
+			preparedStmt.setString(1,dispatchSerialResponsePOJO.getNewSerialNo());
+			preparedStmt.setString(2,dispatchSerialRequestPOJO.getGppdID());
+			preparedStmt.setString(3,dispatchSerialRequestPOJO.getTrackID());
+			preparedStmt.setString(4,PCBADataDictionary.MODIFIED_BY);
+			preparedStmt.executeUpdate();
+			
+			
+			//insert lock code
+			preparedStmt = null;
+			String insertLockCode  = bundle.getString("WS.insertLockCode");
+			preparedStmt = con.prepareStatement(insertLockCode);
+			preparedStmt.setString(1,dispatchSerialResponsePOJO.getNewSerialNo());
+			preparedStmt.setString(2,PCBADataDictionary.MODIFIED_BY);
+			preparedStmt.setString(3,null);
+			preparedStmt.setString(4,null);
+			preparedStmt.setString(5,null);
+			preparedStmt.setString(6,null);
+			
+			//LOCK CODES AKEY1
+			if(DispatchSerialMEID.getaKey1Type().trim().equalsIgnoreCase("ZERO"))
+			{
+				preparedStmt.setString(4, DispatchSerialMEID.getaKey1Value());
+			}
+			
+			if(DispatchSerialMEID.getaKey1Type().trim().equalsIgnoreCase("RANDOM") || DispatchSerialMEID.getaKey1Type().trim().equalsIgnoreCase("SPRINT RANDOM"))
+			{
+				preparedStmt.setString(3, DispatchSerialMEID.getaKey1Value());
+			}
+			
+			//LOCK CODES AKEY1
+			if(DispatchSerialMEID.getaKey2Type()!=null && DispatchSerialMEID.getaKey2Value()!=null)
+			{
+				preparedStmt.setString(5, DispatchSerialMEID.getaKey2Type());
+				preparedStmt.setString(6, DispatchSerialMEID.getaKey2Value());
+			}
+			
+			preparedStmt.setString(7, DispatchSerialMEID.getMasterSubLockCode());
+			preparedStmt.setString(8, DispatchSerialMEID.getOneTimeSublockCode());
 
 			/*
 			 * Setting response parameter
